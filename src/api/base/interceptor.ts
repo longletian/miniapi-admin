@@ -11,11 +11,22 @@ export interface HttpResponse<T = unknown> {
   data: T;
 }
 
+let baseUrl = '';
 if (import.meta.env.VITE_API_BASE_URL) {
-  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+  baseUrl = import.meta.env.VITE_API_BASE_URL;
 }
 
-axios.interceptors.request.use(
+// 创建axios实例
+let request = axios.create({
+  baseURL: baseUrl,
+  timeout: 5000,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
+});
+
+// 添加请求拦截器
+request.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     // let each request carry token
     // this example using the JWT token
@@ -35,8 +46,8 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-// add response interceptors
-axios.interceptors.response.use(
+// 响应拦截器
+request.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     const res = response.data;
     // if the custom code is not 20000, it is judged as an error.
@@ -67,7 +78,12 @@ axios.interceptors.response.use(
     }
     return res;
   },
+
+  // 失败回调
   (error) => {
+    // 处理网络错误
+    let msg = error.msg;
+    let status = error.response.status;
     Message.error({
       content: error.msg || 'Request Error',
       duration: 5 * 1000,
@@ -75,3 +91,5 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default request;
