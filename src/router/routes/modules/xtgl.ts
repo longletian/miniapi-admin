@@ -25,7 +25,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'role',
       name: 'role',
-      component: () => import('@/views/xtgl/user/index.vue'),
+      component: () => import('@/views/xtgl/role/index.vue'),
       meta: {
         locale: 'menu.xtgl.role',
         requiresAuth: true,
@@ -35,7 +35,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'menu',
       name: 'menu',
-      component: () => import('@/views/xtgl/user/index.vue'),
+      component: () => import('@/views/xtgl/menu/index.vue'),
       meta: {
         locale: 'menu.xtgl.menu',
         requiresAuth: true,
@@ -45,7 +45,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'dept',
       name: 'dept',
-      component: () => import('@/views/xtgl/user/index.vue'),
+      component: () => import('@/views/xtgl/dept/index.vue'),
       meta: {
         locale: 'menu.xtgl.dept',
         requiresAuth: true,
@@ -55,7 +55,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'post',
       name: 'post',
-      component: () => import('@/views/xtgl/user/index.vue'),
+      component: () => import('@/views/xtgl/post/index.vue'),
       meta: {
         locale: 'menu.xtgl.post',
         requiresAuth: true,
@@ -65,7 +65,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'dict',
       name: 'dict',
-      component: () => import('@/views/xtgl/user/index.vue'),
+      component: () => import('@/views/xtgl/dict/index.vue'),
       meta: {
         locale: 'menu.xtgl.dict',
         requiresAuth: true,
@@ -73,9 +73,9 @@ const XTGL: AppRouteRecordRaw = {
       },
     },
     {
-      path: 'log',
+      path: '/log',
       name: 'log',
-      component: () => import('@/views/xtgl/user/index.vue'),
+      component: DEFAULT_LAYOUT,
       meta: {
         locale: 'menu.xtgl.log',
         requiresAuth: true,
@@ -85,23 +85,23 @@ const XTGL: AppRouteRecordRaw = {
         {
           path: 'action',
           name: 'action',
-          component: () => import('@/views/xtgl/user/index.vue'),
+          component: () => import('@/views/xtgl/log/action/index.vue'),
           meta: {
             locale: 'menu.xtgl.log.action',
             requiresAuth: true,
             roles: ['*'],
           },
         },
-        {
-          path: 'login',
-          name: 'login',
-          component: () => import('@/views/xtgl/user/index.vue'),
-          meta: {
-            locale: 'menu.xtgl.log.login',
-            requiresAuth: true,
-            roles: ['*'],
-          },
-        },
+        // {
+        //   path: 'login',
+        //   name: 'login',
+        //   component: () => import('@/views/xtgl/log/login/index.vue'),
+        //   meta: {
+        //     locale: 'menu.xtgl.log.login',
+        //     requiresAuth: true,
+        //     roles: ['*'],
+        //   },
+        // },
       ],
     },
   ],

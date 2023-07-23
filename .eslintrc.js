@@ -65,8 +65,10 @@ module.exports = {
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-param-reassign': 0,
-    'no-shadow': off,
     'prefer-regex-literals': 0,
     'import/no-extraneous-dependencies': 0,
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'warn',
+    'import/prefer-default-export': 'off',
   },
 };

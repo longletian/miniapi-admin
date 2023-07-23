@@ -23,6 +23,16 @@ const router = createRouter({
         requiresAuth: false,
       },
     },
+    // {
+    //   path: '/404',
+    //   name: 'notFound',
+    //   component: () => import('@/views/exception/404/index.vue'),
+    // },
+    // {
+    //   path: '/:pathMatch(.*)*',
+    //   redirect: '/404',
+    //   name: 'any',
+    // },
     ...appRoutes,
     REDIRECT_MAIN,
   ],

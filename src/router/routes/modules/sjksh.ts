@@ -13,7 +13,7 @@ const XTGL: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: '/index',
+      path: 'index',
       name: 'index',
       component: () => import('@/views/sjksh/index.vue'),
       meta: {

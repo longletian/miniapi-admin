@@ -1,10 +1,83 @@
-import axios from 'axios';
-
-enum contanturl {
-  LOGIN_URL = '',
-  USER_INFO = '',
+export enum AccountRegirstType {
+  None = 0,
+  EMAIL = 1,
+  TELEPHONE = 2,
 }
 
-export const reqLogin = (data: any) => axios.post(contanturl.LOGIN_URL, data);
+// 验证码
+export interface CatachaData {
+  captchaId: string;
+  captchaLength: number;
+  picPath: string;
+}
 
-export const reqLogin1 = (data: any) => axios.post(contanturl.LOGIN_URL, data);
+export interface LoginData {
+  AccountName: string;
+  category: number;
+  PassWord: string;
+  telePhone: string;
+  email: string;
+  accountRegirstType: AccountRegirstType;
+}
+
+export interface UserListData {
+  id: number;
+  name: string;
+  nickName: string;
+  unitId: number;
+  unitName: string;
+  headIcon: string;
+  gender: number;
+  birthDay: Date;
+  telePhone: string;
+  email: string;
+  sortNum: number;
+  description: string;
+  createUser: string;
+  createTime: Date;
+  updateUser: string;
+  updateTime: Date;
+}
+
+export interface UserInfoData {
+  id: number;
+  name: string;
+  nickName: string;
+  unitId: number;
+  unitName: string;
+  headIcon: string;
+  gender: number;
+  birthDay: Date;
+  telePhone: string;
+  email: string;
+  sortNum: number;
+  description: string;
+  createUser: string;
+  createTime: Date;
+  updateUser: string;
+  updateTime: Date;
+}
+
+export interface LoginInfoData {
+  accessToken: string;
+  expireTime: Date;
+  refreshToken: string;
+  refreshExpireTime: Date;
+  user: UserInfoData;
+}
+
+export interface AddUserData {
+  name: string;
+  nickName: string;
+  unitId: number;
+  unitName: string;
+  headIcon: string;
+  gender: number;
+  birthDay: Date;
+  telePhone: string;
+  email: string;
+  sortNum: number;
+  description: string;
+  roleIds: number[];
+  postIds: number[];
+}

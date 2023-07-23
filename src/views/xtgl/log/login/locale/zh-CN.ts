@@ -1,5 +1,6 @@
 export default {
-  'menu.xtgl.user': '人员管理',
+  'menu.xtgl.log.login': '登录日志',
+
   'menu.list.searchTable': '查询表格',
   'searchTable.form.number': '集合编号',
   'searchTable.form.number.placeholder': '请输入集合编号',

@@ -1,5 +1,6 @@
 export default {
-  'menu.xtgl.user': '人员管理',
+  'menu.xtgl.dict': '字典管理',
+
   'menu.list.searchTable': '查询表格',
   'searchTable.form.number': '集合编号',
   'searchTable.form.number.placeholder': '请输入集合编号',
@@ -22,13 +23,14 @@ export default {
   'searchTable.operation.create': '新建',
   'searchTable.operation.import': '批量导入',
   'searchTable.operation.download': '下载',
+
   // columns
   'searchTable.columns.index': '#',
-  'searchTable.columns.number': '集合编号',
-  'searchTable.columns.name': '集合名称',
-  'searchTable.columns.contentType': '内容体裁',
-  'searchTable.columns.filterType': '筛选方式',
-  'searchTable.columns.count': '内容量',
+  'searchTable.columns.dictTypeId': '字典类型编号',
+  'searchTable.columns.dictTypeCode': '字典类型编码',
+  'searchTable.columns.dictTypeName': '字典类型名称',
+  'searchTable.columns.sort': '排序',
+  'searchTable.columns.description': '描述',
   'searchTable.columns.createdTime': '创建时间',
   'searchTable.columns.status': '状态',
   'searchTable.columns.operations': '操作',

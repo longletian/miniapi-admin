@@ -5,20 +5,22 @@
     <div class="login-form-error-msg">{{ errorMessage }}</div>
     <a-form
       ref="loginForm"
-      :model="userInfo"
+      :model="loginConfig"
       class="login-form"
       layout="vertical"
       @submit="handleSubmit"
     >
       <a-form-item
-        field="username"
-        :rules="[{ required: true, message: $t('login.form.userName.errMsg') }]"
+        field="AccountName"
+        :rules="[
+          { required: true, message: $t('login.form.accountname.errMsg') },
+        ]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input
-          v-model="userInfo.username"
-          :placeholder="$t('login.form.userName.placeholder')"
+          v-model="loginConfig.AccountName"
+          :placeholder="$t('login.form.accountname.placeholder')"
         >
           <template #prefix>
             <icon-user />
@@ -26,13 +28,13 @@
         </a-input>
       </a-form-item>
       <a-form-item
-        field="password"
+        field="PassWord"
         :rules="[{ required: true, message: $t('login.form.password.errMsg') }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input-password
-          v-model="userInfo.password"
+          v-model="loginConfig.PassWord"
           :placeholder="$t('login.form.password.placeholder')"
           allow-clear
         >
@@ -72,7 +74,7 @@
   import { useStorage } from '@vueuse/core';
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
-  import type { LoginData } from '@/api/user';
+  import type { LoginData } from '@/api/xtgl/user/type';
 
   const router = useRouter();
   const { t } = useI18n();
@@ -82,12 +84,12 @@
 
   const loginConfig = useStorage('login-config', {
     rememberPassword: true,
-    username: 'admin', // 演示默认值
-    password: 'admin', // demo default value
+    AccountName: 'admin', // 演示默认值
+    PassWord: 'admin', // demo default value
   });
   const userInfo = reactive({
-    username: loginConfig.value.username,
-    password: loginConfig.value.password,
+    accountName: loginConfig.value.AccountName,
+    passWord: loginConfig.value.PassWord,
   });
 
   const handleSubmit = async ({
@@ -98,10 +100,13 @@
     values: Record<string, any>;
   }) => {
     if (loading.value) return;
+
+    // debugger;
     if (!errors) {
       setLoading(true);
       try {
-        await userStore.login(values as LoginData);
+        console.log(values);
+        await userStore.postLoginUserData(values as LoginData);
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
           name: (redirect as string) || 'Workplace',
@@ -110,12 +115,12 @@
           },
         });
         Message.success(t('login.form.login.success'));
-        const { rememberPassword } = loginConfig.value;
+        // const { rememberPassword } = loginConfig.value;
         const { username, password } = values;
         // 实际生产环境需要进行加密存储。
         // The actual production environment requires encrypted storage.
-        loginConfig.value.username = rememberPassword ? username : '';
-        loginConfig.value.password = rememberPassword ? password : '';
+        // loginConfig.value.accountName = rememberPassword ? username : '';
+        // loginConfig.value.rememberPassword = rememberPassword ? password : '';
       } catch (err) {
         errorMessage.value = (err as Error).message;
       } finally {

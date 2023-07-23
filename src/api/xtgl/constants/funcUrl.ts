@@ -6,8 +6,13 @@ const BASE = {
   LIST: '_list',
 };
 
+const COMMON = {
+  LOGIN: '/user/login',
+  VERIFICATIONCODE: '',
+};
+
 const USER = {
   ROOT: '/user',
 };
 
-export { USER, BASE };
+export { USER, COMMON, BASE };

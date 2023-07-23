@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.user']" />
-    <a-card class="general-card" :title="$t('menu.xtgl.user')">
+    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.role']" />
+    <a-card class="general-card" :title="$t('menu.xtgl.role')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -11,61 +11,18 @@
             label-align="left"
           >
             <a-row :gutter="16">
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
-                  field="number"
-                  :label="$t('searchTable.form.number')"
+                  field="rolename"
+                  :label="$t('searchTable.form.rolename')"
                 >
                   <a-input
-                    v-model="formModel.number"
-                    :placeholder="$t('searchTable.form.number.placeholder')"
+                    v-model="formModel.roleName"
+                    :placeholder="$t('searchTable.form.rolename.placeholder')"
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item field="name" :label="$t('searchTable.form.name')">
-                  <a-input
-                    v-model="formModel.name"
-                    :placeholder="$t('searchTable.form.name.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="contentType"
-                  :label="$t('searchTable.form.contentType')"
-                >
-                  <a-select
-                    v-model="formModel.contentType"
-                    :options="contentTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="filterType"
-                  :label="$t('searchTable.form.filterType')"
-                >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="createdTime"
-                  :label="$t('searchTable.form.createdTime')"
-                >
-                  <a-range-picker
-                    v-model="formModel.createdTime"
-                    style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
                   field="status"
                   :label="$t('searchTable.form.status')"
@@ -77,25 +34,24 @@
                   />
                 </a-form-item>
               </a-col>
+              <a-col :span="6">
+                <a-space :size="18">
+                  <a-button type="primary" @click="search">
+                    <template #icon>
+                      <icon-search />
+                    </template>
+                    {{ $t('searchTable.form.search') }}
+                  </a-button>
+                  <a-button @click="reset">
+                    <template #icon>
+                      <icon-refresh />
+                    </template>
+                    {{ $t('searchTable.form.reset') }}
+                  </a-button>
+                </a-space>
+              </a-col>
             </a-row>
           </a-form>
-        </a-col>
-        <a-divider style="height: 84px" direction="vertical" />
-        <a-col :flex="'86px'" style="text-align: right">
-          <a-space direction="vertical" :size="18">
-            <a-button type="primary" @click="search">
-              <template #icon>
-                <icon-search />
-              </template>
-              {{ $t('searchTable.form.search') }}
-            </a-button>
-            <a-button @click="reset">
-              <template #icon>
-                <icon-refresh />
-              </template>
-              {{ $t('searchTable.form.reset') }}
-            </a-button>
-          </a-space>
         </a-col>
       </a-row>
       <a-divider style="margin-top: 0" />
@@ -108,79 +64,26 @@
               </template>
               {{ $t('searchTable.operation.create') }}
             </a-button>
-            <a-upload action="/">
-              <template #upload-button>
-                <a-button>
-                  {{ $t('searchTable.operation.import') }}
-                </a-button>
+            <a-button type="primary" status="success">
+              <template #icon>
+                <icon-edit />
               </template>
-            </a-upload>
+              {{ $t('searchTable.operation.edit') }}
+            </a-button>
+
+            <a-button type="primary" status="danger">
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('searchTable.operation.delete') }}
+            </a-button>
+            <a-button>
+              <template #icon>
+                <icon-to-bottom />
+              </template>
+              {{ $t('searchTable.operation.showAll') }}
+            </a-button>
           </a-space>
-        </a-col>
-        <a-col
-          :span="12"
-          style="display: flex; align-items: center; justify-content: end"
-        >
-          <a-button>
-            <template #icon>
-              <icon-download />
-            </template>
-            {{ $t('searchTable.operation.download') }}
-          </a-button>
-          <a-tooltip :content="$t('searchTable.actions.refresh')">
-            <div class="action-icon" @click="search"
-              ><icon-refresh size="18"
-            /></div>
-          </a-tooltip>
-          <a-dropdown @select="handleSelectDensity">
-            <a-tooltip :content="$t('searchTable.actions.density')">
-              <div class="action-icon"><icon-line-height size="18" /></div>
-            </a-tooltip>
-            <template #content>
-              <a-doption
-                v-for="item in densityList"
-                :key="item.value"
-                :value="item.value"
-                :class="{ active: item.value === size }"
-              >
-                <span>{{ item.name }}</span>
-              </a-doption>
-            </template>
-          </a-dropdown>
-          <a-tooltip :content="$t('searchTable.actions.columnSetting')">
-            <a-popover
-              trigger="click"
-              position="bl"
-              @popup-visible-change="popupVisibleChange"
-            >
-              <div class="action-icon"><icon-settings size="18" /></div>
-              <template #content>
-                <div id="tableSetting">
-                  <div
-                    v-for="(item, index) in showColumns"
-                    :key="item.dataIndex"
-                    class="setting"
-                  >
-                    <div style="margin-right: 4px; cursor: move">
-                      <icon-drag-arrow />
-                    </div>
-                    <div>
-                      <a-checkbox
-                        v-model="item.checked"
-                        @change="
-                          handleChange($event, item as TableColumnData, index)
-                        "
-                      >
-                      </a-checkbox>
-                    </div>
-                    <div class="title">
-                      {{ item.title === '#' ? '序列号' : item.title }}
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </a-popover>
-          </a-tooltip>
         </a-col>
       </a-row>
       <a-table
@@ -188,7 +91,7 @@
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
-        :data="renderData"
+        :data="data"
         :bordered="false"
         :size="size"
         @page-change="onPageChange"
@@ -196,48 +99,44 @@
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
         </template>
-        <template #contentType="{ record }">
-          <a-space>
-            <a-avatar
-              v-if="record.contentType === 'img'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar
-              v-else-if="record.contentType === 'horizontalVideo'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar v-else :size="16" shape="square">
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            {{ $t(`searchTable.form.contentType.${record.contentType}`) }}
-          </a-space>
-        </template>
-        <template #filterType="{ record }">
-          {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
-        </template>
+
         <template #status="{ record }">
-          <span v-if="record.status === 'offline'" class="circle"></span>
+          <span v-if="record.status === 0" class="circle"></span>
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
+
         <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small">
-            {{ $t('searchTable.columns.operations.view') }}
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-settings />
+            </template>
+            <template #default>
+              {{ $t('searchTable.columns.operations.setPermission') }}
+            </template>
+          </a-button>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-plus />
+            </template>
+            <template #default>
+              {{ $t('searchTable.columns.operations.addSubRole') }}
+            </template>
+          </a-button>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-copy />
+            </template>
+          </a-button>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-edit />
+            </template>
+          </a-button>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-delete />
+            </template>
           </a-button>
         </template>
       </a-table>
@@ -261,11 +160,7 @@
 
   const generateFormModel = () => {
     return {
-      number: '',
-      name: '',
-      contentType: '',
-      filterType: '',
-      createdTime: [],
+      roleName: '',
       status: '',
     };
   };
@@ -285,88 +180,33 @@
   const pagination = reactive({
     ...basePagination,
   });
-  const densityList = computed(() => [
-    {
-      name: t('searchTable.size.mini'),
-      value: 'mini',
-    },
-    {
-      name: t('searchTable.size.small'),
-      value: 'small',
-    },
-    {
-      name: t('searchTable.size.medium'),
-      value: 'medium',
-    },
-    {
-      name: t('searchTable.size.large'),
-      value: 'large',
-    },
-  ]);
   const columns = computed<TableColumnData[]>(() => [
     {
-      title: t('searchTable.columns.index'),
-      dataIndex: 'index',
-      slotName: 'index',
+      title: t('searchTable.columns.roleId'),
+      dataIndex: 'roleId',
+      slotName: 'roleId',
     },
     {
-      title: t('searchTable.columns.number'),
-      dataIndex: 'number',
+      title: t('searchTable.columns.roleName'),
+      dataIndex: 'roleName',
     },
     {
-      title: t('searchTable.columns.name'),
-      dataIndex: 'name',
-    },
-    {
-      title: t('searchTable.columns.contentType'),
-      dataIndex: 'contentType',
-      slotName: 'contentType',
-    },
-    {
-      title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
-    },
-    {
-      title: t('searchTable.columns.count'),
-      dataIndex: 'count',
+      title: t('searchTable.columns.roleCode'),
+      dataIndex: 'roleCode',
     },
     {
       title: t('searchTable.columns.createdTime'),
       dataIndex: 'createdTime',
+      slotName: 'createdTime',
     },
     {
       title: t('searchTable.columns.status'),
       dataIndex: 'status',
-      slotName: 'status',
     },
     {
       title: t('searchTable.columns.operations'),
       dataIndex: 'operations',
       slotName: 'operations',
-    },
-  ]);
-  const contentTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('searchTable.form.contentType.img'),
-      value: 'img',
-    },
-    {
-      label: t('searchTable.form.contentType.horizontalVideo'),
-      value: 'horizontalVideo',
-    },
-    {
-      label: t('searchTable.form.contentType.verticalVideo'),
-      value: 'verticalVideo',
-    },
-  ]);
-  const filterTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('searchTable.form.filterType.artificial'),
-      value: 'artificial',
-    },
-    {
-      label: t('searchTable.form.filterType.rules'),
-      value: 'rules',
     },
   ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
@@ -379,6 +219,31 @@
       value: 'offline',
     },
   ]);
+  const data = reactive([
+    {
+      roleId: '1',
+      roleName: '管理员',
+      status: 0,
+      children: [
+        {
+          roleId: '1001',
+          roleName: '子管理员1',
+          status: 0,
+        },
+        {
+          roleId: '1002',
+          roleName: '子管理员2',
+          status: 0,
+        },
+      ],
+    },
+    {
+      roleId: '2',
+      roleName: '开发人员',
+      status: 0,
+    },
+  ]);
+
   const fetchData = async (
     params: PolicyParams = { current: 1, pageSize: 20 }
   ) => {

@@ -13,47 +13,50 @@
             <a-row :gutter="16">
               <a-col :span="8">
                 <a-form-item
-                  field="number"
-                  :label="$t('searchTable.form.number')"
+                  field="userName"
+                  :label="$t('searchTable.form.username')"
                 >
                   <a-input
-                    v-model="formModel.number"
-                    :placeholder="$t('searchTable.form.number.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item field="name" :label="$t('searchTable.form.name')">
-                  <a-input
-                    v-model="formModel.name"
-                    :placeholder="$t('searchTable.form.name.placeholder')"
+                    v-model="formModel.userName"
+                    :placeholder="$t('searchTable.form.username.placeholder')"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  field="contentType"
-                  :label="$t('searchTable.form.contentType')"
+                  field="nickName"
+                  :label="$t('searchTable.form.nickname')"
                 >
-                  <a-select
-                    v-model="formModel.contentType"
-                    :options="contentTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
+                  <a-input
+                    v-model="formModel.nickName"
+                    :placeholder="$t('searchTable.form.nickname.placeholder')"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  field="filterType"
-                  :label="$t('searchTable.form.filterType')"
+                  field="email"
+                  :label="$t('searchTable.form.email')"
                 >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
+                  <a-input
+                    v-model="formModel.email"
+                    :placeholder="$t('searchTable.form.email.placeholder')"
                   />
                 </a-form-item>
               </a-col>
+
+              <a-col :span="8">
+                <a-form-item
+                  field="phone"
+                  :label="$t('searchTable.form.phone')"
+                >
+                  <a-input
+                    v-model="formModel.phone"
+                    :placeholder="$t('searchTable.form.phone.placeholder')"
+                  />
+                </a-form-item>
+              </a-col>
+
               <a-col :span="8">
                 <a-form-item
                   field="createdTime"
@@ -107,6 +110,18 @@
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
+            </a-button>
+            <a-button type="primary" status="success">
+              <template #icon>
+                <icon-edit />
+              </template>
+              {{ $t('searchTable.operation.edit') }}
+            </a-button>
+            <a-button type="primary" status="danger">
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('searchTable.operation.delete') }}
             </a-button>
             <a-upload action="/">
               <template #upload-button>
@@ -261,11 +276,13 @@
 
   const generateFormModel = () => {
     return {
-      number: '',
-      name: '',
-      contentType: '',
-      filterType: '',
+      userName: '',
+      nickName: '',
+      email: '',
+      phone: '',
+      startTime: '',
       createdTime: [],
+      endTime: '',
       status: '',
     };
   };
@@ -310,29 +327,24 @@
       slotName: 'index',
     },
     {
-      title: t('searchTable.columns.number'),
-      dataIndex: 'number',
+      title: t('searchTable.columns.userName'),
+      dataIndex: 'userName',
     },
     {
-      title: t('searchTable.columns.name'),
-      dataIndex: 'name',
+      title: t('searchTable.columns.nickName'),
+      dataIndex: 'nickName',
     },
     {
-      title: t('searchTable.columns.contentType'),
-      dataIndex: 'contentType',
-      slotName: 'contentType',
+      title: t('searchTable.columns.deptName'),
+      dataIndex: 'deptName',
     },
     {
-      title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
+      title: t('searchTable.columns.email'),
+      dataIndex: 'email',
     },
     {
-      title: t('searchTable.columns.count'),
-      dataIndex: 'count',
-    },
-    {
-      title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
+      title: t('searchTable.columns.gmtCreate'),
+      dataIndex: 'gmtCreate',
     },
     {
       title: t('searchTable.columns.status'),

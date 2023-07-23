@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.user']" />
-    <a-card class="general-card" :title="$t('menu.xtgl.user')">
+    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.dict']" />
+    <a-card class="general-card" :title="$t('menu.xtgl.dict')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -108,13 +108,6 @@
               </template>
               {{ $t('searchTable.operation.create') }}
             </a-button>
-            <a-upload action="/">
-              <template #upload-button>
-                <a-button>
-                  {{ $t('searchTable.operation.import') }}
-                </a-button>
-              </template>
-            </a-upload>
           </a-space>
         </a-col>
         <a-col
@@ -188,7 +181,7 @@
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
-        :data="renderData"
+        :data="data"
         :bordered="false"
         :size="size"
         @page-change="onPageChange"
@@ -196,37 +189,7 @@
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
         </template>
-        <template #contentType="{ record }">
-          <a-space>
-            <a-avatar
-              v-if="record.contentType === 'img'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar
-              v-else-if="record.contentType === 'horizontalVideo'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar v-else :size="16" shape="square">
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            {{ $t(`searchTable.form.contentType.${record.contentType}`) }}
-          </a-space>
-        </template>
+
         <template #filterType="{ record }">
           {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
         </template>
@@ -236,8 +199,20 @@
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
         <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small">
-            {{ $t('searchTable.columns.operations.view') }}
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-eye />
+            </template>
+          </a-button>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-edit />
+            </template>
+          </a-button>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-delete />
+            </template>
           </a-button>
         </template>
       </a-table>
@@ -310,25 +285,25 @@
       slotName: 'index',
     },
     {
-      title: t('searchTable.columns.number'),
-      dataIndex: 'number',
+      title: t('searchTable.columns.dictTypeId'),
+      dataIndex: 'dictTypeId',
     },
     {
-      title: t('searchTable.columns.name'),
-      dataIndex: 'name',
+      title: t('searchTable.columns.dictTypeName'),
+      dataIndex: 'dictTypeName',
     },
     {
-      title: t('searchTable.columns.contentType'),
-      dataIndex: 'contentType',
-      slotName: 'contentType',
+      title: t('searchTable.columns.dictTypeCode'),
+      dataIndex: 'dictTypeCode',
+    },
+
+    {
+      title: t('searchTable.columns.description'),
+      dataIndex: 'description',
     },
     {
-      title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
-    },
-    {
-      title: t('searchTable.columns.count'),
-      dataIndex: 'count',
+      title: t('searchTable.columns.sort'),
+      dataIndex: 'sort',
     },
     {
       title: t('searchTable.columns.createdTime'),
@@ -345,6 +320,19 @@
       slotName: 'operations',
     },
   ]);
+
+  const data = [
+    {
+      dictTypeId: '223',
+      dictTypeCode: '232',
+      dictTypeName: '232',
+      sort: '232',
+      description: '12',
+      createdTime: '1231',
+      status: '0',
+    },
+  ];
+
   const contentTypeOptions = computed<SelectOptionData[]>(() => [
     {
       label: t('searchTable.form.contentType.img'),
