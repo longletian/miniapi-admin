@@ -27,14 +27,7 @@ export const postVerificationCode = () => {
 
 // 登录
 export const postLoginUserData = (data: LoginData) => {
-  return axios
-    .post(COMMON.LOGIN, data)
-    .then((c) => {
-      console.log(c);
-    })
-    .catch((r) => {
-      console.log(`异常${r}`);
-    });
+  return axios.post(COMMON.LOGIN, data);
 };
 
 // 重置密码

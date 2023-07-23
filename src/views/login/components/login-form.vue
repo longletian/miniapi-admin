@@ -107,6 +107,7 @@
       try {
         console.log(values);
         await userStore.postLoginUserData(values as LoginData);
+        debugger;
         const { redirect, ...othersQuery } = router.currentRoute.value.query;
         router.push({
           name: (redirect as string) || 'Workplace',

@@ -50,7 +50,7 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
-    debugger;
+    // debugger;
     const res = response.data;
     console.log(res);
 

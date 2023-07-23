@@ -27,8 +27,8 @@ const useUserStore = defineStore('user', {
       try {
         const res = postLoginUserData(loginForm);
         res.then((response) => {
-          // this.userInfoData = response.data;
-          // setToken(response.data.token);
+          this.userInfoData = response.data.userInfoData;
+          setToken(response.data.token);
         });
       } catch (err) {
         clearToken();
