@@ -18,8 +18,8 @@ const XTGL: AppRouteRecordRaw = {
       component: () => import('@/views/xtgl/user/index.vue'),
       meta: {
         locale: 'menu.xtgl.user',
-        requiresAuth: true,
-        roles: ['*'],
+        requiresAuth: false,
+        // roles: ['*'],
       },
     },
     {

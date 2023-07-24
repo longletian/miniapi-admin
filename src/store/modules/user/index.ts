@@ -28,11 +28,18 @@ const useUserStore = defineStore('user', {
         const res = postLoginUserData(loginForm);
         res.then((response) => {
           this.userInfoData = response.data.userInfoData;
-          setToken(response.data.token);
+          // setToken(response.data.token);
         });
       } catch (err) {
         clearToken();
         throw err;
+      }
+    },
+    async logout() {
+      try {
+        // await userLogout();
+      } finally {
+        // this.logoutCallBack();
       }
     },
   },
@@ -78,14 +85,7 @@ const useUserStore = defineStore('user', {
   //     removeRouteListener();
   //     appStore.clearServerMenu();
   //   },
-  //   // Logout
-  //   async logout() {
-  //     try {
-  //       await userLogout();
-  //     } finally {
-  //       this.logoutCallBack();
-  //     }
-  //   },
+
   // },
 });
 

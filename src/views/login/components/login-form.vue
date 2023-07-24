@@ -5,7 +5,7 @@
     <div class="login-form-error-msg">{{ errorMessage }}</div>
     <a-form
       ref="loginForm"
-      :model="loginConfig"
+      :model="userInfo"
       class="login-form"
       layout="vertical"
       @submit="handleSubmit"
@@ -19,7 +19,7 @@
         hide-label
       >
         <a-input
-          v-model="loginConfig.AccountName"
+          v-model="userInfo.AccountName"
           :placeholder="$t('login.form.accountname.placeholder')"
         >
           <template #prefix>
@@ -34,7 +34,7 @@
         hide-label
       >
         <a-input-password
-          v-model="loginConfig.PassWord"
+          v-model="userInfo.PassWord"
           :placeholder="$t('login.form.password.placeholder')"
           allow-clear
         >
@@ -47,7 +47,7 @@
         <div class="login-form-password-actions">
           <a-checkbox
             checked="rememberPassword"
-            :model-value="loginConfig.rememberPassword"
+            :model-value="userInfo.rememberPassword"
             @change="setRememberPassword as any"
           >
             {{ $t('login.form.rememberPassword') }}
@@ -82,14 +82,15 @@
   const { loading, setLoading } = useLoading();
   const userStore = useUserStore();
 
-  const loginConfig = useStorage('login-config', {
-    rememberPassword: true,
-    AccountName: 'admin', // 演示默认值
-    PassWord: 'admin', // demo default value
-  });
+  // const loginConfig = useStorage('login-config', {
+  //   rememberPassword: true,
+  //   AccountName: 'admin', // 演示默认值
+  //   PassWord: 'admin', // demo default value
+  // });
   const userInfo = reactive({
-    accountName: loginConfig.value.AccountName,
-    passWord: loginConfig.value.PassWord,
+    AccountName: 'admin',
+    PassWord: 'admin',
+    rememberPassword: false,
   });
 
   const handleSubmit = async ({
@@ -100,24 +101,33 @@
     values: Record<string, any>;
   }) => {
     if (loading.value) return;
-
-    // debugger;
     if (!errors) {
       setLoading(true);
       try {
         console.log(values);
         await userStore.postLoginUserData(values as LoginData);
-        debugger;
-        const { redirect, ...othersQuery } = router.currentRoute.value.query;
+        // Message.success(t('login.form.login.success'));
+
+        // debugger;
+        // const { redirect, ...othersQuery } = router.currentRoute.value.query;
+
+        console.log(router);
+        // router.push({
+        //   path: '/dashboard',
+        // });
+
         router.push({
-          name: (redirect as string) || 'Workplace',
-          query: {
-            ...othersQuery,
-          },
+          name: 'xtgl',
         });
-        Message.success(t('login.form.login.success'));
+
+        // router.push({
+        //   name: redirect as string | 'dashboard',
+        //   query: {
+        //     ...othersQuery,
+        //   },
+        // });
         // const { rememberPassword } = loginConfig.value;
-        const { username, password } = values;
+        // const { username, password } = values;
         // 实际生产环境需要进行加密存储。
         // The actual production environment requires encrypted storage.
         // loginConfig.value.accountName = rememberPassword ? username : '';
@@ -130,7 +140,7 @@
     }
   };
   const setRememberPassword = (value: boolean) => {
-    loginConfig.value.rememberPassword = value;
+    // loginConfig.value.rememberPassword = value;
   };
 </script>
 
