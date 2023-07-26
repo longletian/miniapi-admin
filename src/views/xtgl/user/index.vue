@@ -209,49 +209,15 @@
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
-          {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
-        </template>
-        <template #contentType="{ record }">
-          <a-space>
-            <a-avatar
-              v-if="record.contentType === 'img'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/581b17753093199839f2e327e726b157.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar
-              v-else-if="record.contentType === 'horizontalVideo'"
-              :size="16"
-              shape="square"
-            >
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/77721e365eb2ab786c889682cbc721c1.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            <a-avatar v-else :size="16" shape="square">
-              <img
-                alt="avatar"
-                src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/ea8b09190046da0ea7e070d83c5d1731.svg~tplv-49unhts6dw-image.image"
-              />
-            </a-avatar>
-            {{ $t(`searchTable.form.contentType.${record.contentType}`) }}
-          </a-space>
-        </template>
-        <template #filterType="{ record }">
-          {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
+          {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
         <template #status="{ record }">
-          <span v-if="record.status === 'offline'" class="circle"></span>
+          <span v-if="record.status === 0" class="circle"></span>
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
         <template #operations>
-          <a-button v-permission="['admin']" type="text" size="small">
+          <a-button type="text" size="small">
             {{ $t('searchTable.columns.operations.view') }}
           </a-button>
         </template>
@@ -264,12 +230,13 @@
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import { UserListData, UserSearchParams } from '@/api/xtgl/user/type';
+  import { getPageUserListData } from '@/api/xtgl/user/user';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -288,7 +255,8 @@
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<PolicyRecord[]>([]);
+
+  const renderData = ref<UserListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
@@ -296,12 +264,14 @@
   const size = ref<SizeProps>('medium');
 
   const basePagination: Pagination = {
-    current: 1,
-    pageSize: 20,
+    page: 1,
+    pageSize: 5,
   };
+
   const pagination = reactive({
     ...basePagination,
   });
+
   const densityList = computed(() => [
     {
       name: t('searchTable.size.mini'),
@@ -320,31 +290,36 @@
       value: 'large',
     },
   ]);
+
   const columns = computed<TableColumnData[]>(() => [
     {
       title: t('searchTable.columns.index'),
-      dataIndex: 'index',
-      slotName: 'index',
+      dataIndex: 'id',
+      slotName: 'id',
     },
     {
       title: t('searchTable.columns.userName'),
-      dataIndex: 'userName',
+      dataIndex: 'name',
     },
     {
       title: t('searchTable.columns.nickName'),
       dataIndex: 'nickName',
     },
     {
-      title: t('searchTable.columns.deptName'),
-      dataIndex: 'deptName',
+      title: t('searchTable.columns.unitName'),
+      dataIndex: 'unitName',
     },
     {
       title: t('searchTable.columns.email'),
       dataIndex: 'email',
     },
     {
-      title: t('searchTable.columns.gmtCreate'),
-      dataIndex: 'gmtCreate',
+      title: t('searchTable.columns.telePhone'),
+      dataIndex: 'telePhone',
+    },
+    {
+      title: t('searchTable.columns.createTime'),
+      dataIndex: 'createTime',
     },
     {
       title: t('searchTable.columns.status'),
@@ -357,30 +332,7 @@
       slotName: 'operations',
     },
   ]);
-  const contentTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('searchTable.form.contentType.img'),
-      value: 'img',
-    },
-    {
-      label: t('searchTable.form.contentType.horizontalVideo'),
-      value: 'horizontalVideo',
-    },
-    {
-      label: t('searchTable.form.contentType.verticalVideo'),
-      value: 'verticalVideo',
-    },
-  ]);
-  const filterTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('searchTable.form.filterType.artificial'),
-      value: 'artificial',
-    },
-    {
-      label: t('searchTable.form.filterType.rules'),
-      value: 'rules',
-    },
-  ]);
+
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
       label: t('searchTable.form.status.online'),
@@ -391,15 +343,16 @@
       value: 'offline',
     },
   ]);
+
   const fetchData = async (
-    params: PolicyParams = { current: 1, pageSize: 20 }
+    params: UserSearchParams = { page: 1, pageSize: 5 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await queryPolicyList(params);
-      renderData.value = data.list;
-      pagination.current = params.current;
-      pagination.total = data.total;
+      const { data } = await getPageUserListData(params);
+      renderData.value = data.items;
+      pagination.page = data.totalPages;
+      pagination.total = data.totalCount;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -411,10 +364,12 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as PolicyParams);
+    } as unknown as UserSearchParams);
   };
-  const onPageChange = (current: number) => {
-    fetchData({ ...basePagination, current });
+
+  const onPageChange = (page: number) => {
+    basePagination.page = page;
+    search();
   };
 
   fetchData();

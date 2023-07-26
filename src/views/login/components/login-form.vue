@@ -117,7 +117,7 @@
         // });
 
         router.push({
-          name: 'xtgl',
+          path: '/dashboard/workplace',
         });
 
         // router.push({

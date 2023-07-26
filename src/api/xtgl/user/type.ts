@@ -1,3 +1,5 @@
+import { Pagination } from '@/types/global';
+
 export enum AccountRegirstType {
   None = 0,
   EMAIL = 1,
@@ -37,6 +39,11 @@ export interface UserListData {
   createTime: Date;
   updateUser: string;
   updateTime: Date;
+}
+
+export interface UserSearchParams extends Partial<UserListData> {
+  page: number;
+  pageSize: number;
 }
 
 export interface UserInfoData {

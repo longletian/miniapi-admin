@@ -6,12 +6,12 @@ import setupUserLoginInfoGuard from './userLoginInfo';
 function setupPageGuard(router: Router) {
   router.beforeEach(async (to) => {
     // emit route change
-    // setRouteEmitter(to);
+    setRouteEmitter(to);
   });
 }
 
 export default function createRouteGuard(router: Router) {
   setupPageGuard(router);
-  setupUserLoginInfoGuard(router);
+  // setupUserLoginInfoGuard(router);
   // setupPermissionGuard(router);
 }

@@ -18,7 +18,7 @@ export const REDIRECT_MAIN: RouteRecordRaw = {
       component: () => import('@/views/redirect/index.vue'),
       meta: {
         requiresAuth: false,
-        hideInMenu: false,
+        hideInMenu: true,
       },
     },
   ],
