@@ -6,7 +6,7 @@ export default {
 
   // columns
   'searchTable.columns.index': '#',
-  'searchTable.columns.roleId': '角色编号',
+  'searchTable.columns.id': '角色编号',
   'searchTable.columns.roleName': '角色名称',
   'searchTable.columns.roleCode': '角色字符',
   'searchTable.columns.createdTime': '创建时间',
@@ -18,9 +18,11 @@ export default {
   'searchTable.operation.edit': '编辑',
   'searchTable.operation.delete': '删除',
 
+  'searchTable.form.status.0': '正常',
+  'searchTable.form.status.1': '停用',
+
   'searchTable.columns.operations.setPermission': '设置权限',
-  'searchTable.columns.operations.addSubRole': '新增子角色',
-  'searchTable.columns.operations.copy': '复制',
+  'searchTable.columns.operations.addUserToRole': '配置角色',
   'searchTable.columns.operations.edit': '编辑',
   'searchTable.columns.operations.delete': '删除',
   'searchTable.columns.operations.view': '查看',

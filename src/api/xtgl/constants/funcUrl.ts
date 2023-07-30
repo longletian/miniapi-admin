@@ -15,4 +15,8 @@ const USER = {
   ROOT: '/user',
 };
 
-export { USER, COMMON, BASE };
+const ROLE = {
+  ROOT: '/role',
+};
+
+export { USER, COMMON, BASE, ROLE };

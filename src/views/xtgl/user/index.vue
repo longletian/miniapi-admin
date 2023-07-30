@@ -199,13 +199,19 @@
         </a-col>
       </a-row>
       <a-table
+        v-model:selectedKeys="selectedKeys"
         row-key="id"
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
         :data="renderData"
+        :column-resizable="true"
+        :row-selection="rowSelection"
         :bordered="false"
         :size="size"
+        @select="onSelectEvent"
+        @select-all="onSelectAllEvent"
+        @selection-change="onSelectChange"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
@@ -216,6 +222,23 @@
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
+
+        <!-- 
+        <template #province="{ record, rowIndex }">
+          <a-select
+            v-model="record.province"
+            @change="
+              () => {
+                record.city = '';
+              }
+            "
+          >
+            <a-option v-for="value of Object.keys(options)">{{
+              value
+            }}</a-option>
+          </a-select>
+        </template> -->
+
         <template #operations>
           <a-button type="text" size="small">
             {{ $t('searchTable.columns.operations.view') }}
@@ -232,7 +255,10 @@
   import useLoading from '@/hooks/loading';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+  import type {
+    TableColumnData,
+    TableRowSelection,
+  } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
   import { UserListData, UserSearchParams } from '@/api/xtgl/user/type';
@@ -260,6 +286,7 @@
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
+  const selectedKeys = ref([]);
 
   const size = ref<SizeProps>('medium');
 
@@ -271,6 +298,12 @@
   const pagination = reactive({
     ...basePagination,
   });
+
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
 
   const densityList = computed(() => [
     {
@@ -318,6 +351,10 @@
       dataIndex: 'telePhone',
     },
     {
+      title: t('searchTable.columns.roleIds'),
+      dataIndex: 'roleIds',
+    },
+    {
       title: t('searchTable.columns.createTime'),
       dataIndex: 'createTime',
     },
@@ -335,12 +372,12 @@
 
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.status.online'),
-      value: 'online',
+      label: t('searchTable.form.status.0'),
+      value: '0',
     },
     {
-      label: t('searchTable.form.status.offline'),
-      value: 'offline',
+      label: t('searchTable.form.status.1'),
+      value: '1',
     },
   ]);
 
@@ -375,6 +412,18 @@
   fetchData();
   const reset = () => {
     formModel.value = generateFormModel();
+  };
+
+  const onSelectEvent = (keys, rowKey, record) => {
+    console.log(`${keys}--${rowKey}${JSON.stringify(record)}`);
+  };
+
+  const onSelectAllEvent = (keys) => {
+    console.log(keys);
+  };
+
+  const onSelectChange = (rowKeys) => {
+    console.log(rowKeys);
   };
 
   const handleSelectDensity = (

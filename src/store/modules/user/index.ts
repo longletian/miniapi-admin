@@ -1,10 +1,4 @@
 import { defineStore } from 'pinia';
-// import {
-//   login as userLogin,
-//   logout as userLogout,
-//   getUserInfo,
-//   LoginData,
-// } from '@/api/user';
 
 import { postLoginUserData, postResetPassWordData } from '@/api/xtgl/user/user';
 import { setToken, clearToken } from '@/utils/auth';

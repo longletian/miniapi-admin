@@ -77,12 +77,6 @@
               </template>
               {{ $t('searchTable.operation.delete') }}
             </a-button>
-            <a-button>
-              <template #icon>
-                <icon-to-bottom />
-              </template>
-              {{ $t('searchTable.operation.showAll') }}
-            </a-button>
           </a-space>
         </a-col>
       </a-row>
@@ -91,13 +85,14 @@
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
-        :data="data"
+        :data="renderData"
+        :row-selection="rowSelection"
         :bordered="false"
         :size="size"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
-          {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
+          {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
 
         <template #status="{ record }">
@@ -120,12 +115,7 @@
               <icon-plus />
             </template>
             <template #default>
-              {{ $t('searchTable.columns.operations.addSubRole') }}
-            </template>
-          </a-button>
-          <a-button type="text" size="small">
-            <template #icon>
-              <icon-copy />
+              {{ $t('searchTable.columns.operations.addUserToRole') }}
             </template>
           </a-button>
           <a-button type="text" size="small">
@@ -148,10 +138,14 @@
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
+  import { getPageRoleListData } from '@/api/xtgl/role/role';
   import { Pagination } from '@/types/global';
+  import { RoleListData, RoleSearchParams } from '@/api/xtgl/role/type';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+  import type {
+    TableColumnData,
+    TableRowSelection,
+  } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
 
@@ -161,20 +155,26 @@
   const generateFormModel = () => {
     return {
       roleName: '',
-      status: '',
+      status: undefined,
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<PolicyRecord[]>([]);
+  const renderData = ref<RoleListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
 
   const size = ref<SizeProps>('medium');
 
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
+
   const basePagination: Pagination = {
-    current: 1,
+    page: 1,
     pageSize: 20,
   };
   const pagination = reactive({
@@ -182,9 +182,9 @@
   });
   const columns = computed<TableColumnData[]>(() => [
     {
-      title: t('searchTable.columns.roleId'),
-      dataIndex: 'roleId',
-      slotName: 'roleId',
+      title: t('searchTable.columns.id'),
+      dataIndex: 'id',
+      slotName: 'id',
     },
     {
       title: t('searchTable.columns.roleName'),
@@ -195,13 +195,14 @@
       dataIndex: 'roleCode',
     },
     {
-      title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
-      slotName: 'createdTime',
+      title: t('searchTable.columns.createTime'),
+      dataIndex: 'createTime',
+      slotName: 'createTime',
     },
     {
       title: t('searchTable.columns.status'),
       dataIndex: 'status',
+      slotName: 'status',
     },
     {
       title: t('searchTable.columns.operations'),
@@ -211,48 +212,24 @@
   ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.status.online'),
-      value: 'online',
+      label: t('searchTable.form.status.0'),
+      value: '0',
     },
     {
-      label: t('searchTable.form.status.offline'),
-      value: 'offline',
-    },
-  ]);
-  const data = reactive([
-    {
-      roleId: '1',
-      roleName: '管理员',
-      status: 0,
-      children: [
-        {
-          roleId: '1001',
-          roleName: '子管理员1',
-          status: 0,
-        },
-        {
-          roleId: '1002',
-          roleName: '子管理员2',
-          status: 0,
-        },
-      ],
-    },
-    {
-      roleId: '2',
-      roleName: '开发人员',
-      status: 0,
+      label: t('searchTable.form.status.1'),
+      value: '1',
     },
   ]);
 
   const fetchData = async (
-    params: PolicyParams = { current: 1, pageSize: 20 }
+    params: RoleSearchParams = { page: 1, pageSize: 20 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await queryPolicyList(params);
-      renderData.value = data.list;
-      pagination.current = params.current;
-      pagination.total = data.total;
+      const { data } = await getPageRoleListData(params);
+      renderData.value = data.items;
+      pagination.page = data.totalPages;
+      pagination.total = data.totalCount;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -264,10 +241,11 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as PolicyParams);
+    } as unknown as RoleSearchParams);
   };
   const onPageChange = (current: number) => {
-    fetchData({ ...basePagination, current });
+    basePagination.page = current;
+    search();
   };
 
   fetchData();

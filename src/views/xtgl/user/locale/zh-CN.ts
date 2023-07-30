@@ -9,6 +9,7 @@ export default {
   'searchTable.form.email': '邮箱',
   'searchTable.form.email.placeholder': '请输入邮箱',
   'searchTable.form.status': '状态',
+
   'searchTable.form.createdTime': '创建时间',
   'searchTable.form.search': '查询',
   'searchTable.form.reset': '重置',
@@ -25,8 +26,12 @@ export default {
   'searchTable.columns.unitName': '部门',
   'searchTable.columns.email': '电子邮箱',
   'searchTable.columns.telePhone': '手机号码',
+  'searchTable.columns.roleIds': '角色',
   'searchTable.columns.createTime': '创建时间',
   'searchTable.columns.status': '状态',
+  'searchTable.form.status.0': '正常',
+  'searchTable.form.status.1': '停用',
+
   'searchTable.columns.operations': '操作',
   'searchTable.columns.operations.view': '查看',
 
