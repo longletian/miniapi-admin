@@ -19,4 +19,22 @@ const ROLE = {
   ROOT: '/role',
 };
 
-export { USER, COMMON, BASE, ROLE };
+const PERMISSION = {
+  ROOT: '/permission',
+};
+
+const DEPT = {
+  ROOT: '/unit',
+};
+
+const DICT = {
+  ROOT: '/dict',
+  TYPE_ROOT: '/dict/type',
+};
+
+const LOG = {
+  LOGIN_ROOT: '/logger/login',
+  ACTION_ROOT: '/logger/oper',
+};
+
+export { USER, COMMON, BASE, PERMISSION, ROLE, DEPT, DICT, LOG };

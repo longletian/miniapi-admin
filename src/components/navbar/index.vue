@@ -256,8 +256,8 @@
     triggerBtn.value.dispatchEvent(event);
   };
   const switchRoles = async () => {
-    const res = await userStore.switchRoles();
-    Message.success(res as string);
+    // const res = await userStore.switchRoles();
+    // Message.success(res as string);
   };
   const toggleDrawerMenu = inject('toggleDrawerMenu') as () => void;
 </script>

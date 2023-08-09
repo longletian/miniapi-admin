@@ -6,7 +6,7 @@ import { UserSearchParams } from './type';
 
 // 获取用户分页列表
 export const getPageUserListData = (params: UserSearchParams) =>
-  axios.get(`${USER.ROOT}/page`, { params });
+  axios.get(`${USER.ROOT}/list`, { params });
 
 // 获取用户详情
 export const getUserInfoData = (id: number) => axios.get(USER.ROOT);

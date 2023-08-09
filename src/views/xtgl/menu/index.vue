@@ -90,13 +90,14 @@
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
-        :data="data"
+        :data="renderData"
+        :bordered="false"
         :size="size"
         :scrollbar="true"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
-          {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
+          {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
 
         <template #status="{ record }">
@@ -104,8 +105,15 @@
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
-
         <template #operations>
+          <a-button type="text" size="small">
+            <template #icon>
+              <icon-plus />
+            </template>
+            <template #default>
+              {{ $t('searchTable.columns.operations.setSubPermission') }}
+            </template>
+          </a-button>
           <a-button type="text" size="small">
             <template #icon>
               <icon-edit />
@@ -126,10 +134,17 @@
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
+  import { getPagePermissionListData } from '@/api/xtgl/permission/permission';
   import { Pagination } from '@/types/global';
+  import {
+    PermissListData,
+    PermissionSearchParams,
+  } from '@/api/xtgl/permission/type';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+  import type {
+    TableColumnData,
+    TableRowSelection,
+  } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
 
@@ -144,7 +159,7 @@
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<PolicyRecord[]>([]);
+  const renderData = ref<PermissListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
@@ -152,7 +167,7 @@
   const size = ref<SizeProps>('medium');
 
   const basePagination: Pagination = {
-    current: 1,
+    page: 1,
     pageSize: 20,
   };
   const pagination = reactive({
@@ -160,12 +175,8 @@
   });
   const columns = computed<TableColumnData[]>(() => [
     {
-      title: t('searchTable.columns.index'),
-      dataIndex: 'index',
-    },
-    {
-      title: t('searchTable.columns.menuId'),
-      dataIndex: 'menuId',
+      title: t('searchTable.columns.id'),
+      dataIndex: 'id',
     },
     {
       title: t('searchTable.columns.menuName'),
@@ -184,16 +195,28 @@
       dataIndex: 'menuPath',
     },
     {
-      title: t('searchTable.columns.menuIsVisable'),
-      dataIndex: 'menuIsVisable',
+      title: t('searchTable.columns.component'),
+      dataIndex: 'component',
+    },
+    {
+      title: t('searchTable.columns.parentId'),
+      dataIndex: 'parentId',
+    },
+    {
+      title: t('searchTable.columns.visible'),
+      dataIndex: 'visible',
     },
     {
       title: t('searchTable.columns.status'),
       dataIndex: 'status',
     },
     {
-      title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
+      title: t('searchTable.columns.sortNum'),
+      dataIndex: 'sortNum',
+    },
+    {
+      title: t('searchTable.columns.createTime'),
+      dataIndex: 'createTime',
     },
     {
       title: t('searchTable.columns.operations'),
@@ -203,92 +226,29 @@
   ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.status.online'),
-      value: 'online',
+      label: t('searchTable.form.status.0'),
+      value: '正常',
     },
     {
-      label: t('searchTable.form.status.offline'),
-      value: 'offline',
-    },
-  ]);
-  const data = reactive([
-    {
-      index: '1',
-      menuId: '管理员',
-      menuName: 0,
-      menuIcon: 0,
-      menuUrl: '管理员',
-      menuPath: '管理员',
-      menuIsVisable: '管理员',
-      menuIsFrame: '管理员',
-      menuParent: '管理员',
-      menuSort: '管理员',
-      menuComponent: '管理员',
-      createdTime: '管理员',
-      status: '管理员',
-      children: [
-        {
-          index: '2',
-          menuId: '管理员',
-          menuName: 0,
-          menuIcon: 0,
-          menuUrl: '管理员',
-          menuPath: '管理员',
-          menuIsVisable: '管理员',
-          menuIsFrame: '管理员',
-          menuParent: '管理员',
-          menuSort: '管理员',
-          menuComponent: '管理员',
-          createdTime: '管理员',
-          status: '管理员',
-        },
-        {
-          index: '3',
-          menuId: '管理员',
-          menuName: 0,
-          menuIcon: 0,
-          menuUrl: '管理员',
-          menuPath: '管理员',
-          menuIsVisable: '管理员',
-          menuIsFrame: '管理员',
-          menuParent: '管理员',
-          menuSort: '管理员',
-          menuComponent: '管理员',
-          createdTime: '管理员',
-          status: '管理员',
-        },
-      ],
-    },
-    {
-      index: '4',
-      menuId: '管理员',
-      menuName: 0,
-      menuIcon: 0,
-      menuUrl: '管理员',
-      menuPath: '管理员',
-      menuIsVisable: '管理员',
-      menuIsFrame: '管理员',
-      menuParent: '管理员',
-      menuSort: '管理员',
-      menuComponent: '管理员',
-      createdTime: '管理员',
-      status: '管理员',
+      label: t('searchTable.form.status.1'),
+      value: '停用',
     },
   ]);
 
-  const scroll = {
-    x: 4000,
-    y: 300,
-  };
+  // const rowSelection: TableRowSelection = {
+  //   type: 'checkbox',
+  //   showCheckedAll: true,
+  //   onlyCurrent: false,
+  // };
 
   const fetchData = async (
-    params: PolicyParams = { current: 1, pageSize: 20 }
+    params: PermissionSearchParams = { page: 1, pageSize: 20 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await queryPolicyList(params);
-      renderData.value = data.list;
-      pagination.current = params.current;
+      const { data } = await getPagePermissionListData(params);
+      renderData.value = data.items;
+      pagination.page = data.totalPages;
       pagination.total = data.total;
     } catch (err) {
       // you can report use errorHandler or other
@@ -301,10 +261,11 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as PolicyParams);
+    } as unknown as PermissionSearchParams);
   };
   const onPageChange = (current: number) => {
-    fetchData({ ...basePagination, current });
+    basePagination.page = current;
+    search();
   };
 
   fetchData();

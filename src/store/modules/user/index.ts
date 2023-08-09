@@ -22,19 +22,33 @@ const useUserStore = defineStore('user', {
         const res = postLoginUserData(loginForm);
         res.then((response) => {
           this.userInfoData = response.data.userInfoData;
-          // setToken(response.data.token);
+          setToken(response.data.token);
         });
       } catch (err) {
         clearToken();
         throw err;
       }
     },
+
     async logout() {
       try {
         // await userLogout();
+        this.logoutCallBack();
       } finally {
-        // this.logoutCallBack();
+        this.logoutCallBack();
       }
+    },
+
+    resetInfo() {
+      this.$reset();
+    },
+
+    logoutCallBack() {
+      const appStore = useAppStore();
+      this.resetInfo();
+      clearToken();
+      removeRouteListener();
+      appStore.clearServerMenu();
     },
   },
 
@@ -71,13 +85,6 @@ const useUserStore = defineStore('user', {
   //       clearToken();
   //       throw err;
   //     }
-  //   },
-  //   logoutCallBack() {
-  //     const appStore = useAppStore();
-  //     this.resetInfo();
-  //     clearToken();
-  //     removeRouteListener();
-  //     appStore.clearServerMenu();
   //   },
 
   // },

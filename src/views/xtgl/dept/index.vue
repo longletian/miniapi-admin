@@ -13,55 +13,12 @@
             <a-row :gutter="16">
               <a-col :span="8">
                 <a-form-item
-                  field="number"
-                  :label="$t('searchTable.form.number')"
+                  field="keyWord"
+                  :label="$t('searchTable.form.keyWord')"
                 >
                   <a-input
-                    v-model="formModel.number"
-                    :placeholder="$t('searchTable.form.number.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item field="name" :label="$t('searchTable.form.name')">
-                  <a-input
-                    v-model="formModel.name"
-                    :placeholder="$t('searchTable.form.name.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="contentType"
-                  :label="$t('searchTable.form.contentType')"
-                >
-                  <a-select
-                    v-model="formModel.contentType"
-                    :options="contentTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="filterType"
-                  :label="$t('searchTable.form.filterType')"
-                >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="createdTime"
-                  :label="$t('searchTable.form.createdTime')"
-                >
-                  <a-range-picker
-                    v-model="formModel.createdTime"
-                    style="width: 100%"
+                    v-model="formModel.keyWord"
+                    :placeholder="$t('searchTable.form.keyWord.placeholder')"
                   />
                 </a-form-item>
               </a-col>
@@ -134,13 +91,13 @@
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
-        :data="data"
+        :data="renderData"
         :size="size"
         :scrollbar="true"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
-          {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
+          {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
 
         <template #status="{ record }">
@@ -170,85 +127,66 @@
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
-  import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import { DeptSearchParams, DeptListData } from '../../../api/xtgl/dept/type';
+  import { getPageDeptListData } from '../../../api/xtgl/dept/dept';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
 
   const generateFormModel = () => {
     return {
-      number: '',
-      name: '',
-      contentType: '',
-      filterType: '',
-      createdTime: [],
+      keyWord: '',
+      parentId: undefined,
+      createTime: [],
       status: '',
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<PolicyRecord[]>([]);
+  const renderData = ref<DeptListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
 
   const size = ref<SizeProps>('medium');
 
-  const basePagination: Pagination = {
-    current: 1,
+  const basePagination: DeptSearchParams = {
+    page: 1,
     pageSize: 20,
   };
   const pagination = reactive({
     ...basePagination,
   });
-  const densityList = computed(() => [
-    {
-      name: t('searchTable.size.mini'),
-      value: 'mini',
-    },
-    {
-      name: t('searchTable.size.small'),
-      value: 'small',
-    },
-    {
-      name: t('searchTable.size.medium'),
-      value: 'medium',
-    },
-    {
-      name: t('searchTable.size.large'),
-      value: 'large',
-    },
-  ]);
+
   const columns = computed<TableColumnData[]>(() => [
     {
-      title: t('searchTable.columns.index'),
-      dataIndex: 'index',
-      slotName: 'index',
-    },
-    {
-      title: t('searchTable.columns.unitId'),
-      dataIndex: 'unitId',
+      title: t('searchTable.columns.id'),
+      dataIndex: 'id',
+      slotName: 'id',
     },
     {
       title: t('searchTable.columns.unitName'),
       dataIndex: 'unitName',
     },
     {
-      title: t('searchTable.columns.unitTypeName'),
-      dataIndex: 'unitTypeName',
+      title: t('searchTable.columns.unitTypeId'),
+      dataIndex: 'unitTypeId',
     },
     {
-      title: t('searchTable.columns.sort'),
-      dataIndex: 'sort',
+      title: t('searchTable.columns.sortNum'),
+      dataIndex: 'sortNum',
     },
     {
-      title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
+      title: t('searchTable.columns.createTime'),
+      dataIndex: 'createTime',
+    },
+    {
+      title: t('searchTable.columns.createUser'),
+      dataIndex: 'createUser',
     },
     {
       title: t('searchTable.columns.status'),
@@ -263,81 +201,41 @@
   ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.status.online'),
-      value: 'online',
+      label: t('searchTable.form.status.0'),
+      value: '正常',
     },
     {
-      label: t('searchTable.form.status.offline'),
-      value: 'offline',
+      label: t('searchTable.form.status.1'),
+      value: '停用',
     },
   ]);
   const fetchData = async (
-    params: PolicyParams = { current: 1, pageSize: 20 }
+    params: DeptSearchParams = { page: 1, pageSize: 20 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await queryPolicyList(params);
-      renderData.value = data.list;
-      pagination.current = params.current;
-      pagination.total = data.total;
+      const { data } = await getPageDeptListData(params);
+      renderData.value = data.items;
+      pagination.page = data.currentPage;
+      pagination.pageSize = data.totalCount;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
       setLoading(false);
     }
   };
-
+  fetchData();
   const search = () => {
     fetchData({
-      ...basePagination,
+      ...pagination,
       ...formModel.value,
-    } as unknown as PolicyParams);
+    } as unknown as DeptSearchParams);
   };
   const onPageChange = (current: number) => {
-    fetchData({ ...basePagination, current });
+    basePagination.page = current;
+    search();
   };
 
-  const data = reactive([
-    {
-      index: '1',
-      unitId: '管理员',
-      unitName: 0,
-      unitTypeName: 0,
-      sort: '管理员',
-      createdTime: '管理员',
-      status: '管理员',
-      children: [
-        {
-          index: '2',
-          unitId: '管理员',
-          unitName: 0,
-          unitTypeName: 0,
-          sort: '管理员',
-          createdTime: '管理员',
-          status: '管理员',
-        },
-        {
-          index: '3',
-          unitId: '管理员',
-          unitName: 0,
-          unitTypeName: 0,
-          sort: '管理员',
-          createdTime: '管理员',
-          status: '管理员',
-        },
-      ],
-    },
-    {
-      index: '4',
-      unitId: '管理员',
-      unitName: 0,
-      unitTypeName: 0,
-      sort: '管理员',
-      createdTime: '管理员',
-      status: '管理员',
-    },
-  ]);
-  fetchData();
   const reset = () => {
     formModel.value = generateFormModel();
   };

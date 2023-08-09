@@ -83,6 +83,7 @@
     return { ...paddingLeft, ...paddingTop };
   });
   const setCollapsed = (val: boolean) => {
+    debugger;
     if (!isInit.value) return; // for page initialization menu state problem
     appStore.updateSettings({ menuCollapse: val });
   };

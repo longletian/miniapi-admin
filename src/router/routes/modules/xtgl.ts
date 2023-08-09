@@ -52,16 +52,16 @@ const XTGL: AppRouteRecordRaw = {
         roles: ['*'],
       },
     },
-    {
-      path: 'post',
-      name: 'post',
-      component: () => import('@/views/xtgl/post/index.vue'),
-      meta: {
-        locale: 'menu.xtgl.post',
-        requiresAuth: true,
-        roles: ['*'],
-      },
-    },
+    // {
+    //   path: 'post',
+    //   name: 'post',
+    //   component: () => import('@/views/xtgl/post/index.vue'),
+    //   meta: {
+    //     locale: 'menu.xtgl.post',
+    //     requiresAuth: true,
+    //     roles: ['*'],
+    //   },
+    // },
     {
       path: 'dict',
       name: 'dict',
@@ -75,11 +75,10 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: '/log',
       name: 'log',
-      component: DEFAULT_LAYOUT,
+      component: '',
       meta: {
         locale: 'menu.xtgl.log',
         requiresAuth: true,
-        roles: ['*'],
       },
       children: [
         {
@@ -92,16 +91,16 @@ const XTGL: AppRouteRecordRaw = {
             roles: ['*'],
           },
         },
-        // {
-        //   path: 'login',
-        //   name: 'login',
-        //   component: () => import('@/views/xtgl/log/login/index.vue'),
-        //   meta: {
-        //     locale: 'menu.xtgl.log.login',
-        //     requiresAuth: true,
-        //     roles: ['*'],
-        //   },
-        // },
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('@/views/xtgl/log/login/index.vue'),
+          meta: {
+            locale: 'menu.xtgl.log.login',
+            requiresAuth: true,
+            roles: ['*'],
+          },
+        },
       ],
     },
   ],

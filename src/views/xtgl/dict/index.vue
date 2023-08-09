@@ -13,44 +13,25 @@
             <a-row :gutter="16">
               <a-col :span="8">
                 <a-form-item
-                  field="number"
-                  :label="$t('searchTable.form.number')"
+                  field="keyWord"
+                  :label="$t('searchTable.form.dict.keyWord')"
                 >
                   <a-input
-                    v-model="formModel.number"
-                    :placeholder="$t('searchTable.form.number.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item field="name" :label="$t('searchTable.form.name')">
-                  <a-input
-                    v-model="formModel.name"
-                    :placeholder="$t('searchTable.form.name.placeholder')"
+                    v-model="formModel.keyWord"
+                    :placeholder="
+                      $t('searchTable.form.dict.keyWord.placeholder')
+                    "
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  field="contentType"
-                  :label="$t('searchTable.form.contentType')"
+                  field="dictCode"
+                  :label="$t('searchTable.form.dictCode')"
                 >
-                  <a-select
-                    v-model="formModel.contentType"
-                    :options="contentTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="filterType"
-                  :label="$t('searchTable.form.filterType')"
-                >
-                  <a-select
-                    v-model="formModel.filterType"
-                    :options="filterTypeOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
+                  <a-input
+                    v-model="formModel.dictCode"
+                    :placeholder="$t('searchTable.form.dictCode.placeholder')"
                   />
                 </a-form-item>
               </a-col>
@@ -181,13 +162,13 @@
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
-        :data="data"
+        :data="renderData"
         :bordered="false"
         :size="size"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
-          {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
+          {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
 
         <template #filterType="{ record }">
@@ -224,29 +205,30 @@
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryPolicyList, PolicyRecord, PolicyParams } from '@/api/list';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import { DictSearchParams, DictListDataDto } from '@/api/xtgl/dict/type';
+  import { getPageDictListData } from '../../../api/xtgl/dict/dict';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
 
   const generateFormModel = () => {
     return {
-      number: '',
-      name: '',
-      contentType: '',
-      filterType: '',
-      createdTime: [],
+      keyWord: '',
+      dictCode: '',
+      startTime: null,
+      endTime: null,
       status: '',
+      createdTime: [],
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<PolicyRecord[]>([]);
+  const renderData = ref<DictListDataDto[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
@@ -254,7 +236,7 @@
   const size = ref<SizeProps>('medium');
 
   const basePagination: Pagination = {
-    current: 1,
+    page: 1,
     pageSize: 20,
   };
   const pagination = reactive({
@@ -280,21 +262,17 @@
   ]);
   const columns = computed<TableColumnData[]>(() => [
     {
-      title: t('searchTable.columns.index'),
-      dataIndex: 'index',
-      slotName: 'index',
+      title: t('searchTable.columns.id'),
+      dataIndex: 'id',
+      slotName: 'id',
     },
     {
-      title: t('searchTable.columns.dictTypeId'),
-      dataIndex: 'dictTypeId',
+      title: t('searchTable.columns.dictName'),
+      dataIndex: 'dictName',
     },
     {
-      title: t('searchTable.columns.dictTypeName'),
-      dataIndex: 'dictTypeName',
-    },
-    {
-      title: t('searchTable.columns.dictTypeCode'),
-      dataIndex: 'dictTypeCode',
+      title: t('searchTable.columns.dictCode'),
+      dataIndex: 'dictCode',
     },
 
     {
@@ -302,12 +280,16 @@
       dataIndex: 'description',
     },
     {
-      title: t('searchTable.columns.sort'),
-      dataIndex: 'sort',
+      title: t('searchTable.columns.sortNum'),
+      dataIndex: 'sortNum',
     },
     {
-      title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
+      title: t('searchTable.columns.createTime'),
+      dataIndex: 'createTime',
+    },
+    {
+      title: t('searchTable.columns.createUser'),
+      dataIndex: 'createUser',
     },
     {
       title: t('searchTable.columns.status'),
@@ -321,61 +303,25 @@
     },
   ]);
 
-  const data = [
-    {
-      dictTypeId: '223',
-      dictTypeCode: '232',
-      dictTypeName: '232',
-      sort: '232',
-      description: '12',
-      createdTime: '1231',
-      status: '0',
-    },
-  ];
-
-  const contentTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('searchTable.form.contentType.img'),
-      value: 'img',
-    },
-    {
-      label: t('searchTable.form.contentType.horizontalVideo'),
-      value: 'horizontalVideo',
-    },
-    {
-      label: t('searchTable.form.contentType.verticalVideo'),
-      value: 'verticalVideo',
-    },
-  ]);
-  const filterTypeOptions = computed<SelectOptionData[]>(() => [
-    {
-      label: t('searchTable.form.filterType.artificial'),
-      value: 'artificial',
-    },
-    {
-      label: t('searchTable.form.filterType.rules'),
-      value: 'rules',
-    },
-  ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
-      label: t('searchTable.form.status.online'),
-      value: 'online',
+      label: t('searchTable.form.status.0'),
+      value: '正常',
     },
     {
-      label: t('searchTable.form.status.offline'),
-      value: 'offline',
+      label: t('searchTable.form.status.1'),
+      value: '停用',
     },
   ]);
   const fetchData = async (
-    params: PolicyParams = { current: 1, pageSize: 20 }
+    params: DictSearchParams = { page: 1, pageSize: 20 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await queryPolicyList(params);
-      renderData.value = data.list;
-      pagination.current = params.current;
-      pagination.total = data.total;
+      const { data } = await getPageDictListData(params);
+      renderData.value = data.items;
+      pagination.page = data.totalPages;
+      pagination.total = data.totalCount;
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
@@ -387,10 +333,11 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as PolicyParams);
+    } as unknown as DictSearchParams);
   };
   const onPageChange = (current: number) => {
-    fetchData({ ...basePagination, current });
+    basePagination.page = current;
+    search();
   };
 
   fetchData();
