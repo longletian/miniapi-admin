@@ -94,6 +94,7 @@
         :data="renderData"
         :size="size"
         :scrollbar="true"
+        :row-selection="rowSelection"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
@@ -126,11 +127,14 @@
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import useLoading from '@/hooks/loading';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+  import type {
+    TableColumnData,
+    TableRowSelection,
+  } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import useLoading from '@/hooks/loading';
   import { DeptSearchParams, DeptListData } from '../../../api/xtgl/dept/type';
   import { getPageDeptListData } from '../../../api/xtgl/dept/dept';
 
@@ -163,11 +167,11 @@
   });
 
   const columns = computed<TableColumnData[]>(() => [
-    {
-      title: t('searchTable.columns.id'),
-      dataIndex: 'id',
-      slotName: 'id',
-    },
+    // {
+    //   title: t('searchTable.columns.id'),
+    //   dataIndex: 'id',
+    //   slotName: 'id',
+    // },
     {
       title: t('searchTable.columns.unitName'),
       dataIndex: 'unitName',
@@ -199,6 +203,12 @@
       slotName: 'operations',
     },
   ]);
+
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
       label: t('searchTable.form.status.0'),

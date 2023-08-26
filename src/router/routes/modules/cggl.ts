@@ -1,5 +1,5 @@
 import { DEFAULT_LAYOUT } from '../base';
-import { AppRouteRecordRaw } from '../types';
+import { AppRouteRecordRaw } from '../type/types';
 
 const XTGL: AppRouteRecordRaw = {
   path: '/cggl',

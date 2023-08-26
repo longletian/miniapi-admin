@@ -83,7 +83,7 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <a-button type="primary" @click="onOpen">
               <template #icon>
                 <icon-plus />
               </template>
@@ -164,6 +164,7 @@
         :columns="(cloneColumns as TableColumnData[])"
         :data="renderData"
         :bordered="false"
+        :row-selection="rowSelection"
         :size="size"
         @page-change="onPageChange"
       >
@@ -199,17 +200,22 @@
       </a-table>
     </a-card>
   </div>
+  <YModal ref="modalRefs"></YModal>
 </template>
 
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import useLoading from '@/hooks/loading';
-  import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+  import type {
+    TableColumnData,
+    TableRowSelection,
+  } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import YModal from '@/components/modal/index.vue';
+  import { Pagination } from '@/types/global';
+  import useLoading from '@/hooks/loading';
   import { DictSearchParams, DictListDataDto } from '@/api/xtgl/dict/type';
   import { getPageDictListData } from '../../../api/xtgl/dict/dict';
 
@@ -260,6 +266,7 @@
       value: 'large',
     },
   ]);
+
   const columns = computed<TableColumnData[]>(() => [
     {
       title: t('searchTable.columns.id'),
@@ -302,6 +309,12 @@
       slotName: 'operations',
     },
   ]);
+
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
 
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
@@ -410,6 +423,11 @@
     },
     { deep: true, immediate: true }
   );
+
+  const yModal = ref();
+  const onOpen = () => {
+    console.log(yModal.value);
+  };
 </script>
 
 <script lang="ts">

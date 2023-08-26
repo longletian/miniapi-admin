@@ -137,17 +137,17 @@
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import useLoading from '@/hooks/loading';
-  import { getPageRoleListData } from '@/api/xtgl/role/role';
-  import { Pagination } from '@/types/global';
-  import { RoleListData, RoleSearchParams } from '@/api/xtgl/role/type';
+  import cloneDeep from 'lodash/cloneDeep';
+  import Sortable from 'sortablejs';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
     TableColumnData,
     TableRowSelection,
   } from '@arco-design/web-vue/es/table/interface';
-  import cloneDeep from 'lodash/cloneDeep';
-  import Sortable from 'sortablejs';
+  import useLoading from '@/hooks/loading';
+  import { getPageRoleListData } from '@/api/xtgl/role/role';
+  import { Pagination } from '@/types/global';
+  import { RoleListData, RoleSearchParams } from '@/api/xtgl/role/type';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -181,11 +181,11 @@
     ...basePagination,
   });
   const columns = computed<TableColumnData[]>(() => [
-    {
-      title: t('searchTable.columns.id'),
-      dataIndex: 'id',
-      slotName: 'id',
-    },
+    // {
+    //   title: t('searchTable.columns.id'),
+    //   dataIndex: 'id',
+    //   slotName: 'id',
+    // },
     {
       title: t('searchTable.columns.roleName'),
       dataIndex: 'roleName',

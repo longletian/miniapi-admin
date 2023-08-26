@@ -1,5 +1,5 @@
 export default {
-  'menu.xtgl.log.login': '登录日志',
+  'menu.xtgl.log.loginlog': '登录日志',
 
   'menu.list.searchTable': '查询表格',
   'searchTable.form.accountName': '用户名',

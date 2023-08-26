@@ -94,6 +94,7 @@
         :bordered="false"
         :size="size"
         :scrollbar="true"
+        :row-selection="rowSelection"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
@@ -133,13 +134,6 @@
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import useLoading from '@/hooks/loading';
-  import { getPagePermissionListData } from '@/api/xtgl/permission/permission';
-  import { Pagination } from '@/types/global';
-  import {
-    PermissListData,
-    PermissionSearchParams,
-  } from '@/api/xtgl/permission/type';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
     TableColumnData,
@@ -147,6 +141,13 @@
   } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import useLoading from '@/hooks/loading';
+  import { getPagePermissionListData } from '@/api/xtgl/permission/permission';
+  import { Pagination } from '@/types/global';
+  import {
+    PermissListData,
+    PermissionSearchParams,
+  } from '@/api/xtgl/permission/type';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -190,14 +191,14 @@
       title: t('searchTable.columns.menuUrl'),
       dataIndex: 'menuUrl',
     },
-    {
-      title: t('searchTable.columns.menuPath'),
-      dataIndex: 'menuPath',
-    },
-    {
-      title: t('searchTable.columns.component'),
-      dataIndex: 'component',
-    },
+    // {
+    //   title: t('searchTable.columns.menuPath'),
+    //   dataIndex: 'menuPath',
+    // },
+    // {
+    //   title: t('searchTable.columns.component'),
+    //   dataIndex: 'component',
+    // },
     {
       title: t('searchTable.columns.parentId'),
       dataIndex: 'parentId',
@@ -235,11 +236,11 @@
     },
   ]);
 
-  // const rowSelection: TableRowSelection = {
-  //   type: 'checkbox',
-  //   showCheckedAll: true,
-  //   onlyCurrent: false,
-  // };
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
 
   const fetchData = async (
     params: PermissionSearchParams = { page: 1, pageSize: 20 }

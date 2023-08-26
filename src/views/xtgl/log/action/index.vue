@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <Breadcrumb
-      :items="['menu.xtgl', 'menu.xtgl.log', 'menu.xtgl.log.login']"
+      :items="['menu.xtgl', 'menu.xtgl.log', 'menu.xtgl.log.action']"
     />
-    <a-card class="general-card" :title="$t('menu.xtgl.log.login')">
+    <a-card class="general-card" :title="$t('menu.xtgl.log.action')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -211,12 +211,12 @@
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import useLoading from '@/hooks/loading';
-  import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import { Pagination } from '@/types/global';
+  import useLoading from '@/hooks/loading';
   import {
     ActionLogSearchParams,
     ActionLogListDataDto,
@@ -228,10 +228,10 @@
 
   const generateFormModel = () => {
     return {
-      keyWord: '',
-      dictCode: '',
+      accountName: '',
       startTime: null,
       endTime: null,
+      loginIp: '',
       status: undefined,
       createdTime: [],
     };

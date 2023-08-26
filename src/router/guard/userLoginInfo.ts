@@ -7,10 +7,11 @@ import { isLogin } from '@/utils/auth';
 export default function setupUserLoginInfoGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     NProgress.start();
+    // debugger;
     const userStore = useUserStore();
     if (isLogin()) {
       try {
-        // await userStore.getUserInfo();
+        //  await userStore.getUserInfo();
         next();
       } catch (error) {
         await userStore.logout();
@@ -23,7 +24,6 @@ export default function setupUserLoginInfoGuard(router: Router) {
         });
       }
     } else {
-      console.log(to.name);
       if (to.name === 'login') {
         next();
       }

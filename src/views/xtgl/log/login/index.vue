@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <Breadcrumb
-      :items="['menu.xtgl', 'menu.xtgl.log', 'menu.xtgl.log.action']"
+      :items="['menu.xtgl', 'menu.xtgl.log', 'menu.xtgl.log.loginlog']"
     />
-    <a-card class="general-card" :title="$t('menu.xtgl.log.action')">
+    <a-card class="general-card" :title="$t('menu.xtgl.log.loginlog')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -193,17 +193,17 @@
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import useLoading from '@/hooks/loading';
-  import { Pagination } from '@/types/global';
-  import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
+  import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import {
     LoginLogSearchParams,
     LoginLogListDataDto,
   } from '@/api/xtgl/log/type';
   import { getPageLoginLogListData } from '@/api/xtgl/log/log';
+  import useLoading from '@/hooks/loading';
+  import { Pagination } from '@/types/global';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -313,11 +313,11 @@
     },
   ]);
 
-  // const onTimeChange = (value: any) => {
-  //   formModel.value.startTime = value[0];
-  //   formModel.value.endTime = value[1];
-  //   console.log(value);
-  // };
+  const onTimeChange = (value: any) => {
+    // formModel.value.startTime = value[0];
+    // formModel.value.endTime = value[1];
+    console.log(value);
+  };
 
   const fetchData = async (
     params: LoginLogSearchParams = { page: 1, pageSize: 20 }

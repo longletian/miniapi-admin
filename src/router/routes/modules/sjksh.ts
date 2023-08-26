@@ -1,7 +1,7 @@
 import { DEFAULT_LAYOUT } from '../base';
-import { AppRouteRecordRaw } from '../types';
+import { AppRouteRecordRaw } from '../type/types';
 
-const XTGL: AppRouteRecordRaw = {
+const SJKSH: AppRouteRecordRaw = {
   path: '/sjksh',
   name: 'sjksh',
   component: DEFAULT_LAYOUT,
@@ -11,17 +11,17 @@ const XTGL: AppRouteRecordRaw = {
     icon: 'icon-apps',
     order: 3,
   },
-  children: [
-    {
-      path: 'index',
-      name: 'index',
-      component: () => import('@/views/sjksh/index.vue'),
-      meta: {
-        locale: 'menu.ssjksh.index',
-        requiresAuth: true,
-        roles: ['*'],
-      },
-    },
-  ],
+  // children: [
+  //   {
+  //     path: 'index',
+  //     name: 'index',
+  //     component: () => import('@/views/sjksh/index.vue'),
+  //     meta: {
+  //       locale: 'menu.ssjksh.index',
+  //       requiresAuth: true,
+  //       roles: ['*'],
+  //     },
+  //   },
+  // ],
 };
-export default XTGL;
+export default SJKSH;

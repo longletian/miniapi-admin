@@ -19,11 +19,12 @@ const useUserStore = defineStore('user', {
   actions: {
     postLoginUserData(loginForm: LoginData) {
       try {
-        const res = postLoginUserData(loginForm);
-        res.then((response) => {
-          this.userInfoData = response.data.userInfoData;
-          setToken(response.data.token);
-        });
+        postLoginUserData(loginForm);
+
+        // const res = res.then((response) => {
+        //   this.userInfoData = response.data.userInfoData;
+        //   setToken(response.data.token);
+        // });
       } catch (err) {
         clearToken();
         throw err;

@@ -106,16 +106,12 @@
       try {
         console.log(values);
         await userStore.postLoginUserData(values as LoginData);
-        // Message.success(t('login.form.login.success'));
+        Message.success(t('login.form.login.success'));
 
         // debugger;
-        // const { redirect, ...othersQuery } = router.currentRoute.value.query;
+        const { redirect, ...othersQuery } = router.currentRoute.value.query;
 
         console.log(router);
-        // router.push({
-        //   path: '/dashboard',
-        // });
-
         router.push({
           path: '/dashboard/workplace',
         });

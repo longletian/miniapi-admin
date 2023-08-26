@@ -1,5 +1,5 @@
 import { DEFAULT_LAYOUT } from '../base';
-import { AppRouteRecordRaw } from '../types';
+import { AppRouteRecordRaw } from '../type/types';
 
 const XTGL: AppRouteRecordRaw = {
   path: '/xtgl',
@@ -73,7 +73,7 @@ const XTGL: AppRouteRecordRaw = {
       },
     },
     {
-      path: '/log',
+      path: 'log',
       name: 'log',
       component: '',
       meta: {
@@ -92,11 +92,11 @@ const XTGL: AppRouteRecordRaw = {
           },
         },
         {
-          path: 'login',
-          name: 'login',
+          path: 'loginlog',
+          name: 'loginlog',
           component: () => import('@/views/xtgl/log/login/index.vue'),
           meta: {
-            locale: 'menu.xtgl.log.login',
+            locale: 'menu.xtgl.log.loginlog',
             requiresAuth: true,
             roles: ['*'],
           },
