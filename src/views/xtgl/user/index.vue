@@ -373,11 +373,11 @@
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
       label: t('searchTable.form.status.0'),
-      value: '0',
+      value: '正常',
     },
     {
       label: t('searchTable.form.status.1'),
-      value: '1',
+      value: '停用',
     },
   ]);
 

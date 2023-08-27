@@ -200,11 +200,13 @@
       </a-table>
     </a-card>
   </div>
-  <YModal ref="modalRefs"></YModal>
+  <YModal ref="yModal" :width="600">
+    <addDictType></addDictType>
+  </YModal>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick } from 'vue';
+  import { computed, ref, reactive, watch, nextTick, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
@@ -216,8 +218,12 @@
   import YModal from '@/components/modal/index.vue';
   import { Pagination } from '@/types/global';
   import useLoading from '@/hooks/loading';
-  import { DictSearchParams, DictListDataDto } from '@/api/xtgl/dict/type';
-  import { getPageDictListData } from '../../../api/xtgl/dict/dict';
+  import {
+    DictTypeSearchParams,
+    DictTypeListDataDto,
+  } from '@/api/xtgl/dict/type';
+  import { getPageDictTypeListData } from '@/api/xtgl/dict/dict';
+  import addDictType from './components/add-dict-type.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -228,13 +234,13 @@
       dictCode: '',
       startTime: null,
       endTime: null,
-      status: '',
+      status: undefined,
       createdTime: [],
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<DictListDataDto[]>([]);
+  const renderData = ref<DictTypeListDataDto[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
@@ -327,11 +333,11 @@
     },
   ]);
   const fetchData = async (
-    params: DictSearchParams = { page: 1, pageSize: 20 }
+    params: DictTypeSearchParams = { page: 1, pageSize: 20 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await getPageDictListData(params);
+      const { data } = await getPageDictTypeListData(params);
       renderData.value = data.items;
       pagination.page = data.totalPages;
       pagination.total = data.totalCount;
@@ -346,7 +352,7 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as DictSearchParams);
+    } as unknown as DictTypeSearchParams);
   };
   const onPageChange = (current: number) => {
     basePagination.page = current;
@@ -425,8 +431,11 @@
   );
 
   const yModal = ref();
+  onMounted(() => {});
+
   const onOpen = () => {
     console.log(yModal.value);
+    console.log(yModal.value.handleOpen());
   };
 </script>
 

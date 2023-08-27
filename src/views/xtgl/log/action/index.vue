@@ -15,25 +15,27 @@
             <a-row :gutter="16">
               <a-col :span="8">
                 <a-form-item
-                  field="keyWord"
-                  :label="$t('searchTable.form.dict.keyWord')"
+                  field="accountName"
+                  :label="$t('searchTable.form.log.accountName')"
                 >
                   <a-input
-                    v-model="formModel.keyWord"
+                    v-model="formModel.accountName"
                     :placeholder="
-                      $t('searchTable.form.dict.keyWord.placeholder')
+                      $t('searchTable.form.log.accountName.placeholder')
                     "
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="8">
                 <a-form-item
-                  field="dictCode"
-                  :label="$t('searchTable.form.dictCode')"
+                  field="actionIp"
+                  :label="$t('searchTable.form.log.actionIp')"
                 >
                   <a-input
-                    v-model="formModel.dictCode"
-                    :placeholder="$t('searchTable.form.dictCode.placeholder')"
+                    v-model="formModel.actionIp"
+                    :placeholder="
+                      $t('searchTable.form.log.actionIp.placeholder')
+                    "
                   />
                 </a-form-item>
               </a-col>
@@ -172,12 +174,6 @@
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
-
-        <template #jsonResult="{ record }">
-          <span class="span-style">{{
-            $t(`searchTable.form.${record.jsonResult}`)
-          }}</span>
-        </template>
         <template #filterType="{ record }">
           {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
         </template>
@@ -186,6 +182,14 @@
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
+
+        <template #operParam="{ record }">
+          <a-button
+            @click="$modal.info({ title: 'Name', content: record.operParam })"
+            >view</a-button
+          >
+        </template>
+
         <template #operations>
           <a-button type="text" size="small">
             <template #icon>
@@ -194,14 +198,23 @@
           </a-button>
           <a-button type="text" size="small">
             <template #icon>
-              <icon-edit />
-            </template>
-          </a-button>
-          <a-button type="text" size="small">
-            <template #icon>
               <icon-delete />
             </template>
           </a-button>
+        </template>
+
+        <template #jsonResult="{ record }">
+          <a-button
+            @click="
+              $modal.info({
+                title: 'Name',
+                alignCenter: 'start',
+                width: 400,
+                content: record.jsonResult,
+              })
+            "
+            >view</a-button
+          >
         </template>
       </a-table>
     </a-card>
@@ -215,6 +228,7 @@
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
+  import { start } from 'nprogress';
   import { Pagination } from '@/types/global';
   import useLoading from '@/hooks/loading';
   import {
@@ -231,7 +245,7 @@
       accountName: '',
       startTime: null,
       endTime: null,
-      loginIp: '',
+      actionIp: '',
       status: undefined,
       createdTime: [],
     };
@@ -303,11 +317,13 @@
     {
       title: t('searchTable.columns.operParam'),
       dataIndex: 'operParam',
+      slotName: 'operParam',
     },
-    // {
-    //   title: t('searchTable.columns.jsonResult'),
-    //   dataIndex: 'jsonResult',
-    // },
+    {
+      title: t('searchTable.columns.jsonResult'),
+      dataIndex: 'jsonResult',
+      slotName: 'jsonResult',
+    },
     {
       title: t('searchTable.columns.actionTime'),
       dataIndex: 'actionTime',

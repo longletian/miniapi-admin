@@ -1,40 +1,73 @@
 <template>
   <a-modal
     v-model:visible="visible"
-    :title="props.title"
-    :title-align="props.titleAlign"
-    :closable="props.isClosable"
-    :width="props.width"
-    :top="props.top"
-    :draggable="props.isDraggable"
-    :fullscreen="props.isFullScreen"
+    :closable="isClosable"
+    :width="width"
+    :top="top"
+    title-align="start"
+    :draggable="isDraggable"
+    :fullscreen="isFullScreen"
+    :footer="false"
     @close="handleClose"
     @open="handleOpen"
   >
-    <slot></slot>
+    <template #title>
+      <div class="container-header">
+        <p>{{ title }}</p>
+      </div>
+    </template>
+
+    <div class="container-body">
+      <slot></slot>
+    </div>
   </a-modal>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
-  import { ModalProps } from './type';
 
   const visible = ref(false);
-  const props = defineProps<ModalProps>();
-
-  onMounted(() => {
-    console.log('');
+  const props = defineProps({
+    title: {
+      type: String,
+      default: '添加',
+    },
+    width: {
+      type: Number,
+      default: 1080,
+    },
+    top: Number,
+    isClosable: {
+      type: Boolean,
+      default: true,
+    },
+    isDraggable: {
+      type: Boolean,
+      default: false,
+    },
+    isFullScreen: {
+      type: Boolean,
+      default: false,
+    },
   });
 
-  const emits = defineEmits(['closed', '']);
   const handleClose = () => {
     visible.value = false;
-    emits('closed');
   };
 
   const handleOpen = () => {
     visible.value = true;
   };
+
+  defineExpose({
+    handleOpen,
+    handleClose,
+    props,
+  });
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+  .container-header {
+    text-align: left;
+  }
+</style>

@@ -1,14 +1,7 @@
 export default {
   'menu.xtgl.log.action': '操作日志',
   'menu.list.searchTable': '查询表格',
-  'searchTable.form.number': '集合编号',
-  'searchTable.form.number.placeholder': '请输入集合编号',
-  'searchTable.form.name': '集合名称',
-  'searchTable.form.name.placeholder': '请输入集合名称',
-  'searchTable.form.contentType': '内容体裁',
-  'searchTable.form.contentType.img': '图文',
-  'searchTable.form.contentType.horizontalVideo': '横版短视频',
-  'searchTable.form.contentType.verticalVideo': '竖版小视频',
+
   'searchTable.form.filterType': '筛选方式',
   'searchTable.form.filterType.artificial': '人工筛选',
   'searchTable.form.filterType.rules': '规则筛选',
@@ -22,6 +15,11 @@ export default {
   'searchTable.operation.create': '新建',
   'searchTable.operation.import': '批量导入',
   'searchTable.operation.download': '下载',
+  'searchTable.form.log.accountName': '用户名',
+  'searchTable.form.log.accountName.placeholder': '请输入用户名',
+  'searchTable.form.log.actionIp': '操作Ip',
+  'searchTable.form.log.actionIp.placeholder': '请输入操作Ip',
+
   // columns
   'searchTable.columns.id': '日志编号',
   'searchTable.columns.moduleName': '模块名称',
