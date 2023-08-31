@@ -215,14 +215,15 @@
   } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
-  import YModal from '@/components/modal/index.vue';
   import { Pagination } from '@/types/global';
+
   import useLoading from '@/hooks/loading';
   import {
     DictTypeSearchParams,
     DictTypeListDataDto,
   } from '@/api/xtgl/dict/type';
   import { getPageDictTypeListData } from '@/api/xtgl/dict/dict';
+  import YModal from '@/components/modal/index.vue';
   import addDictType from './components/add-dict-type.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
@@ -431,8 +432,6 @@
   );
 
   const yModal = ref();
-  onMounted(() => {});
-
   const onOpen = () => {
     console.log(yModal.value);
     console.log(yModal.value.handleOpen());

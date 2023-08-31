@@ -58,13 +58,17 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <a-button type="primary" @click="changeComponent('addRole')">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
             </a-button>
-            <a-button type="primary" status="success">
+            <a-button
+              type="primary"
+              status="success"
+              @click="changeComponent('editRole')"
+            >
               <template #icon>
                 <icon-edit />
               </template>
@@ -110,7 +114,11 @@
               {{ $t('searchTable.columns.operations.setPermission') }}
             </template>
           </a-button>
-          <a-button type="text" size="small">
+          <a-button
+            type="text"
+            size="small"
+            @click="changeComponent('configUser')"
+          >
             <template #icon>
               <icon-plus />
             </template>
@@ -132,10 +140,23 @@
       </a-table>
     </a-card>
   </div>
+
+  <component :is="addRole" ref="addRoleRef"></component>
+  <component :is="editRole" ref="editRoleRef"></component>
+  <component :is="configUser" ref="configUserRef"></component>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick } from 'vue';
+  import {
+    computed,
+    ref,
+    reactive,
+    watch,
+    nextTick,
+    markRaw,
+    getCurrentInstance,
+    shallowRef,
+  } from 'vue';
   import { useI18n } from 'vue-i18n';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
@@ -147,7 +168,13 @@
   import useLoading from '@/hooks/loading';
   import { getPageRoleListData } from '@/api/xtgl/role/role';
   import { Pagination } from '@/types/global';
+
   import { RoleListData, RoleSearchParams } from '@/api/xtgl/role/type';
+  import addRole from './components/add.vue';
+  import editRole from './components/edit.vue';
+  import configUser from './components/config-user.vue';
+
+  const lookUp = { addRole: markRaw(addRole), editRole: markRaw(editRole) };
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -181,11 +208,6 @@
     ...basePagination,
   });
   const columns = computed<TableColumnData[]>(() => [
-    // {
-    //   title: t('searchTable.columns.id'),
-    //   dataIndex: 'id',
-    //   slotName: 'id',
-    // },
     {
       title: t('searchTable.columns.roleName'),
       dataIndex: 'roleName',
@@ -318,11 +340,22 @@
     },
     { deep: true, immediate: true }
   );
-</script>
 
-<script lang="ts">
-  export default {
-    name: 'SearchTable',
+  // const lookUp = reactive({
+  //   addRole: markRaw(addRole),
+  //   editRole: markRaw(editRole),
+  // });
+  const currentInstance = getCurrentInstance();
+  const changeComponent = function changeComponent(val) {
+    if (val) {
+      if (val === 'addRole') {
+        currentInstance?.ctx.$refs.addRoleRef.onHandleOpen();
+      } else if (val === 'editRole') {
+        currentInstance?.ctx.$refs.editRoleRef.onHandleOpen();
+      } else if (val === 'configUser') {
+        currentInstance?.ctx.$refs.configUserRef.onHandleOpen();
+      }
+    }
   };
 </script>
 

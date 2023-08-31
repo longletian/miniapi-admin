@@ -105,19 +105,27 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <a-button type="primary" @click="changeComponent('addUser')">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
             </a-button>
-            <a-button type="primary" status="success">
+            <a-button
+              type="primary"
+              status="success"
+              @click="changeComponent('editUser')"
+            >
               <template #icon>
                 <icon-edit />
               </template>
               {{ $t('searchTable.operation.edit') }}
             </a-button>
-            <a-button type="primary" status="danger">
+            <a-button
+              type="primary"
+              status="danger"
+              @click="changeComponent('delete')"
+            >
               <template #icon>
                 <icon-delete />
               </template>
@@ -143,9 +151,9 @@
             {{ $t('searchTable.operation.download') }}
           </a-button>
           <a-tooltip :content="$t('searchTable.actions.refresh')">
-            <div class="action-icon" @click="search"
-              ><icon-refresh size="18"
-            /></div>
+            <div class="action-icon" @click="search">
+              <icon-refresh size="18" />
+            </div>
           </a-tooltip>
           <a-dropdown @select="handleSelectDensity">
             <a-tooltip :content="$t('searchTable.actions.density')">
@@ -172,7 +180,7 @@
               <template #content>
                 <div id="tableSetting">
                   <div
-                    v-for="(item, index) in showColumns"
+                    v-for="item in showColumns"
                     :key="item.dataIndex"
                     class="setting"
                   >
@@ -223,22 +231,6 @@
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
 
-        <!-- 
-        <template #province="{ record, rowIndex }">
-          <a-select
-            v-model="record.province"
-            @change="
-              () => {
-                record.city = '';
-              }
-            "
-          >
-            <a-option v-for="value of Object.keys(options)">{{
-              value
-            }}</a-option>
-          </a-select>
-        </template> -->
-
         <template #operations>
           <a-button type="text" size="small">
             {{ $t('searchTable.columns.operations.view') }}
@@ -247,10 +239,23 @@
       </a-table>
     </a-card>
   </div>
+
+  <component :is="addUser" ref="addUserRef"></component>
+  <component :is="editUser" ref="editUserRef"></component>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick } from 'vue';
+  import {
+    computed,
+    ref,
+    reactive,
+    watch,
+    nextTick,
+    markRaw,
+    shallowRef,
+    onMounted,
+    getCurrentInstance,
+  } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
@@ -263,6 +268,10 @@
   import useLoading from '@/hooks/loading';
   import { UserListData, UserSearchParams } from '@/api/xtgl/user/type';
   import { getPageUserListData } from '@/api/xtgl/user/user';
+  import addUser from './components/add.vue';
+  import editUser from './components/edit.vue';
+
+  const lookUp = { addUser: markRaw(addUser), editUser: markRaw(editUser) };
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -282,6 +291,7 @@
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
 
+  const modalTitle = ref('');
   const renderData = ref<UserListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
@@ -325,11 +335,6 @@
   ]);
 
   const columns = computed<TableColumnData[]>(() => [
-    // {
-    //   title: t('searchTable.columns.index'),
-    //   dataIndex: 'id',
-    //   slotName: 'id',
-    // },
     {
       title: t('searchTable.columns.userName'),
       dataIndex: 'name',
@@ -410,6 +415,7 @@
   };
 
   fetchData();
+
   const reset = () => {
     formModel.value = generateFormModel();
   };
@@ -491,6 +497,18 @@
     },
     { deep: true, immediate: true }
   );
+
+  const componentCheck = shallowRef(null);
+  const currentInstance = getCurrentInstance();
+  const changeComponent = function changeComponent(val) {
+    if (val) {
+      if (val === 'addUser') {
+        currentInstance.ctx.$refs.addUserRef.onHandleOpen();
+      } else if (val === 'editUser') {
+        currentInstance.ctx.$refs.editUserRef.onHandleOpen();
+      }
+    }
+  };
 </script>
 
 <script lang="ts">

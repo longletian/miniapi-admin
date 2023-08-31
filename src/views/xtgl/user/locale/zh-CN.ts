@@ -10,6 +10,10 @@ export default {
   'searchTable.form.email.placeholder': '请输入邮箱',
   'searchTable.form.status': '状态',
 
+  'menu.xtgl.user.add': '新增用户',
+  'menu.xtgl.user.edit': '编辑用户',
+  'menu.xtgl.user.checkUnit': '选择部门',
+
   'searchTable.form.createdTime': '创建时间',
   'searchTable.form.search': '查询',
   'searchTable.form.reset': '重置',
@@ -32,8 +36,36 @@ export default {
   'searchTable.form.status.0': '正常',
   'searchTable.form.status.1': '停用',
 
+  'searchTable.form.keyWord': '关键字',
+  'searchTable.form.keyWord.placeholder': '请输入关键字',
+
   'searchTable.columns.operations': '操作',
   'searchTable.columns.operations.view': '查看',
+
+  'groupForm.form.name': '用户名',
+  'groupForm.form.name.placeholder': '用户名',
+  'groupForm.form.unitId': '所属部门',
+  'groupForm.form.unitId.placeholder': '选择部门',
+  'groupForm.form.passWord': '密码',
+  'groupForm.form.passWord.placeholder': '密码',
+  'groupForm.form.confirmPassWord': '确认密码',
+  'groupForm.form.confirmPassWord.placeholder': '确认密码',
+  'groupForm.form.nickName': '昵称',
+  'groupForm.form.nickName.placeholder': '昵称',
+  'groupForm.form.email': '邮箱',
+  'groupForm.form.email.placeholder': '邮箱',
+  'groupForm.form.telePhone': '手机号',
+  'groupForm.form.telePhone.placeholder': '手机号',
+  'groupForm.form.roleIds': '角色',
+  'groupForm.form.roleIds.placeholder': '角色',
+  'groupForm.form.postIds': '岗位',
+  'groupForm.form.postIds.placeholder': '岗位',
+  'groupForm.form.status': '状态',
+  'groupForm.form.gender': '性别',
+  'groupForm.form.gender.placeholder': '性别',
+  'groupForm.form.gender.0': '未知',
+  'groupForm.form.gender.1': '男',
+  'groupForm.form.gender.2': '女',
 
   // size
   'searchTable.size.mini': '迷你',

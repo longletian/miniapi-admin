@@ -4,6 +4,9 @@ export default {
   'searchTable.form.rolename.placeholder': '请输入角色名称',
   'searchTable.form.status': '状态',
 
+  'menu.xtgl.role.add': '新增角色',
+  'menu.xtgl.role.edit': '编辑角色',
+
   // columns
   'searchTable.columns.index': '#',
   'searchTable.columns.id': '角色编号',
@@ -26,6 +29,28 @@ export default {
   'searchTable.columns.operations.edit': '编辑',
   'searchTable.columns.operations.delete': '删除',
   'searchTable.columns.operations.view': '查看',
+
+  'groupForm.form.roleName': '角色名称',
+  'groupForm.form.roleName.placeholder': '角色名称',
+  'groupForm.form.roleCode': '角色编码',
+  'groupForm.form.roleCode.placeholder': '角色编码',
+  'groupForm.form.category': '角色类型',
+  'groupForm.form.category.placeholder': '角色类型',
+  'groupForm.form.description': '备注',
+  'groupForm.form.description.placeholder': '',
+  'groupForm.form.sortNum': '排序',
+  'groupForm.form.sortNum.placeholder': '排序',
+  'groupForm.form.status': '状态',
+  'groupForm.form.permission': '菜单权限',
+
+  'groupForm.form.tree.open': '展开/折叠',
+  'groupForm.form.tree.check': '全选/全不选',
+  'groupForm.form.tree.check.parent': '父子联动',
+
+  'groupForm.form.category.1': '系统预定义角色',
+  'groupForm.form.category.2': '业务流程角色',
+
+  'menu.xtgl.role.config.user': '配置用户',
 
   // size
   'searchTable.size.mini': '迷你',
