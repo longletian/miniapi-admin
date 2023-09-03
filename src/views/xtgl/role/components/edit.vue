@@ -3,7 +3,7 @@
     <div class="container">
       <a-form ref="formRef" direction="horizontal" :model="formData">
         <a-space direction="horizontal">
-          <a-row :gutter="80">
+          <a-row>
             <a-col>
               <a-form-item
                 :label="$t('groupForm.form.roleName')"

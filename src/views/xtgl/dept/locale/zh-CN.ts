@@ -1,5 +1,7 @@
 export default {
   'menu.xtgl.dept': '部门管理',
+  'menu.xtgl.dept.add': '新增部门',
+  'menu.xtgl.dept.edit': '编辑部门',
 
   'menu.list.searchTable': '查询表格',
   'searchTable.form.keyWord': '部门名称',
@@ -20,6 +22,13 @@ export default {
   'searchTable.columns.operations.edit': '编辑',
   'searchTable.columns.operations.delete': '删除',
   'searchTable.columns.operations.showAll': '展开全部',
+
+  'groupForm.form.parentId': '上级部门',
+  'groupForm.form.parentId.placeholder': '请选择上级部门',
+  'groupForm.form.unitName': '部门名称',
+  'groupForm.form.unitName.placeholder': '部门名称',
+  'groupForm.form.unitTypeId': '部门类型',
+  'groupForm.form.unitTypeId.placeholder': '部门类型',
 
   // columns
   'searchTable.columns.index': '#',

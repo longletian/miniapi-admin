@@ -35,6 +35,7 @@
     },
     width: {
       type: Number,
+      default: 500,
     },
     top: {
       type: Number,
@@ -78,7 +79,6 @@
     text-align: left;
   }
   .container-body {
-    padding: 0px 10px;
-    width: calc(100% - 20px);
+    // width: calc(100% - 20px);
   }
 </style>

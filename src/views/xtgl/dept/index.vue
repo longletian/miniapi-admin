@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.dept']" />
+    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.dept']" :width="400" />
     <a-card class="general-card" :title="$t('menu.xtgl.dept')">
       <a-row>
         <a-col :flex="1">
@@ -59,13 +59,17 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <a-button type="primary" @click="changeComponent('addDept')">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.columns.operations.add') }}
             </a-button>
-            <a-button type="primary" status="success">
+            <a-button
+              type="primary"
+              status="success"
+              @click="changeComponent('editDept')"
+            >
               <template #icon>
                 <icon-edit />
               </template>
@@ -122,10 +126,19 @@
       </a-table>
     </a-card>
   </div>
+  <component :is="addDept" ref="addDeptRef"></component>
+  <component :is="editDept" ref="editDeptRef"></component>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick } from 'vue';
+  import {
+    computed,
+    ref,
+    reactive,
+    watch,
+    nextTick,
+    getCurrentInstance,
+  } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
@@ -137,6 +150,8 @@
   import useLoading from '@/hooks/loading';
   import { DeptSearchParams, DeptListData } from '../../../api/xtgl/dept/type';
   import { getPageDeptListData } from '../../../api/xtgl/dept/dept';
+  import addDept from './components/add.vue';
+  import editDept from './components/edit.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -167,11 +182,6 @@
   });
 
   const columns = computed<TableColumnData[]>(() => [
-    // {
-    //   title: t('searchTable.columns.id'),
-    //   dataIndex: 'id',
-    //   slotName: 'id',
-    // },
     {
       title: t('searchTable.columns.unitName'),
       dataIndex: 'unitName',
@@ -315,11 +325,16 @@
     },
     { deep: true, immediate: true }
   );
-</script>
 
-<script lang="ts">
-  export default {
-    name: 'SearchTable',
+  const currentInstance = getCurrentInstance();
+  const changeComponent = function changeComponent(val) {
+    if (val) {
+      if (val === 'addDept') {
+        currentInstance?.ctx.$refs.addDeptRef.onHandleOpen();
+      } else if (val === 'editDept') {
+        currentInstance?.ctx.$refs.editDeptRef.onHandleOpen();
+      }
+    }
   };
 </script>
 

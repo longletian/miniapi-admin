@@ -37,4 +37,7 @@ const LOG = {
   ACTION_ROOT: '/logger/oper',
 };
 
-export { USER, COMMON, BASE, PERMISSION, ROLE, DEPT, DICT, LOG };
+const ATTACHMENT = {
+  ROOT: '/attchment',
+};
+export { USER, COMMON, BASE, PERMISSION, ROLE, DEPT, DICT, LOG, ATTACHMENT };

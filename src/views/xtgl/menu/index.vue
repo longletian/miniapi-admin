@@ -58,13 +58,17 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary">
+            <a-button type="primary" @click="changeComponent('addMenu')">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.columns.operations.add') }}
             </a-button>
-            <a-button type="primary" status="success">
+            <a-button
+              type="primary"
+              status="success"
+              @click="changeComponent('editMenu')"
+            >
               <template #icon>
                 <icon-edit />
               </template>
@@ -129,10 +133,19 @@
       </a-table>
     </a-card>
   </div>
+  <component :is="addMenu" ref="addMenuRef"></component>
+  <component :is="editMenu" ref="editMenuRef"></component>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick } from 'vue';
+  import {
+    computed,
+    ref,
+    reactive,
+    watch,
+    nextTick,
+    getCurrentInstance,
+  } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
@@ -148,6 +161,9 @@
     PermissListData,
     PermissionSearchParams,
   } from '@/api/xtgl/permission/type';
+
+  import addMenu from './components/add.vue';
+  import editMenu from './components/edit.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -339,11 +355,16 @@
     },
     { deep: true, immediate: true }
   );
-</script>
 
-<script lang="ts">
-  export default {
-    name: 'SearchTable',
+  const currentInstance = getCurrentInstance();
+  const changeComponent = function changeComponent(val) {
+    if (val) {
+      if (val === 'addMenu') {
+        currentInstance?.ctx.$refs.addMenuRef.onHandleOpen();
+      } else if (val === 'editMenu') {
+        currentInstance?.ctx.$refs.editMenuRef.onHandleOpen();
+      }
+    }
   };
 </script>
 

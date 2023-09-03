@@ -1,9 +1,10 @@
 <template>
-  <YModal ref="yModal" :title="$t('menu.xtgl.user.edit')">
+  <YModal ref="yModal" :title="$t('menu.xtgl.menu.edit')">
     <div class="container">
       <a-form ref="formRef" direction="horizontal" :model="formData">
         <a-space direction="horizontal">
           <a-row>
+            <a-col> </a-col>
             <a-col>
               <a-form-item
                 :label="$t('groupForm.form.name')"
@@ -194,7 +195,6 @@
       </a-form>
     </div>
   </YModal>
-  <checkUnit ref="checkUnitRef"></checkUnit>
 </template>
 
 <script lang="ts" setup>
@@ -202,7 +202,6 @@
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import checkUnit from './check-unit.vue';
 
   const { t } = useI18n();
 
@@ -263,11 +262,6 @@
   const yModal = ref();
   const onHandleOpen = () => {
     yModal.value.handleOpen();
-  };
-
-  const checkUnitRef = ref();
-  const onUnitSearch = () => {
-    checkUnitRef.value.onHandleOpen();
   };
 
   defineExpose({ onHandleOpen });

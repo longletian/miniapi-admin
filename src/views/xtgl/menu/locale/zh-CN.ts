@@ -1,5 +1,8 @@
 export default {
   'menu.xtgl.menu': '菜单管理',
+  'menu.xtgl.menu.add': '新增菜单',
+  'menu.xtgl.menu.edit': '编辑菜单',
+
   'searchTable.form.menuname': '菜单名称',
   'searchTable.form.menuname.placeholder': '请输入菜单名称',
   'searchTable.form.status': '状态',
@@ -24,8 +27,35 @@ export default {
   'searchTable.columns.operations.edit': '编辑',
   'searchTable.columns.operations.delete': '删除',
   'searchTable.columns.operations.showAll': '展开全部',
-  // 'searchTable.columns.operations.view': '查看',
   'searchTable.columns.operations.setSubPermission': '添加子菜单',
+
+  'groupForm.form.parentId': '父菜单',
+  'groupForm.form.parentId.placeholder': '父菜单',
+  'groupForm.form.category': '菜单类型',
+  'groupForm.form.menuIcon': '菜单图标',
+  'groupForm.form.menuName': '菜单名称',
+  'groupForm.form.menuName.placeholder': '菜单名称',
+  'groupForm.form.menuCode': '菜单编码',
+  'groupForm.form.menuCode.placeholder': '菜单编码',
+  'groupForm.form.component': '组件路径',
+  'groupForm.form.component.placeholder': '组件路径',
+  'groupForm.form.menuUrl': '路由地址',
+  'groupForm.form.menuUrl.placeholder': '路由地址',
+  'groupForm.form.description': '备注',
+  'groupForm.form.description.placeholder': '备注',
+  'groupForm.form.isFrame': '是否外链',
+  'groupForm.form.visible': '显示状态',
+  'groupForm.form.sortNum': '排序',
+  'groupForm.form.status': '状态',
+
+  'groupForm.form.category.0': '菜单',
+  'groupForm.form.category.1': '目录',
+  'groupForm.form.category.2': '按钮',
+
+  'groupForm.form.isFrame.0': '是',
+  'groupForm.form.isFrame.1': '否',
+  'groupForm.form.visible.0': '显示',
+  'groupForm.form.visible.1': '隐藏',
 
   // size
   'searchTable.size.mini': '迷你',

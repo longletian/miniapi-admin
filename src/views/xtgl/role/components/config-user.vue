@@ -2,7 +2,7 @@
   <YModal
     ref="yModal"
     :title="$t('menu.xtgl.role.config.user')"
-    :width="1000"
+    :width="900"
     :top="300"
     :footer="true"
   >
@@ -10,12 +10,12 @@
       <a-row class="body-header">
         <a-col :span="6"><span>组织架构</span></a-col>
         <a-col :span="12">
-          <div>
-            <a-input
-              v-model="keyWord"
-              :placeholder="$t('searchTable.form.rolename.placeholder')"
-            />
-          </div>
+          <a-input
+            v-model="keyWord"
+            :style="{ width: '400px' }"
+            allow-clear
+            :placeholder="$t('searchTable.form.username.placeholder')"
+          />
         </a-col>
         <a-col :span="6"><span>已选人员</span> </a-col>
       </a-row>
@@ -131,6 +131,11 @@
           >
         </a-col>
       </a-row>
+      <a-row class="body-footer">
+        <a-button>{{ $t('groupForm.from.checkAll') }}</a-button>
+        <a-button type="primary">{{ $t('groupForm.from.confirm') }}</a-button>
+        <a-button>{{ $t('groupForm.from.cancel') }}</a-button>
+      </a-row>
     </div>
     <template #footer> heii </template>
   </YModal>
@@ -205,32 +210,44 @@
     margin-top: 30px;
     text-align: right;
   }
-  .arco-modal-body {
-    padding: 0;
-  }
   .body {
     height: 600px;
     .body-header {
       height: 40px;
       border: 1px solid #eee;
       padding-left: 10px;
+      align-items: center;
       .arco-col {
-        align-items: center;
         color: cornflowerblue;
       }
     }
     .body-content {
       margin-top: 2px;
+      border-bottom: 1px solid #eee;
       .arco-col {
-        height: 500px;
+        height: 530px;
         overflow-y: auto;
-        border: 1px solid red;
+      }
+      .arco-col:nth-child(2),
+      .arco-col:last-child {
+        border-left: 1px solid #eee;
       }
     }
     .content-box {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
+    }
+
+    .body-footer {
+      margin-top: 5px;
+      display: flex;
+      justify-content: flex-end;
+      height: 30px;
+      align-items: center;
+      .arco-btn {
+        margin: 0px 10px;
+      }
     }
   }
 </style>

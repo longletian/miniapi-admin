@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.dict']" />
-    <a-card class="general-card" :title="$t('menu.xtgl.dict')">
+    <Breadcrumb :items="['menu.cggl', 'menu.cggl.attachment']" />
+    <a-card class="general-card" :title="$t('menu.cggl.attachment')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -11,31 +11,60 @@
             label-align="left"
           >
             <a-row :gutter="16">
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
-                  field="keyWord"
-                  :label="$t('searchTable.form.dict.keyWord')"
+                  field="businessTypeId"
+                  :label="$t('searchTable.form.businessTypeId')"
                 >
                   <a-input
-                    v-model="formModel.keyWord"
+                    v-model="formModel.businessTypeId"
                     :placeholder="
-                      $t('searchTable.form.dict.keyWord.placeholder')
+                      $t('searchTable.form.businessTypeId.placeholder')
                     "
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
-                  field="dictCode"
-                  :label="$t('searchTable.form.dictCode')"
+                  field="fileName"
+                  :label="$t('searchTable.form.fileName')"
                 >
                   <a-input
-                    v-model="formModel.dictCode"
-                    :placeholder="$t('searchTable.form.dictCode.placeholder')"
+                    v-model="formModel.fileName"
+                    :placeholder="$t('searchTable.form.fileName.placeholder')"
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+
+              <a-col :span="6">
+                <a-form-item
+                  field="accountName"
+                  :label="$t('searchTable.form.accountName')"
+                >
+                  <a-input
+                    v-model="formModel.accountName"
+                    :placeholder="
+                      $t('searchTable.form.accountName.placeholder')
+                    "
+                  />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="6">
+                <a-form-item
+                  field="storeTyepId"
+                  :label="$t('searchTable.form.storeTyepId')"
+                >
+                  <a-input
+                    v-model="formModel.storeTyepId"
+                    :placeholder="
+                      $t('searchTable.form.storeTyepId.placeholder')
+                    "
+                  />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="6">
                 <a-form-item
                   field="createdTime"
                   :label="$t('searchTable.form.createdTime')"
@@ -46,7 +75,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
                   field="status"
                   :label="$t('searchTable.form.status')"
@@ -83,7 +112,7 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="changeComponent('addDict')">
+            <a-button type="primary" @click="changeComponent('addAttachment')">
               <template #icon>
                 <icon-plus />
               </template>
@@ -92,7 +121,7 @@
             <a-button
               type="primary"
               status="success"
-              @click="changeComponent('editDict')"
+              @click="changeComponent('editAttachment')"
             >
               <template #icon>
                 <icon-edit />
@@ -181,21 +210,12 @@
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
-
-        <template #filterType="{ record }">
-          {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
-        </template>
         <template #status="{ record }">
           <span v-if="record.status === 'offline'" class="circle"></span>
           <span v-else class="circle pass"></span>
           {{ $t(`searchTable.form.status.${record.status}`) }}
         </template>
         <template #operations>
-          <a-button type="text" size="small">
-            <template #icon>
-              <icon-eye />
-            </template>
-          </a-button>
           <a-button type="text" size="small">
             <template #icon>
               <icon-edit />
@@ -210,12 +230,17 @@
       </a-table>
     </a-card>
   </div>
-  <component :is="addDict" ref="addDictRef"></component>
-  <component :is="editDict" ref="editDictRef"></component>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick, onMounted } from 'vue';
+  import {
+    computed,
+    ref,
+    reactive,
+    watch,
+    nextTick,
+    getCurrentInstance,
+  } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
@@ -225,28 +250,31 @@
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
   import { Pagination } from '@/types/global';
+
   import useLoading from '@/hooks/loading';
-  import { DictSearchParams, DictListDataDto } from '@/api/xtgl/dict/type';
-  import { getPageDictListData } from '@/api/xtgl/dict/dict';
-  import addDict from './add.vue';
-  import editDict from './edit.vue';
+  import {
+    AttachmentSearchParams,
+    AttachmentListData,
+  } from '@/api/xtgl/dict/type';
+  import { getPageAttachmentListData } from '@/api/xtgl/attachment/attachment';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
 
   const generateFormModel = () => {
     return {
-      keyWord: '',
-      dictTypeCode: '',
+      businessTypeId: '',
+      fileName: '',
       startTime: null,
       endTime: null,
-      status: undefined,
+      accountName: '',
+      storeTyepId: undefined,
       createdTime: [],
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<DictListDataDto[]>([]);
+  const renderData = ref<AttachmentListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
@@ -286,17 +314,28 @@
       slotName: 'id',
     },
     {
-      title: t('searchTable.columns.DictText'),
-      dataIndex: 'DictText',
+      title: t('searchTable.columns.fileType'),
+      dataIndex: 'fileType',
     },
     {
-      title: t('searchTable.columns.DictValue'),
-      dataIndex: 'DictValue',
+      title: t('searchTable.columns.businessTypeId'),
+      dataIndex: 'businessTypeId',
     },
-
     {
-      title: t('searchTable.columns.description'),
-      dataIndex: 'description',
+      title: t('searchTable.columns.storeTypeId'),
+      dataIndex: 'storeTypeId',
+    },
+    {
+      title: t('searchTable.columns.fileName'),
+      dataIndex: 'fileName',
+    },
+    {
+      title: t('searchTable.columns.filePath'),
+      dataIndex: 'filePath',
+    },
+    {
+      title: t('searchTable.columns.fileSize'),
+      dataIndex: 'fileSize',
     },
     {
       title: t('searchTable.columns.sortNum'),
@@ -339,11 +378,11 @@
     },
   ]);
   const fetchData = async (
-    params: DictSearchParams = { page: 1, pageSize: 20 }
+    params: AttachmentSearchParams = { page: 1, pageSize: 20 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await getPageDictListData(params);
+      const { data } = await getPageAttachmentListData(params);
       renderData.value = data.items;
       pagination.page = data.totalPages;
       pagination.total = data.totalCount;
@@ -358,7 +397,7 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as DictSearchParams);
+    } as unknown as AttachmentSearchParams);
   };
   const onPageChange = (current: number) => {
     basePagination.page = current;
@@ -436,25 +475,16 @@
     { deep: true, immediate: true }
   );
 
-  const yModal = ref();
-  onMounted(() => {});
-
   const currentInstance = getCurrentInstance();
   const changeComponent = function changeComponent(val) {
     console.log(val);
     if (val) {
-      if (val === 'addDict') {
-        currentInstance?.ctx.$refs.addDictRef.onHandleOpen();
-      } else if (val === 'editDict') {
-        currentInstance?.ctx.$refs.editDictRef.onHandleOpen();
-      }
+      // if (val === 'addDictType') {
+      //   currentInstance?.ctx.$refs.addDictTypeRef.onHandleOpen();
+      // } else if (val === 'editDictType') {
+      //   currentInstance?.ctx.$refs.editDictTypeRef.onHandleOpen();
+      // }
     }
-  };
-</script>
-
-<script lang="ts">
-  export default {
-    name: 'SearchTable',
   };
 </script>
 

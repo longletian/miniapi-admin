@@ -51,6 +51,9 @@ export default {
   'groupForm.form.category.2': '业务流程角色',
 
   'menu.xtgl.role.config.user': '配置用户',
+  'groupForm.from.confirm': '确认',
+  'groupForm.from.cancel': '取消',
+  'groupForm.from.checkAll': '全选',
 
   // size
   'searchTable.size.mini': '迷你',

@@ -7,7 +7,7 @@
   >
     <div class="container-header">
       <a-space direction="horizontal">
-        <a-row :gutter="80">
+        <a-row>
           <a-col>
             <a-form-item
               :label="$t('searchTable.form.keyWord')"

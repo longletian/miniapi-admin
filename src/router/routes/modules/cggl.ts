@@ -15,7 +15,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'grzl',
       name: 'grzl',
-      component: () => import('@/views/cggl/info/index.vue'),
+      component: () => import('@/views/cggl/grzl/index.vue'),
       meta: {
         locale: 'menu.cggl.grzl',
         requiresAuth: true,
@@ -25,7 +25,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'xtpz',
       name: 'xtpz',
-      component: () => import('@/views/cggl/info/index.vue'),
+      component: () => import('@/views/cggl/xtpz/index.vue'),
       meta: {
         locale: 'menu.cggl.xtpz',
         requiresAuth: true,
@@ -35,7 +35,7 @@ const XTGL: AppRouteRecordRaw = {
     {
       path: 'attachment',
       name: 'attachment',
-      component: () => import('@/views/cggl/info/index.vue'),
+      component: () => import('@/views/cggl/fjgl/index.vue'),
       meta: {
         locale: 'menu.cggl.attachment',
         requiresAuth: true,

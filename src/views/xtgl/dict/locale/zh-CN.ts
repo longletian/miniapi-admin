@@ -1,18 +1,24 @@
 export default {
+  'menu.xtgl.dict.type': '字典类型管理',
+  'menu.xtgl.dict.type.add': '新增字典类型',
+  'menu.xtgl.dict.type.edit': '编辑字典类型',
+
   'menu.xtgl.dict': '字典管理',
+  'menu.xtgl.dict.add': '新增字典',
+  'menu.xtgl.dict.edit': '编辑字典',
 
   'searchTable.form.dict.keyWord': '字典类型名称',
-  'searchTable.form.dict.keyWord.placeholder': '请输入字典类型名称',
+  'searchTable.form.dict.keyWord.placeholder': '字典类型名称',
   'searchTable.form.dictCode': '字典类型编码',
-  'searchTable.form.dictCode.placeholder': '请输入字典类型编码',
+  'searchTable.form.dictCode.placeholder': '字典类型编码',
   'searchTable.form.dictTypeCode': '字典类型编码',
   'searchTable.form.dictText': '字典文本',
-  'searchTable.form.dictText.placeholder': '请输入字典文本',
+  'searchTable.form.dictText.placeholder': '字典文本',
 
   'groupForm.form.dictName': '字典类型名称',
-  'groupForm.form.dictName.placeholder': '请输入字典类型名称',
+  'groupForm.form.dictName.placeholder': '字典类型名称',
   'groupForm.form.dictCode': '字典类型编码',
-  'groupForm.form.dictCode.placeholder': '请输入字典类型编码',
+  'groupForm.form.dictCode.placeholder': '字典类型编码',
   'groupForm.form.dictTypeCode': '字典类型',
   'groupForm.form.dictTypeCode.placeholder': '请选择字典类型',
 
@@ -22,9 +28,9 @@ export default {
   'groupForm.from.submit': '确认',
   'groupForm.from.reset': '重置',
   'groupForm.form.dictValue': '字典值',
-  'groupForm.form.dictValue.placeholder': '请输入字典值',
+  'groupForm.form.dictValue.placeholder': '字典值',
   'groupForm.form.dictText': '字典文本',
-  'groupForm.form.dictText.placeholder': '请输入字典文本',
+  'groupForm.form.dictText.placeholder': '字典文本',
 
   'searchTable.form.status': '状态',
   'searchTable.form.search': '查询',

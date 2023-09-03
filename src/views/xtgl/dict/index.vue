@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.dict']" />
-    <a-card class="general-card" :title="$t('menu.xtgl.dict')">
+    <Breadcrumb :items="['menu.xtgl', 'menu.xtgl.dict.type']" />
+    <a-card class="general-card" :title="$t('menu.xtgl.dict.type')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -83,11 +83,21 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="onOpen">
+            <a-button type="primary" @click="changeComponent('addDictType')">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
+            </a-button>
+            <a-button
+              type="primary"
+              status="success"
+              @click="changeComponent('editDictType')"
+            >
+              <template #icon>
+                <icon-edit />
+              </template>
+              {{ $t('searchTable.operation.edit') }}
             </a-button>
           </a-space>
         </a-col>
@@ -132,7 +142,7 @@
                 <div id="tableSetting">
                   <div
                     v-for="(item, index) in showColumns"
-                    :key="item.dataIndex"
+                    :key="index"
                     class="setting"
                   >
                     <div style="margin-right: 4px; cursor: move">
@@ -200,13 +210,20 @@
       </a-table>
     </a-card>
   </div>
-  <YModal ref="yModal" :width="600">
-    <addDictType></addDictType>
-  </YModal>
+
+  <component :is="addDictType" ref="addDictTypeRef"></component>
+  <component :is="editDictType" ref="editDictTypeRef"></component>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, reactive, watch, nextTick, onMounted } from 'vue';
+  import {
+    computed,
+    ref,
+    reactive,
+    watch,
+    nextTick,
+    getCurrentInstance,
+  } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
@@ -223,8 +240,8 @@
     DictTypeListDataDto,
   } from '@/api/xtgl/dict/type';
   import { getPageDictTypeListData } from '@/api/xtgl/dict/dict';
-  import YModal from '@/components/modal/index.vue';
   import addDictType from './components/add-dict-type.vue';
+  import editDictType from './components/edit-dict-type.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -431,10 +448,16 @@
     { deep: true, immediate: true }
   );
 
-  const yModal = ref();
-  const onOpen = () => {
-    console.log(yModal.value);
-    console.log(yModal.value.handleOpen());
+  const currentInstance = getCurrentInstance();
+  const changeComponent = function changeComponent(val) {
+    console.log(val);
+    if (val) {
+      if (val === 'addDictType') {
+        currentInstance?.ctx.$refs.addDictTypeRef.onHandleOpen();
+      } else if (val === 'editDictType') {
+        currentInstance?.ctx.$refs.editDictTypeRef.onHandleOpen();
+      }
+    }
   };
 </script>
 

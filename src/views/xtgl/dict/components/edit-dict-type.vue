@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <YModal ref="yModal" :title="$t('menu.xtgl.dict.type.edit')" :width="550">
     <a-form ref="formRef" direction="horizontal" :model="formData">
       <a-space direction="horizontal" :size="24">
-        <a-row :gutter="80">
+        <a-row>
           <a-col>
             <a-form-item
               :label="$t('groupForm.form.dictName')"
@@ -64,7 +64,7 @@
         </a-space>
       </div>
     </a-form>
-  </div>
+  </YModal>
 </template>
 
 <script setup lang="ts">
@@ -92,9 +92,12 @@
     }, 1000);
   };
 
-  onMounted(() => {
-    console.log('测试');
-  });
+  const yModal = ref();
+  const onHandleOpen = () => {
+    yModal.value.handleOpen();
+  };
+
+  defineExpose({ onHandleOpen });
 </script>
 
 <style scoped lang="less">

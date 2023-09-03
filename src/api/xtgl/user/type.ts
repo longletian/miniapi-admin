@@ -1,5 +1,3 @@
-import { Pagination } from '@/types/global';
-
 export enum AccountRegirstType {
   None = 0,
   EMAIL = 1,
