@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.cggl', 'menu.cggl.attachment']" />
-    <a-card class="general-card" :title="$t('menu.cggl.attachment')">
+    <Breadcrumb :items="['menu.ykgl', 'menu.ykgl.jcls']" />
+    <a-card class="general-card" :title="$t('menu.ykgl.jcls')">
       <a-row>
         <a-col :flex="1">
           <a-form
@@ -11,61 +11,53 @@
             label-align="left"
           >
             <a-row :gutter="16">
-              <a-col :span="6">
+              <a-col :span="8">
                 <a-form-item
-                  field="businessTypeId"
-                  :label="$t('searchTable.form.businessTypeId')"
+                  field="userName"
+                  :label="$t('searchTable.form.username')"
                 >
                   <a-input
-                    v-model="formModel.businessTypeId"
-                    :placeholder="
-                      $t('searchTable.form.businessTypeId.placeholder')
-                    "
+                    v-model="formModel.userName"
+                    :placeholder="$t('searchTable.form.username.placeholder')"
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="6">
+              <a-col :span="8">
                 <a-form-item
-                  field="fileName"
-                  :label="$t('searchTable.form.fileName')"
+                  field="nickName"
+                  :label="$t('searchTable.form.nickname')"
                 >
                   <a-input
-                    v-model="formModel.fileName"
-                    allow-clear
-                    :placeholder="$t('searchTable.form.fileName.placeholder')"
+                    v-model="formModel.nickName"
+                    :placeholder="$t('searchTable.form.nickname.placeholder')"
                   />
                 </a-form-item>
               </a-col>
-
-              <a-col :span="6">
+              <a-col :span="8">
                 <a-form-item
-                  field="accountName"
-                  :label="$t('searchTable.form.accountName')"
+                  field="email"
+                  :label="$t('searchTable.form.email')"
                 >
                   <a-input
-                    v-model="formModel.accountName"
-                    :placeholder="
-                      $t('searchTable.form.accountName.placeholder')
-                    "
+                    v-model="formModel.email"
+                    :placeholder="$t('searchTable.form.email.placeholder')"
                   />
                 </a-form-item>
               </a-col>
 
-              <a-col :span="6">
+              <a-col :span="8">
                 <a-form-item
-                  field="storeTyepId"
-                  :label="$t('searchTable.form.storeTyepId')"
+                  field="phone"
+                  :label="$t('searchTable.form.phone')"
                 >
                   <a-input
-                    v-model="formModel.storeTyepId"
-                    :placeholder="
-                      $t('searchTable.form.storeTyepId.placeholder')
-                    "
+                    v-model="formModel.phone"
+                    :placeholder="$t('searchTable.form.phone.placeholder')"
                   />
                 </a-form-item>
               </a-col>
 
-              <a-col :span="6">
+              <a-col :span="8">
                 <a-form-item
                   field="createdTime"
                   :label="$t('searchTable.form.createdTime')"
@@ -73,18 +65,6 @@
                   <a-range-picker
                     v-model="formModel.createdTime"
                     style="width: 100%"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="6">
-                <a-form-item
-                  field="status"
-                  :label="$t('searchTable.form.status')"
-                >
-                  <a-select
-                    v-model="formModel.status"
-                    :options="statusOptions"
-                    :placeholder="$t('searchTable.form.selectDefault')"
                   />
                 </a-form-item>
               </a-col>
@@ -113,7 +93,7 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="changeComponent('addAttachment')">
+            <a-button type="primary" @click="changeComponent('addUser')">
               <template #icon>
                 <icon-plus />
               </template>
@@ -122,13 +102,30 @@
             <a-button
               type="primary"
               status="success"
-              @click="changeComponent('editAttachment')"
+              @click="changeComponent('editUser')"
             >
               <template #icon>
                 <icon-edit />
               </template>
               {{ $t('searchTable.operation.edit') }}
             </a-button>
+            <a-button
+              type="primary"
+              status="danger"
+              @click="changeComponent('delete')"
+            >
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('searchTable.operation.delete') }}
+            </a-button>
+            <a-upload action="/">
+              <template #upload-button>
+                <a-button>
+                  {{ $t('searchTable.operation.import') }}
+                </a-button>
+              </template>
+            </a-upload>
           </a-space>
         </a-col>
         <a-col
@@ -142,9 +139,9 @@
             {{ $t('searchTable.operation.download') }}
           </a-button>
           <a-tooltip :content="$t('searchTable.actions.refresh')">
-            <div class="action-icon" @click="search"
-              ><icon-refresh size="18"
-            /></div>
+            <div class="action-icon" @click="search">
+              <icon-refresh size="18" />
+            </div>
           </a-tooltip>
           <a-dropdown @select="handleSelectDensity">
             <a-tooltip :content="$t('searchTable.actions.density')">
@@ -171,8 +168,8 @@
               <template #content>
                 <div id="tableSetting">
                   <div
-                    v-for="(item, index) in showColumns"
-                    :key="index"
+                    v-for="item in showColumns"
+                    :key="item.dataIndex"
                     class="setting"
                   >
                     <div style="margin-right: 4px; cursor: move">
@@ -198,39 +195,35 @@
         </a-col>
       </a-row>
       <a-table
+        v-model:selectedKeys="selectedKeys"
         row-key="id"
         :loading="loading"
         :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
         :data="renderData"
-        :bordered="false"
+        :column-resizable="true"
         :row-selection="rowSelection"
+        :bordered="false"
         :size="size"
+        @select="onSelectEvent"
+        @select-all="onSelectAllEvent"
+        @selection-change="onSelectChange"
         @page-change="onPageChange"
       >
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.page - 1) * pagination.pageSize }}
         </template>
-        <template #status="{ record }">
-          <span v-if="record.status === 'offline'" class="circle"></span>
-          <span v-else class="circle pass"></span>
-          {{ $t(`searchTable.form.status.${record.status}`) }}
-        </template>
         <template #operations>
           <a-button type="text" size="small">
-            <template #icon>
-              <icon-edit />
-            </template>
-          </a-button>
-          <a-button type="text" size="small">
-            <template #icon>
-              <icon-delete />
-            </template>
+            {{ $t('searchTable.columns.operations.view') }}
           </a-button>
         </template>
       </a-table>
     </a-card>
   </div>
+
+  <component :is="addWj" ref="addWjRef"></component>
+  <component :is="editWj" ref="editWjRef"></component>
 </template>
 
 <script lang="ts" setup>
@@ -240,6 +233,9 @@
     reactive,
     watch,
     nextTick,
+    markRaw,
+    shallowRef,
+    onMounted,
     getCurrentInstance,
   } from 'vue';
   import { useI18n } from 'vue-i18n';
@@ -251,44 +247,53 @@
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
   import { Pagination } from '@/types/global';
-
   import useLoading from '@/hooks/loading';
-  import {
-    AttachmentSearchParams,
-    AttachmentListData,
-  } from '@/api/xtgl/dict/type';
-  import { getPageAttachmentListData } from '@/api/xtgl/attachment/attachment';
+  import { WjglListData, WjglSearchParams } from '@/api/ykgl/wjgl/type';
+  import { getPageWjListData } from '@/api/ykgl/wjgl/wjgl';
+  import addWj from './components/add.vue';
+  import editWj from './components/edit.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
 
   const generateFormModel = () => {
     return {
-      businessTypeId: '',
-      fileName: '',
-      startTime: null,
-      endTime: null,
-      accountName: '',
-      storeTyepId: undefined,
+      userName: '',
+      keyWord: '',
+      startTime: '',
       createdTime: [],
+      endTime: '',
+      typeId: undefined,
+      isAutoQuestionnaire: null,
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<AttachmentListData[]>([]);
+
+  const modalTitle = ref('');
+  const renderData = ref<WjglListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
+  const selectedKeys = ref([]);
 
   const size = ref<SizeProps>('medium');
 
   const basePagination: Pagination = {
     page: 1,
-    pageSize: 20,
+    pageSize: 5,
   };
+
   const pagination = reactive({
     ...basePagination,
   });
+
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
+
   const densityList = computed(() => [
     {
       name: t('searchTable.size.mini'),
@@ -312,48 +317,40 @@
     {
       title: t('searchTable.columns.id'),
       dataIndex: 'id',
-      slotName: 'id',
+    },
+
+    {
+      title: t('searchTable.columns.name'),
+      dataIndex: 'name',
+    },
+
+    {
+      title: t('searchTable.columns.typeName'),
+      dataIndex: 'typeName',
+    },
+    // {
+    //   title: t('searchTable.columns.Description'),
+    //   dataIndex: 'Description',
+    // },
+    {
+      title: t('searchTable.columns.yxqStime'),
+      dataIndex: 'yxqStime',
     },
     {
-      title: t('searchTable.columns.fileType'),
-      dataIndex: 'fileType',
+      title: t('searchTable.columns.yxqEtime'),
+      dataIndex: 'yxqEtime',
     },
     {
-      title: t('searchTable.columns.businessTypeId'),
-      dataIndex: 'businessTypeId',
+      title: t('searchTable.columns.fullScore'),
+      dataIndex: 'fullScore',
     },
     {
-      title: t('searchTable.columns.storeTypeId'),
-      dataIndex: 'storeTypeId',
-    },
-    {
-      title: t('searchTable.columns.fileName'),
-      dataIndex: 'fileName',
-    },
-    {
-      title: t('searchTable.columns.filePath'),
-      dataIndex: 'filePath',
-    },
-    {
-      title: t('searchTable.columns.fileSize'),
-      dataIndex: 'fileSize',
-    },
-    {
-      title: t('searchTable.columns.sortNum'),
-      dataIndex: 'sortNum',
+      title: t('searchTable.columns.isPublished'),
+      dataIndex: 'isPublished',
     },
     {
       title: t('searchTable.columns.createTime'),
       dataIndex: 'createTime',
-    },
-    {
-      title: t('searchTable.columns.createUser'),
-      dataIndex: 'createUser',
-    },
-    {
-      title: t('searchTable.columns.status'),
-      dataIndex: 'status',
-      slotName: 'status',
     },
     {
       title: t('searchTable.columns.operations'),
@@ -361,12 +358,6 @@
       slotName: 'operations',
     },
   ]);
-
-  const rowSelection: TableRowSelection = {
-    type: 'checkbox',
-    showCheckedAll: true,
-    onlyCurrent: false,
-  };
 
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
@@ -378,12 +369,13 @@
       value: '停用',
     },
   ]);
+
   const fetchData = async (
-    params: AttachmentSearchParams = { page: 1, pageSize: 20 }
+    params: WjglSearchParams = { page: 1, pageSize: 5 }
   ) => {
     setLoading(true);
     try {
-      const { data } = await getPageAttachmentListData(params);
+      const { data } = await getPageWjListData(params);
       renderData.value = data.items;
       pagination.page = data.totalPages;
       pagination.total = data.totalCount;
@@ -398,16 +390,30 @@
     fetchData({
       ...basePagination,
       ...formModel.value,
-    } as unknown as AttachmentSearchParams);
+    } as unknown as WjglSearchParams);
   };
-  const onPageChange = (current: number) => {
-    basePagination.page = current;
+
+  const onPageChange = (page: number) => {
+    basePagination.page = page;
     search();
   };
 
   fetchData();
+
   const reset = () => {
     formModel.value = generateFormModel();
+  };
+
+  const onSelectEvent = (keys, rowKey, record) => {
+    console.log(`${keys}--${rowKey}${JSON.stringify(record)}`);
+  };
+
+  const onSelectAllEvent = (keys) => {
+    console.log(keys);
+  };
+
+  const onSelectChange = (rowKeys) => {
+    console.log(rowKeys);
   };
 
   const handleSelectDensity = (
@@ -476,16 +482,22 @@
     { deep: true, immediate: true }
   );
 
+  const componentCheck = shallowRef(null);
   const currentInstance = getCurrentInstance();
   const changeComponent = function changeComponent(val) {
-    console.log(val);
     if (val) {
-      // if (val === 'addDictType') {
-      //   currentInstance?.ctx.$refs.addDictTypeRef.onHandleOpen();
-      // } else if (val === 'editDictType') {
-      //   currentInstance?.ctx.$refs.editDictTypeRef.onHandleOpen();
-      // }
+      if (val === 'addWj') {
+        currentInstance.ctx.$refs.addWjRef.onHandleOpen();
+      } else if (val === 'editWj') {
+        currentInstance.ctx.$refs.editWjRef.onHandleOpen();
+      }
     }
+  };
+</script>
+
+<script lang="ts">
+  export default {
+    name: 'SearchTable',
   };
 </script>
 

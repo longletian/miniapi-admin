@@ -25,6 +25,10 @@ import localGrzl from '@/views/cggl/grzl/locale/zh-CN';
 import localXtpz from '@/views/cggl/xtpz/locale/zh-CN';
 import localMessageBox from '@/components/message-box/locale/zh-CN';
 
+import localWjgl from '@/views/ykgl/wjgl/locale/zh-CN';
+import localTkgl from '@/views/ykgl/tkgl/locale/zh-CN';
+import localJcls from '@/views/ykgl/jcls/locale/zh-CN';
+
 import localeSettings from './zh-CN/settings';
 
 export default {
@@ -33,6 +37,8 @@ export default {
   'menu.cggl': '常规管理',
   'menu.sjksh': '报表管理',
   'menu.xtgl.log': '日志管理',
+  'menu.ykgl': '医考管理',
+  'menu.yygl': '医药管理',
 
   // 'menu.server.dashboard': '仪表盘-服务端',
   // 'menu.server.workplace': '工作台-服务端',
@@ -69,4 +75,7 @@ export default {
   ...localFjgl,
   ...localGrzl,
   ...localXtpz,
+  ...localWjgl,
+  ...localTkgl,
+  ...localJcls,
 };
