@@ -1,9 +1,9 @@
 export interface QuestionAnswerDtos {
-  answerCode: string;
-  answerContent: string;
-  isRightResult: boolean;
+  answerCode?: string;
+  answerContent?: string;
+  isRightResult?: boolean;
   attachmentFiles: [];
-  dzjx: string;
+  dzjx?: string;
 }
 
 export interface QuestionAddDto {

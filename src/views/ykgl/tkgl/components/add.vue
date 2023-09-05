@@ -1,5 +1,5 @@
 <template>
-  <YModal ref="yModal" :title="$t('menu.ykgl.tkgl.add')" :width="550">
+  <YModal ref="yModal" :title="$t('menu.ykgl.tkgl.add')" :width="650">
     <a-form ref="formRef" direction="horizontal" :width="400" :model="formData">
       <a-space direction="horizontal" :size="24">
         <a-row>
@@ -11,6 +11,7 @@
               <a-select
                 v-model="formData.typeName"
                 :options="questionTypeOptions"
+                allow-clear
                 :field-names="{ value: 'code', label: 'name' }"
                 :placeholder="$t('searchTable.form.selectDefault')"
               />
@@ -68,31 +69,30 @@
               />
             </a-form-item>
           </a-col>
-          <a-col>
-            <a-form-item>
-              <a-button type="primary">{{
-                $t('groupForm.form.answer.add')
-              }}</a-button>
-            </a-form-item>
-          </a-col>
-
-          <a-col>
-            <a-table
-              :columns="columns"
-              :data="questionAnswers"
-              style="margin-top: 20px"
+          <a-col :span="8" style="margin-left: 40px">
+            <a-button type="primary">
+              <template #icon>
+                <icon-plus />
+              </template>
+              {{ $t('groupForm.form.answer.add') }}</a-button
             >
-              <template #name="{ record }">
-                <a-input v-model="record.name" />
-              </template>
-
-              <template #city="{ record }">
-                <a-select
-                  v-model="record.city"
-                  :options="options[record.province] || []"
+          </a-col>
+          <a-col class="box">
+            <div class="box-header">
+              <span v-for="(item, index) in selectList" :key="index">
+                {{ item.title }}</span
+              >
+            </div>
+            <div class="box-content">
+              <a-row v-for="(item, index) in questionAnswers" :key="index">
+                <a-input
+                  v-model="item.answerCode"
+                  :width="100"
+                  placeholder=""
+                  allow-clear
                 />
-              </template>
-            </a-table>
+              </a-row>
+            </div>
           </a-col>
         </a-row>
       </a-space>
@@ -142,7 +142,22 @@
     }, 1000);
   };
 
-  const questionAnswers = reactive<QuestionAnswerDtos[]>([]);
+  const questionAnswers = reactive<QuestionAnswerDtos[]>([
+    {
+      answerCode: '',
+      answerContent: '',
+      isRightResult: undefined,
+      attachmentFiles: [],
+      dzjx: '',
+    },
+    {
+      answerCode: '',
+      answerContent: '',
+      isRightResult: undefined,
+      attachmentFiles: [],
+      dzjx: '',
+    },
+  ]);
 
   const questionTypeOptions = computed(() => {
     return [
@@ -170,26 +185,24 @@
     },
   ];
 
-  const columns = [
+  const selectList = [
     {
       title: t('groupForm.form.answer.code'),
-      dataIndex: 'answerCode',
     },
     {
       title: t('groupForm.form.answer.image'),
-      dataIndex: 'attachmentFiles',
     },
     {
       title: t('groupForm.form.answer.content'),
-      dataIndex: 'answerContent',
     },
     {
       title: t('groupForm.form.answer.nrjx'),
-      dataIndex: 'dzjx',
     },
     {
       title: t('groupForm.form.answer.sfwda'),
-      dataIndex: 'isRightResult',
+    },
+    {
+      title: t('groupForm.form.answer.action'),
     },
   ];
 
@@ -205,5 +218,25 @@
   .btn-group {
     margin-top: 30px;
     text-align: right;
+  }
+
+  .box {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    .box-header {
+      text-align: center;
+      align-items: center;
+      justify-content: space-around;
+      display: flex;
+      span {
+        display: block;
+        width: 100px;
+        border: 1px solid #ccc;
+      }
+    }
+    .box-content {
+      display: flex;
+    }
   }
 </style>

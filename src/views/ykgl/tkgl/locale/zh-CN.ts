@@ -13,6 +13,11 @@ export default {
   'searchTable.columns.createUser': '创建人',
   'searchTable.columns.description': '备注',
 
+  'searchTable.form.username': '创建人',
+  'searchTable.form.username.placeholder': '创建人',
+  'searchTable.form.question.keyWord': '题库名称',
+  'searchTable.form.question.keyWord.placeholder': '题库名称',
+
   'groupForm.form.question_content': '题目内容',
   'groupForm.form.question_content.placeholder': '题目内容',
   'groupForm.form.categoryTypeName': '题目类别',
@@ -25,7 +30,7 @@ export default {
   'groupForm.form.question_image.add': '上传',
   'groupForm.form.answer.add': '添加选项',
 
-  'groupForm.form.answer.code': '答案选项编码',
+  'groupForm.form.answer.code': '答案选项',
   'groupForm.form.answer.code.placeholder': '答案选项编码',
   'groupForm.form.answer.image': '答案附件',
   'groupForm.form.answer.image.placeholder': '答案附件',
@@ -34,4 +39,5 @@ export default {
   'groupForm.form.answer.nrjx': '答案解析',
   'groupForm.form.answer.nrjx.placeholder': '答案解析',
   'groupForm.form.answer.sfwda': '是否为答案',
+  'groupForm.form.answer.action': '操作',
 };

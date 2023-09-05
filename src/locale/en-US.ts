@@ -14,6 +14,7 @@ import localeUserSetting from '@/views/user/setting/locale/en-US';
 
 import localMessageBox from '@/components/message-box/locale/en-US';
 import localeSettings from './en-US/settings';
+import localCommon from './en-US/common';
 
 export default {
   'menu.dashboard': 'Dashboard',
@@ -45,4 +46,5 @@ export default {
   ...localeMultiDAnalysis,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...localCommon,
 };

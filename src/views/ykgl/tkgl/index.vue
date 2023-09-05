@@ -13,6 +13,35 @@
             <a-row :gutter="16">
               <a-col :span="8">
                 <a-form-item
+                  field="keyWord"
+                  :label="$t('searchTable.form.question.keyWord')"
+                >
+                  <a-input
+                    v-model="formModel.keyWord"
+                    :placeholder="
+                      $t('searchTable.form.question.keyWord.placeholder')
+                    "
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
+                  field="typeId"
+                  :label="$t('groupForm.form.question_typeName')"
+                >
+                  <a-select
+                    v-model="formModel.typeId"
+                    :options="questionnaireOptions"
+                    allow-clear
+                    :field-names="{ value: 'code', label: 'name' }"
+                    :placeholder="
+                      $t('groupForm.form.question_typeName.placeholder')
+                    "
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="8">
+                <a-form-item
                   field="userName"
                   :label="$t('searchTable.form.username')"
                 >
@@ -22,41 +51,6 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="nickName"
-                  :label="$t('searchTable.form.nickname')"
-                >
-                  <a-input
-                    v-model="formModel.nickName"
-                    :placeholder="$t('searchTable.form.nickname.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item
-                  field="email"
-                  :label="$t('searchTable.form.email')"
-                >
-                  <a-input
-                    v-model="formModel.email"
-                    :placeholder="$t('searchTable.form.email.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-
-              <a-col :span="8">
-                <a-form-item
-                  field="phone"
-                  :label="$t('searchTable.form.phone')"
-                >
-                  <a-input
-                    v-model="formModel.phone"
-                    :placeholder="$t('searchTable.form.phone.placeholder')"
-                  />
-                </a-form-item>
-              </a-col>
-
               <a-col :span="8">
                 <a-form-item
                   field="createdTime"
@@ -274,6 +268,22 @@
       status: '',
     };
   };
+
+  const questionnaireOptions = computed(() => [
+    {
+      code: '1',
+      name: '问卷类型1',
+    },
+    {
+      code: '2',
+      name: '问卷类型2',
+    },
+    {
+      code: '3',
+      name: '问卷类型3',
+    },
+  ]);
+
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
 

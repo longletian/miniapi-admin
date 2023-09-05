@@ -30,6 +30,7 @@ import localTkgl from '@/views/ykgl/tkgl/locale/zh-CN';
 import localJcls from '@/views/ykgl/jcls/locale/zh-CN';
 
 import localeSettings from './zh-CN/settings';
+import localCommon from './zh-CN/common';
 
 export default {
   'menu.dashboard': '仪表盘',
@@ -78,4 +79,5 @@ export default {
   ...localWjgl,
   ...localTkgl,
   ...localJcls,
+  ...localCommon,
 };
