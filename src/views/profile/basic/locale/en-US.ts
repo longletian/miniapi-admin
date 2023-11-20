@@ -35,5 +35,5 @@ export default {
   'basicProfile.column.operation': 'Operation',
   'basicProfile.cell.pass': 'Pass',
   'basicProfile.cell.auditing': 'Auditing',
-  'basicProfile.cell.view': 'View',
+  'basicProfile.cell.view': 'View'
 };

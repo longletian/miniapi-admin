@@ -1,3 +1,3 @@
 export default {
-  'menu.ykgl.jcls': 'questionnaire manager',
+  'menu.ykgl.jcls': 'questionnaire manager'
 };

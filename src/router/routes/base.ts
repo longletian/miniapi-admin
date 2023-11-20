@@ -9,7 +9,7 @@ export const REDIRECT_MAIN: RouteRecordRaw = {
   component: DEFAULT_LAYOUT,
   meta: {
     requiresAuth: true,
-    hideInMenu: true,
+    hideInMenu: true
   },
   children: [
     {
@@ -18,8 +18,8 @@ export const REDIRECT_MAIN: RouteRecordRaw = {
       component: () => import('@/views/redirect/index.vue'),
       meta: {
         requiresAuth: false,
-        hideInMenu: true,
-      },
-    },
-  ],
+        hideInMenu: true
+      }
+    }
+  ]
 };

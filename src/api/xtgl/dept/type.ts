@@ -16,3 +16,18 @@ export interface DeptSearchParams extends Partial<DeptListData> {
   page: number;
   pageSize: number;
 }
+
+export interface DeptTreeSeachDto {
+  status?: number;
+  parentId?: number;
+  unitName?: string;
+}
+
+export interface AddDeptInput {
+  unitName: string;
+  parentId?: number;
+  sortNum?: number;
+  description?: string;
+  unitTypeId?: number;
+  status?: number;
+}

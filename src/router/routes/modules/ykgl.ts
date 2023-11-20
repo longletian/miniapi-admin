@@ -9,7 +9,7 @@ const XTGL: AppRouteRecordRaw = {
     locale: 'menu.ykgl',
     requiresAuth: true,
     icon: 'icon-file',
-    order: 1,
+    order: 3
   },
   children: [
     {
@@ -18,9 +18,9 @@ const XTGL: AppRouteRecordRaw = {
       component: () => import('@/views/ykgl/wjgl/index.vue'),
       meta: {
         locale: 'menu.ykgl.wjgl',
-        requiresAuth: false,
+        requiresAuth: false
         // roles: ['*'],
-      },
+      }
     },
     {
       path: 'tkgl',
@@ -28,9 +28,9 @@ const XTGL: AppRouteRecordRaw = {
       component: () => import('@/views/ykgl/tkgl/index.vue'),
       meta: {
         locale: 'menu.ykgl.tkgl',
-        requiresAuth: false,
+        requiresAuth: false
         // roles: ['*'],
-      },
+      }
     },
     {
       path: 'jcls',
@@ -38,10 +38,10 @@ const XTGL: AppRouteRecordRaw = {
       component: () => import('@/views/ykgl/jcls/index.vue'),
       meta: {
         locale: 'menu.ykgl.jcls',
-        requiresAuth: false,
+        requiresAuth: false
         // roles: ['*'],
-      },
-    },
-  ],
+      }
+    }
+  ]
 };
 export default XTGL;

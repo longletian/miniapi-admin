@@ -132,6 +132,9 @@
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
 
+  import useCommonStore from '@/store/modules/xtgl/common/common';
+  import useDeptStore from '@/store/modules/xtgl/dept/dept';
+
   const { t } = useI18n();
 
   const formData = reactive({
@@ -145,65 +148,16 @@
   });
   const formRef = ref<FormInstance>();
   const { loading, setLoading } = useLoading();
-  const treeData = [
-    {
-      label: '旺旺集团',
-      value: '0',
-      items: [
-        {
-          label: '旺旺集团-开发部',
-          value: '0-0-2',
-          items: [
-            {
-              label: '旺旺集团-开发部-后台',
-              value: '0-0-2-1',
-            },
-          ],
-        },
-        {
-          label: '旺旺集团-销售部',
-          value: '0-1',
-          items: [
-            {
-              label: '旺旺集团-销售部-售前',
-              value: '0-1-1',
-              items: [
-                {
-                  label: 'Leaf',
-                  value: '0-1-1-0',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ];
 
-  const unitTypeOptions = computed(() => {
-    return [
-      {
-        code: 'beijing',
-        name: 'Beijing',
-        other: 'extra',
-      },
-      {
-        code: 'shanghai',
-        name: 'Shanghai',
-        other: 'extra',
-      },
-      {
-        code: 'guangzhou',
-        name: 'Guangzhou',
-        other: 'extra',
-      },
-      {
-        code: 'chengdu',
-        name: 'Chengdu',
-        other: 'extra',
-      },
-    ];
+  const treeData = computed(() => useDeptStore);
+
+  const commonStore = useCommonStore();
+
+  onMounted(() => {
+    commonStore.getDictListData('Unit_Type');
   });
+
+  const unitTypeOptions = computed(() => commonStore.dictTypeList);
 
   const onConfirm = async () => {
     const res = await formRef.value?.validate();

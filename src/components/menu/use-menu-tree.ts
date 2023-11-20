@@ -64,6 +64,6 @@ export default function useMenuTree() {
   });
 
   return {
-    menuTree,
+    menuTree
   };
 }

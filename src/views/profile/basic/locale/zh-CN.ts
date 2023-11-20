@@ -35,5 +35,5 @@ export default {
   'basicProfile.column.operation': '操作',
   'basicProfile.cell.pass': '已通过',
   'basicProfile.cell.auditing': '审核中',
-  'basicProfile.cell.view': '查看',
+  'basicProfile.cell.view': '查看'
 };

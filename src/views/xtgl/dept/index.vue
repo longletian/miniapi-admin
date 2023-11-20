@@ -11,7 +11,7 @@
             label-align="left"
           >
             <a-row :gutter="16">
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
                   field="keyWord"
                   :label="$t('searchTable.form.keyWord')"
@@ -22,7 +22,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item
                   field="status"
                   :label="$t('searchTable.form.status')"
@@ -37,7 +37,6 @@
             </a-row>
           </a-form>
         </a-col>
-        <a-divider style="height: 84px" direction="vertical" />
         <a-col :flex="'86px'" style="text-align: right">
           <a-space direction="vertical" :size="18">
             <a-button type="primary" @click="search">
@@ -45,12 +44,6 @@
                 <icon-search />
               </template>
               {{ $t('searchTable.form.search') }}
-            </a-button>
-            <a-button @click="reset">
-              <template #icon>
-                <icon-refresh />
-              </template>
-              {{ $t('searchTable.form.reset') }}
             </a-button>
           </a-space>
         </a-col>
@@ -138,103 +131,108 @@
     watch,
     nextTick,
     getCurrentInstance,
+    onMounted
   } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
     TableColumnData,
-    TableRowSelection,
+    TableRowSelection
   } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
   import useLoading from '@/hooks/loading';
+  import useXtglStore from '@/store/modules/xtgl/index';
+  import { PageReturnData, Pagination } from '@/types/global';
   import { DeptSearchParams, DeptListData } from '../../../api/xtgl/dept/type';
-  import { getPageDeptListData } from '../../../api/xtgl/dept/dept';
   import addDept from './components/add.vue';
   import editDept from './components/edit.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
+  const useDeptStore = useXtglStore.useDeptStore();
 
   const generateFormModel = () => {
     return {
       keyWord: '',
       parentId: undefined,
       createTime: [],
-      status: '',
+      status: ''
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
-  const renderData = ref<DeptListData[]>([]);
+
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
 
   const size = ref<SizeProps>('medium');
 
-  const basePagination: DeptSearchParams = {
+  const basePagination: Pagination = {
     page: 1,
-    pageSize: 20,
+    pageSize: 20
   };
   const pagination = reactive({
-    ...basePagination,
+    ...basePagination
   });
 
   const columns = computed<TableColumnData[]>(() => [
     {
       title: t('searchTable.columns.unitName'),
-      dataIndex: 'unitName',
+      dataIndex: 'unitName'
     },
     {
       title: t('searchTable.columns.unitTypeId'),
-      dataIndex: 'unitTypeId',
+      dataIndex: 'unitTypeId'
     },
     {
       title: t('searchTable.columns.sortNum'),
-      dataIndex: 'sortNum',
+      dataIndex: 'sortNum'
     },
     {
       title: t('searchTable.columns.createTime'),
-      dataIndex: 'createTime',
+      dataIndex: 'createTime'
     },
     {
       title: t('searchTable.columns.createUser'),
-      dataIndex: 'createUser',
+      dataIndex: 'createUser'
     },
     {
       title: t('searchTable.columns.status'),
       dataIndex: 'status',
-      slotName: 'status',
+      slotName: 'status'
     },
     {
       title: t('searchTable.columns.operations'),
       dataIndex: 'operations',
-      slotName: 'operations',
-    },
+      slotName: 'operations'
+    }
   ]);
 
   const rowSelection: TableRowSelection = {
     type: 'checkbox',
     showCheckedAll: true,
-    onlyCurrent: false,
+    onlyCurrent: false
   };
+
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
       label: t('searchTable.form.status.0'),
-      value: '正常',
+      value: '正常'
     },
     {
       label: t('searchTable.form.status.1'),
-      value: '停用',
-    },
+      value: '停用'
+    }
   ]);
-  const fetchData = async (
-    params: DeptSearchParams = { page: 1, pageSize: 20 }
-  ) => {
+
+  const renderData = ref<DeptListData[]>([]);
+  const fetchData = () => {
     setLoading(true);
     try {
-      const { data } = await getPageDeptListData(params);
+      const data = useDeptStore.getPageDeptListData(pagination);
+      console.log(`获取列表数据${JSON.stringify(data)}`);
       renderData.value = data.items;
       pagination.page = data.currentPage;
       pagination.pageSize = data.totalCount;
@@ -244,27 +242,28 @@
       setLoading(false);
     }
   };
+
+  // fetchData();
+
+  onMounted(() => {
+    console.log(`请求参数${JSON.stringify(pagination)}`);
+    useDeptStore.getPageDeptListData(pagination);
+  });
   fetchData();
   const search = () => {
-    fetchData({
+    useDeptStore.getPageDeptListData({
       ...pagination,
-      ...formModel.value,
+      ...formModel.value
     } as unknown as DeptSearchParams);
   };
+
   const onPageChange = (current: number) => {
-    basePagination.page = current;
+    pagination.page = current;
     search();
   };
 
-  const reset = () => {
+  const onCancle = () => {
     formModel.value = generateFormModel();
-  };
-
-  const handleSelectDensity = (
-    val: string | number | Record<string, any> | undefined,
-    e: Event
-  ) => {
-    size.value = val as SizeProps;
   };
 
   const handleChange = (
@@ -308,7 +307,7 @@
             const { oldIndex, newIndex } = e;
             exchangeArray(cloneColumns.value, oldIndex, newIndex);
             exchangeArray(showColumns.value, oldIndex, newIndex);
-          },
+          }
         });
       });
     }
@@ -335,6 +334,13 @@
         currentInstance?.ctx.$refs.editDeptRef.onHandleOpen();
       }
     }
+  };
+</script>
+
+<script lang="ts">
+  export default {
+    mounted: () => {},
+    methods: {}
   };
 </script>
 

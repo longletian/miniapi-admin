@@ -9,7 +9,7 @@ const XTGL: AppRouteRecordRaw = {
     locale: 'menu.cggl',
     requiresAuth: true,
     icon: 'icon-settings',
-    order: 2,
+    order: 2
   },
   children: [
     {
@@ -19,8 +19,8 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.cggl.grzl',
         requiresAuth: true,
-        roles: ['*'],
-      },
+        roles: ['*']
+      }
     },
     {
       path: 'xtpz',
@@ -29,8 +29,8 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.cggl.xtpz',
         requiresAuth: true,
-        roles: ['*'],
-      },
+        roles: ['*']
+      }
     },
     {
       path: 'attachment',
@@ -39,9 +39,9 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.cggl.attachment',
         requiresAuth: true,
-        roles: ['*'],
-      },
-    },
-  ],
+        roles: ['*']
+      }
+    }
+  ]
 };
 export default XTGL;

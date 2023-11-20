@@ -198,7 +198,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, onMounted } from 'vue';
+  import { ref, reactive, onMounted, computed } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
@@ -220,34 +220,40 @@
     sortNum: undefined,
     status: undefined,
     roleIds: [],
-    postIds: [],
+    postIds: []
   });
   const formRef = ref<FormInstance>();
   const { loading, setLoading } = useLoading();
   const options = [
     {
       code: '1',
-      name: '角色1',
+      name: '角色1'
     },
     {
       code: '2',
-      name: '角色2',
-    },
+      name: '角色2'
+    }
   ];
+
+  //  const topMenu = computed(() => appStore.topMenu);
+
+  // const roleOptions = computed(() => {});
+
+  // const postOptions = computed(() => {});
 
   const genderOptions = [
     {
       code: 0,
-      name: t('groupForm.form.gender.0'),
+      name: t('groupForm.form.gender.0')
     },
     {
       code: 1,
-      name: t('groupForm.form.gender.1'),
+      name: t('groupForm.form.gender.1')
     },
     {
       code: 2,
-      name: t('groupForm.form.gender.2'),
-    },
+      name: t('groupForm.form.gender.2')
+    }
   ];
 
   const onConfirm = async () => {

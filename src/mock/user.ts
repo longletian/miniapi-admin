@@ -1,7 +1,7 @@
 import Mock from 'mockjs';
 import setupMock, {
   successResponseWrap,
-  failResponseWrap,
+  failResponseWrap
 } from '@/utils/setup-mock';
 
 import { MockParams } from '@/types/mock';
@@ -97,5 +97,5 @@ setupMock({
     //   ];
     //   return successResponseWrap(menuList);
     // });
-  },
+  }
 });

@@ -11,5 +11,5 @@ export default {
   'userInfo.viewAll': 'View All',
   'userInfo.nodata': 'No Data',
   'userInfo.visits.unit': 'times',
-  'userInfo.visits.lastMonth': 'Last Month',
+  'userInfo.visits.lastMonth': 'Last Month'
 };

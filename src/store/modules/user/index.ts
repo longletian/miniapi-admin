@@ -9,11 +9,11 @@ import { LoginData } from '../../../api/xtgl/user/type';
 
 const useUserStore = defineStore('user', {
   state: () => ({
-    userInfoData: null as UserInfo | null,
+    userInfoData: null as UserInfo | null
   }),
 
   getters: {
-    getUserInfo: (state) => state.userInfoData,
+    getUserInfo: (state) => state.userInfoData
   },
 
   actions: {
@@ -50,8 +50,8 @@ const useUserStore = defineStore('user', {
       clearToken();
       removeRouteListener();
       appStore.clearServerMenu();
-    },
-  },
+    }
+  }
 
   // actions: {
   //   switchRoles() {

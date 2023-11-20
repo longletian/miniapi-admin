@@ -9,8 +9,8 @@ const SJKSH: AppRouteRecordRaw = {
     locale: 'menu.sjksh',
     requiresAuth: true,
     icon: 'icon-apps',
-    order: 3,
-  },
+    order: 3
+  }
   // children: [
   //   {
   //     path: 'index',

@@ -12,7 +12,7 @@ export default mergeConfig(
       configCompressPlugin('gzip'),
       configVisualizerPlugin(),
       configArcoResolverPlugin(),
-      configImageminPlugin(),
+      configImageminPlugin()
     ],
     build: {
       rollupOptions: {
@@ -20,12 +20,12 @@ export default mergeConfig(
           manualChunks: {
             arco: ['@arco-design/web-vue'],
             chart: ['echarts', 'vue-echarts'],
-            vue: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'vue-i18n'],
-          },
-        },
+            vue: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'vue-i18n']
+          }
+        }
       },
-      chunkSizeWarningLimit: 2000,
-    },
+      chunkSizeWarningLimit: 2000
+    }
   },
   baseConfig
 );

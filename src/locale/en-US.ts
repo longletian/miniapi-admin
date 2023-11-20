@@ -46,5 +46,5 @@ export default {
   ...localeMultiDAnalysis,
   ...localeUserInfo,
   ...localeUserSetting,
-  ...localCommon,
+  ...localCommon
 };

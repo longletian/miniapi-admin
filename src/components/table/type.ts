@@ -1,7 +1,7 @@
 import {
   TableColumnData,
   TableData,
-  TableRowSelection,
+  TableRowSelection
 } from '@arco-design/web-vue/es/table/interface';
 
 export interface TableDataDto {

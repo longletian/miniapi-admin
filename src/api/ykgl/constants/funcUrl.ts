@@ -3,14 +3,14 @@ const BASE = {
   DELETE: '_delete',
   EDIT: '_edit',
   INFO: '_info',
-  LIST: '_list',
+  LIST: '_list'
 };
 
 const WJGL = {
-  ROOT: 'questionnaire',
+  ROOT: 'questionnaire'
 };
 
 const TKGL = {
-  ROOT: 'question',
+  ROOT: 'question'
 };
 export { BASE, WJGL, TKGL };

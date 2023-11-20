@@ -1,5 +1,5 @@
 export default {
-  'menu.ykgl.jcls': '记录历史',
+  'menu.ykgl.jcls': '历史记录',
 
   'searchTable.columns.name': '问卷名称',
   'searchTable.columns.typeName': '问卷类型',
@@ -9,5 +9,5 @@ export default {
   'searchTable.columns.isPublished': '是否发布',
   'searchTable.columns.createTime': '创建时间',
   'searchTable.columns.operations': '操作',
-  'searchTable.columns.createUser': '创建人',
+  'searchTable.columns.createUser': '创建人'
 };

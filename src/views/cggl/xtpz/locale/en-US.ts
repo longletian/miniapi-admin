@@ -1,3 +1,3 @@
 export default {
-  'menu.cggl.attachment': 'Attachment Manage',
+  'menu.cggl.attachment': 'Attachment Manage'
 };

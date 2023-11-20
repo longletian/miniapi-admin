@@ -9,7 +9,7 @@ const XTGL: AppRouteRecordRaw = {
     locale: 'menu.xtgl',
     requiresAuth: true,
     icon: 'icon-file',
-    order: 1,
+    order: 1
   },
   children: [
     {
@@ -18,9 +18,9 @@ const XTGL: AppRouteRecordRaw = {
       component: () => import('@/views/xtgl/user/index.vue'),
       meta: {
         locale: 'menu.xtgl.user',
-        requiresAuth: false,
+        requiresAuth: false
         // roles: ['*'],
-      },
+      }
     },
     {
       path: 'role',
@@ -29,8 +29,8 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.xtgl.role',
         requiresAuth: true,
-        roles: ['*'],
-      },
+        roles: ['*']
+      }
     },
     {
       path: 'menu',
@@ -39,8 +39,8 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.xtgl.menu',
         requiresAuth: true,
-        roles: ['*'],
-      },
+        roles: ['*']
+      }
     },
     {
       path: 'dept',
@@ -49,8 +49,8 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.xtgl.dept',
         requiresAuth: true,
-        roles: ['*'],
-      },
+        roles: ['*']
+      }
     },
     // {
     //   path: 'post',
@@ -69,8 +69,8 @@ const XTGL: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.xtgl.dict',
         requiresAuth: true,
-        roles: ['*'],
-      },
+        roles: ['*']
+      }
     },
     {
       path: 'log',
@@ -78,7 +78,7 @@ const XTGL: AppRouteRecordRaw = {
       component: '',
       meta: {
         locale: 'menu.xtgl.log',
-        requiresAuth: true,
+        requiresAuth: true
       },
       children: [
         {
@@ -88,8 +88,8 @@ const XTGL: AppRouteRecordRaw = {
           meta: {
             locale: 'menu.xtgl.log.action',
             requiresAuth: true,
-            roles: ['*'],
-          },
+            roles: ['*']
+          }
         },
         {
           path: 'loginlog',
@@ -98,11 +98,11 @@ const XTGL: AppRouteRecordRaw = {
           meta: {
             locale: 'menu.xtgl.log.loginlog',
             requiresAuth: true,
-            roles: ['*'],
-          },
-        },
-      ],
-    },
-  ],
+            roles: ['*']
+          }
+        }
+      ]
+    }
+  ]
 };
 export default XTGL;

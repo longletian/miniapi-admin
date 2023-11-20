@@ -36,3 +36,20 @@ export interface DictTypeSearchParams extends Partial<DictTypeListDataDto> {
   page: number;
   pageSize: number;
 }
+
+export interface AddDictTypeInput {
+  dictCode: string;
+  dictName: string;
+  description: string;
+  sortNum: number;
+  status: number;
+}
+
+export interface AddDictInput {
+  dictTypeCode: string;
+  dictValue: string;
+  dictText: string;
+  description: string;
+  sortNum: number;
+  status: number;
+}

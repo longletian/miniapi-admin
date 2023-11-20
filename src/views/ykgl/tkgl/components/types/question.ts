@@ -17,3 +17,23 @@ export interface QuestionAddDto {
   attachmentFiles: [];
   questionAnswerDtos: Array<QuestionAnswerDtos>;
 }
+
+export interface QuestionAnswerInfoDto {
+  id?: number;
+  answerCode?: string;
+  answerContent?: string;
+  isRightResult?: boolean;
+  dzjx?: string;
+}
+
+export interface QuestionInfoDto {
+  id: number;
+  name?: string;
+  typeId?: number;
+  typeName?: string;
+  questionScore?: number;
+  categoryTypeId?: number;
+  categoryTypeName?: string;
+  ztjx?: string;
+  questionAnswerInfoDtos?: Array<QuestionAnswerInfoDto>;
+}

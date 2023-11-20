@@ -34,7 +34,7 @@
         :field-names="{
           key: 'value',
           title: 'label',
-          children: 'items',
+          children: 'items'
         }"
         :default-value="treeData[0]"
         :model-value="from.unitId"
@@ -53,7 +53,7 @@
   const empty = ref();
   const from = reactive({
     unitId: undefined,
-    unitName: '',
+    unitName: ''
   });
   const keyWord = ref();
   const treeData = [
@@ -67,9 +67,9 @@
           items: [
             {
               label: '旺旺集团-开发部-后台',
-              value: '0-0-2-1',
-            },
-          ],
+              value: '0-0-2-1'
+            }
+          ]
         },
         {
           label: '旺旺集团-销售部',
@@ -81,14 +81,14 @@
               items: [
                 {
                   label: 'Leaf',
-                  value: '0-1-1-0',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
+                  value: '0-1-1-0'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ];
 
   const onSearch = () => {};
@@ -103,7 +103,7 @@
   };
 
   defineExpose({
-    onHandleOpen,
+    onHandleOpen
   });
 </script>
 

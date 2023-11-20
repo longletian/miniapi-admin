@@ -14,5 +14,5 @@ export default {
     'Content Consumption Trends',
   'multiDAnalysis.card.title.contentConsumption': 'Content Consumption',
   'multiDAnalysis.card.title.contentPublishingSource':
-    'Content Publishing Source',
+    'Content Publishing Source'
 };

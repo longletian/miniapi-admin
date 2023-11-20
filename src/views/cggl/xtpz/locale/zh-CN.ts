@@ -1,3 +1,3 @@
 export default {
-  'menu.cggl.xtpz': '系统配置',
+  'menu.cggl.xtpz': '系统配置'
 };

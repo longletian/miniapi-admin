@@ -7,7 +7,7 @@ import {
   TooltipComponent,
   LegendComponent,
   DataZoomComponent,
-  GraphicComponent,
+  GraphicComponent
 } from 'echarts/components';
 import Chart from './chart/index.vue';
 import Breadcrumb from './breadcrumb/index.vue';
@@ -24,7 +24,7 @@ use([
   TooltipComponent,
   LegendComponent,
   DataZoomComponent,
-  GraphicComponent,
+  GraphicComponent
 ]);
 
 export default {
@@ -32,5 +32,5 @@ export default {
     Vue.component('Chart', Chart);
     Vue.component('Breadcrumb', Breadcrumb);
     Vue.component('YModal', YModal);
-  },
+  }
 };

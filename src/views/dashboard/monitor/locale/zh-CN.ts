@@ -44,5 +44,5 @@ export default {
   'monitor.studioStatus.play': '播放格式',
   'monitor.studioStatus.pictureQuality': '画质',
   'monitor.studioPreview.studio': '直播间',
-  'monitor.studioPreview.watching': '在看',
+  'monitor.studioPreview.watching': '在看'
 };

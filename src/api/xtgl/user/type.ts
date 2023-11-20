@@ -1,7 +1,7 @@
 export enum AccountRegirstType {
   None = 0,
   EMAIL = 1,
-  TELEPHONE = 2,
+  TELEPHONE = 2
 }
 
 // 验证码

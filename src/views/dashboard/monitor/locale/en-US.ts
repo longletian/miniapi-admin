@@ -44,5 +44,5 @@ export default {
   'monitor.studioStatus.play': 'Format',
   'monitor.studioStatus.pictureQuality': 'Quality',
   'monitor.studioPreview.studio': 'Studio',
-  'monitor.studioPreview.watching': 'watching',
+  'monitor.studioPreview.watching': 'watching'
 };

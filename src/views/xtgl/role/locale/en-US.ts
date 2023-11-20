@@ -40,5 +40,5 @@ export default {
   // actions
   'searchTable.actions.refresh': 'refresh',
   'searchTable.actions.density': 'density',
-  'searchTable.actions.columnSetting': 'columnSetting',
+  'searchTable.actions.columnSetting': 'columnSetting'
 };

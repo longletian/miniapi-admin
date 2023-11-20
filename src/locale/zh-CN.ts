@@ -79,5 +79,5 @@ export default {
   ...localWjgl,
   ...localTkgl,
   ...localJcls,
-  ...localCommon,
+  ...localCommon
 };

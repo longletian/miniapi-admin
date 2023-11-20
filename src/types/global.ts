@@ -36,8 +36,15 @@ export interface GeneralChart {
   data: Array<{ name: string; value: number[] }>;
 }
 
-export interface ResponseData {
+export interface ResponseData<T = unknown> {
   msgCode: string;
   msgMessage: string;
-  data: any;
+  data: T;
+}
+
+export interface PageReturnData {
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  items?: any;
 }

@@ -87,5 +87,5 @@ export default {
   'userSetting.certification.columns.time': 'Time',
   'userSetting.certification.columns.operation': 'Operation',
   'userSetting.certification.button.check': 'Check',
-  'userSetting.certification.button.withdraw': 'Withdraw',
+  'userSetting.certification.button.withdraw': 'Withdraw'
 };

@@ -12,9 +12,9 @@
                 <a-tree-select
                   :placeholder="$t('groupForm.form.parentId.placeholder')"
                   :field-names="{
-                    key: 'value',
-                    title: 'label',
-                    children: 'items',
+                    key: 'id',
+                    title: 'unitName',
+                    children: 'children',
                   }"
                   :label-in-value="true"
                   :data="treeData"
@@ -127,14 +127,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, onMounted, computed } from 'vue';
+  import { ref, reactive, onMounted, computed, onBeforeMount } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
+  import { DeptTreeSeachDto, AddDeptInput } from '@/api/xtgl/dept/type';
+  import useXtglStore from '@/store/modules/xtgl/index';
 
   const { t } = useI18n();
 
-  const formData = reactive({
+  const formData = reactive<AddDeptInput>({
     parentId: undefined,
     unitTypeId: undefined,
     unitName: '',
@@ -142,76 +144,27 @@
     sortNum: undefined,
     status: undefined,
   });
+
+  const useCommonStore = useXtglStore.useCommonStore();
+  const useDeptStore = useXtglStore.useDeptStore();
+
   const formRef = ref<FormInstance>();
   const { loading, setLoading } = useLoading();
-  const treeData = [
-    {
-      label: '旺旺集团',
-      value: '0',
-      items: [
-        {
-          label: '旺旺集团-开发部',
-          value: '0-0-2',
-          items: [
-            {
-              label: '旺旺集团-开发部-后台',
-              value: '0-0-2-1',
-            },
-          ],
-        },
-        {
-          label: '旺旺集团-销售部',
-          value: '0-1',
-          items: [
-            {
-              label: '旺旺集团-销售部-售前',
-              value: '0-1-1',
-              items: [
-                {
-                  label: 'Leaf',
-                  value: '0-1-1-0',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  const deptTreeSeachDto: DeptTreeSeachDto = {};
 
-  const unitTypeOptions = computed(() => {
-    return [
-      {
-        code: 'beijing',
-        name: 'Beijing',
-        other: 'extra',
-      },
-      {
-        code: 'shanghai',
-        name: 'Shanghai',
-        other: 'extra',
-      },
-      {
-        code: 'guangzhou',
-        name: 'Guangzhou',
-        other: 'extra',
-      },
-      {
-        code: 'chengdu',
-        name: 'Chengdu',
-        other: 'extra',
-      },
-    ];
+  onMounted(() => {
+    useDeptStore.getDeptTreeData(deptTreeSeachDto);
+
+    useCommonStore.getDictListData('Unit_Type');
   });
 
+  const treeData = computed(() => useDeptStore.treeInfo);
+
+  const unitTypeOptions = computed(() => useCommonStore.getDictList);
+
   const onConfirm = async () => {
-    const res = await formRef.value?.validate();
-    if (!res) {
-      setLoading(true);
-    }
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    const res = await useDeptStore.postDeptData(formData);
+    console.log(`添加部门${res.data}`);
   };
 
   const yModal = ref();

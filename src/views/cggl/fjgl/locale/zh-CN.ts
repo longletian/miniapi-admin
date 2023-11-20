@@ -19,5 +19,5 @@ export default {
   'searchTable.columns.createTime': '创建时间',
   'searchTable.columns.createUser': '创建人',
   'searchTable.columns.status': '状态',
-  'searchTable.columns.filePath': '链接',
+  'searchTable.columns.filePath': '链接'
 };

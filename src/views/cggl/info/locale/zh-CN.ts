@@ -12,5 +12,5 @@ export default {
   'userInfo.viewAll': '查看全部',
   'userInfo.nodata': '暂无数据',
   'userInfo.visits.unit': '人次',
-  'userInfo.visits.lastMonth': '较上月',
+  'userInfo.visits.lastMonth': '较上月'
 };

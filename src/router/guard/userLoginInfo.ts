@@ -19,8 +19,8 @@ export default function setupUserLoginInfoGuard(router: Router) {
           name: 'login',
           query: {
             redirect: to.name,
-            ...to.query,
-          } as LocationQueryRaw,
+            ...to.query
+          } as LocationQueryRaw
         });
       }
     } else {
@@ -31,8 +31,8 @@ export default function setupUserLoginInfoGuard(router: Router) {
         name: 'login',
         query: {
           redirect: to.name,
-          ...to.query,
-        } as LocationQueryRaw,
+          ...to.query
+        } as LocationQueryRaw
       });
     }
   });

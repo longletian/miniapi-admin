@@ -39,5 +39,5 @@ export default {
   'groupForm.form.answer.nrjx': '答案解析',
   'groupForm.form.answer.nrjx.placeholder': '答案解析',
   'groupForm.form.answer.sfwda': '是否为答案',
-  'groupForm.form.answer.action': '操作',
+  'groupForm.form.answer.action': '操作'
 };

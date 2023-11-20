@@ -2,6 +2,7 @@ export default {
   'menu.ykgl.wjgl': '问卷管理',
   'menu.ykgl.wjgl.add': '新增问卷',
   'menu.ykgl.wjgl.edit': '编辑问卷',
+  'menu.ykgl.wjgl.check-question': '配置问卷',
 
   'searchTable.form.username': '创建人',
   'searchTable.form.username.placeholder': '创建人',
@@ -31,6 +32,9 @@ export default {
   'groupForm.form.isRandomGenerate.1': '随机组卷',
   'groupForm.form.isRandomGenerate.0': '自定义组卷',
 
+  'groupForm.form.btn.next': '下一步',
+  'groupForm.form.btn.add.question': '新增题目',
+
   'groupForm.form.isPublished.1': '是',
-  'groupForm.form.isPublished.0': '否',
+  'groupForm.form.isPublished.0': '否'
 };

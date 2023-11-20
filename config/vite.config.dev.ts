@@ -8,16 +8,16 @@ export default mergeConfig(
     server: {
       open: true,
       fs: {
-        strict: true,
-      },
+        strict: true
+      }
     },
     plugins: [
       eslint({
         cache: false,
         include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue'],
-        exclude: ['node_modules'],
-      }),
-    ],
+        exclude: ['node_modules']
+      })
+    ]
   },
   baseConfig
 );

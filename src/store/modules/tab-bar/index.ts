@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import {
   DEFAULT_ROUTE,
   DEFAULT_ROUTE_NAME,
-  REDIRECT_ROUTE_NAME,
+  REDIRECT_ROUTE_NAME
 } from '@/router/constants';
 import { isString } from '@/utils/is';
 import { TabBarState, TagProps } from './types';
@@ -15,7 +15,7 @@ const formatTag = (route: RouteLocationNormalized): TagProps => {
     name: String(name),
     fullPath,
     query,
-    ignoreCache: meta.ignoreCache,
+    ignoreCache: meta.ignoreCache
   };
 };
 
@@ -24,7 +24,7 @@ const BAN_LIST = [REDIRECT_ROUTE_NAME];
 const useAppStore = defineStore('tabBar', {
   state: (): TabBarState => ({
     cacheTabList: new Set([DEFAULT_ROUTE_NAME]),
-    tagList: [DEFAULT_ROUTE],
+    tagList: [DEFAULT_ROUTE]
   }),
 
   getters: {
@@ -33,7 +33,7 @@ const useAppStore = defineStore('tabBar', {
     },
     getCacheList(): string[] {
       return Array.from(this.cacheTabList);
-    },
+    }
   },
 
   actions: {
@@ -67,8 +67,8 @@ const useAppStore = defineStore('tabBar', {
       this.tagList = [DEFAULT_ROUTE];
       this.cacheTabList.clear();
       this.cacheTabList.add(DEFAULT_ROUTE_NAME);
-    },
-  },
+    }
+  }
 });
 
 export default useAppStore;

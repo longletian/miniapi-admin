@@ -3,12 +3,7 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Message, Modal } from '@arco-design/web-vue';
 // import { useUserStore } from '@/store';
 import { getToken } from '@/utils/auth';
-
-export interface HttpResponse<T = unknown> {
-  msgCode: string;
-  msgMessage: string;
-  data: T;
-}
+import { ResponseData } from '@/types/global';
 
 let baseUrl = '';
 if (import.meta.env.VITE_API_BASE_URL) {
@@ -20,8 +15,8 @@ const request = axios.create({
   baseURL: baseUrl,
   timeout: 5000,
   headers: {
-    'Access-Control-Allow-Origin': '*',
-  },
+    'Access-Control-Allow-Origin': '*'
+  }
 });
 
 // 添加请求拦截器
@@ -47,7 +42,7 @@ request.interceptors.request.use(
 );
 // 响应拦截器
 request.interceptors.response.use(
-  (response: AxiosResponse<HttpResponse>) => {
+  (response: AxiosResponse<ResponseData>) => {
     // debugger;
     const res = response.data;
     console.log(res);
@@ -88,7 +83,7 @@ request.interceptors.response.use(
     // const { status } = error.response;
     Message.error({
       content: msg || 'Request Error',
-      duration: 5 * 1000,
+      duration: 5 * 1000
     });
     return Promise.reject(error);
   }

@@ -63,5 +63,5 @@ export default {
   // actions
   'searchTable.actions.refresh': '刷新',
   'searchTable.actions.density': '密度',
-  'searchTable.actions.columnSetting': '列设置',
+  'searchTable.actions.columnSetting': '列设置'
 };

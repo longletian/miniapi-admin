@@ -13,15 +13,15 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login',
+      redirect: '/login'
     },
     {
       path: '/login',
       name: 'login',
       component: () => import('@/views/xtgl/login/index.vue'),
       meta: {
-        requiresAuth: false,
-      },
+        requiresAuth: false
+      }
     },
     // {
     //   path: '/404',
@@ -34,11 +34,11 @@ const router = createRouter({
     //   name: 'any',
     // },
     ...appRoutes,
-    REDIRECT_MAIN,
+    REDIRECT_MAIN
   ],
   scrollBehavior() {
     return { top: 0 };
-  },
+  }
 });
 
 createRouteGuard(router);

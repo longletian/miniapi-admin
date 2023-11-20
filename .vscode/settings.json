@@ -1,6 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "tslint.typeCheck": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
@@ -35,5 +34,5 @@
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "vue.codeActions.enabled": false
+  "prettier.endOfLine": "crlf",
 }

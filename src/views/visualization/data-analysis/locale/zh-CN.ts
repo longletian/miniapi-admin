@@ -12,5 +12,5 @@ export default {
   'dataAnalysis.popularAuthor.column.author': '作者',
   'dataAnalysis.popularAuthor.column.content': '内容量',
   'dataAnalysis.popularAuthor.column.click': '点击量',
-  'dataAnalysis.contentPeriodAnalysis': '内容时段分析',
+  'dataAnalysis.contentPeriodAnalysis': '内容时段分析'
 };

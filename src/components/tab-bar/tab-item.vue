@@ -70,7 +70,7 @@
     left = 'left',
     right = 'right',
     others = 'others',
-    all = 'all',
+    all = 'all'
   }
 
   const props = defineProps({
@@ -78,12 +78,12 @@
       type: Object as PropType<TagProps>,
       default() {
         return [];
-      },
+      }
     },
     index: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   });
 
   const router = useRouter();
@@ -156,8 +156,8 @@
       await router.push({
         name: REDIRECT_ROUTE_NAME,
         params: {
-          path: route.fullPath,
-        },
+          path: route.fullPath
+        }
       });
       tabBarStore.addCache(itemData.name);
     } else {

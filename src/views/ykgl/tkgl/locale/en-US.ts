@@ -1,3 +1,3 @@
 export default {
-  'menu.ykgl.tkgl': 'question manager',
+  'menu.ykgl.tkgl': 'question manager'
 };
