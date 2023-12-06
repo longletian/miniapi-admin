@@ -157,7 +157,7 @@
       keyWord: '',
       parentId: undefined,
       createTime: [],
-      status: ''
+      status: undefined
     };
   };
   const { loading, setLoading } = useLoading(true);
@@ -246,10 +246,9 @@
   // fetchData();
 
   onMounted(() => {
-    console.log(`请求参数${JSON.stringify(pagination)}`);
-    useDeptStore.getPageDeptListData(pagination);
+    // console.log(`请求参数${JSON.stringify(pagination)}`);
+    // useDeptStore.getPageDeptListData(pagination);
   });
-  fetchData();
   const search = () => {
     useDeptStore.getPageDeptListData({
       ...pagination,
