@@ -1,5 +1,4 @@
 module.exports = {
-  // tabWidth: 2,
   semi: true,
   singleQuote: true,
   quoteProps: 'consistent',
@@ -9,13 +8,4 @@ module.exports = {
   arrowParens: 'always',
   tabWidth: 2,
   endOfLine: 'auto'
-  // overrides: [
-  //   {
-  //     files: '*.vue',
-  //     options: {
-  //       parser: 'vue',
-  //       printWidth: 300
-  //     }
-  //   }
-  // ]
 };

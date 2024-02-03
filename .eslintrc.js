@@ -8,18 +8,20 @@ module.exports = {
   parserOptions: {
     // Parser that checks the content of the <script> tag
     parser: '@typescript-eslint/parser',
+    // parser: 'babel-eslint',
     sourceType: 'module',
     ecmaVersion: 2020,
     ecmaFeatures: {
-      jsx: true,
-    },
+      jsx: true
+    }
   },
   env: {
     'browser': true,
     'node': true,
-    'vue/setup-compiler-macros': true,
+    'es6': true,
+    'vue/setup-compiler-macros': true
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['vue', '@typescript-eslint'],
   extends: [
     // Airbnb JavaScript Style Guide https://github.com/airbnb/javascript
     'airbnb-base',
@@ -27,17 +29,17 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:vue/vue3-recommended',
-    'plugin:prettier/recommended',
+    'plugin:prettier/recommended'
   ],
   settings: {
     'import/resolver': {
       typescript: {
-        project: path.resolve(__dirname, './tsconfig.json'),
-      },
-    },
+        project: path.resolve(__dirname, './tsconfig.json')
+      }
+    }
   },
   rules: {
-    'prettier/prettier': 1,
+    'prettier/prettier': 0,
     // Vue: Recommended rules to be closed or modify
     'vue/require-default-prop': 0,
     'vue/singleline-html-element-content-newline': 0,
@@ -60,8 +62,8 @@ module.exports = {
         js: 'never',
         jsx: 'never',
         ts: 'never',
-        tsx: 'never',
-      },
+        tsx: 'never'
+      }
     ],
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-param-reassign': 0,
@@ -69,6 +71,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'warn',
-    'import/prefer-default-export': 'off',
-  },
+    'import/prefer-default-export': 'off'
+  }
 };

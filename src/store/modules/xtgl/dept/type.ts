@@ -30,7 +30,7 @@ export interface DeptInfoDto {
 }
 
 export interface DeptState {
-  treeInfo: UnitTreeDto;
+  treeInfo: Array<UnitTreeDto>;
   deptInfo: DeptInfoDto;
   deptPageData: PageReturnData;
 }

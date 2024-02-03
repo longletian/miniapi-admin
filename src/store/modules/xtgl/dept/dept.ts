@@ -15,9 +15,9 @@ import {
 import { PageReturnData } from '@/types/global';
 import { DeptState } from './type';
 
-const deptStore = defineStore('dept', {
+const useDeptStore = defineStore('dept', {
   state: (): DeptState => ({
-    treeInfo: {},
+    treeInfo: [],
     deptInfo: {},
     deptPageData: {
       totalPages: 0,
@@ -65,4 +65,4 @@ const deptStore = defineStore('dept', {
   }
 });
 
-export default deptStore;
+export default useDeptStore;

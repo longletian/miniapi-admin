@@ -18,6 +18,7 @@
                 >
                   <a-input
                     v-model="formModel.userName"
+                    :allow-clear="true"
                     :placeholder="$t('searchTable.form.username.placeholder')"
                   />
                 </a-form-item>
@@ -29,6 +30,7 @@
                 >
                   <a-input
                     v-model="formModel.nickName"
+                    :allow-clear="true"
                     :placeholder="$t('searchTable.form.nickname.placeholder')"
                   />
                 </a-form-item>
@@ -40,6 +42,7 @@
                 >
                   <a-input
                     v-model="formModel.email"
+                    :allow-clear="true"
                     :placeholder="$t('searchTable.form.email.placeholder')"
                   />
                 </a-form-item>
@@ -52,6 +55,7 @@
                 >
                   <a-input
                     v-model="formModel.phone"
+                    :allow-clear="true"
                     :placeholder="$t('searchTable.form.phone.placeholder')"
                   />
                 </a-form-item>
@@ -65,6 +69,7 @@
                   <a-range-picker
                     v-model="formModel.createdTime"
                     style="width: 100%"
+                    :clear="true"
                   />
                 </a-form-item>
               </a-col>
@@ -77,6 +82,7 @@
                     v-model="formModel.status"
                     :options="statusOptions"
                     :placeholder="$t('searchTable.form.selectDefault')"
+                    :allow-clear="true"
                   />
                 </a-form-item>
               </a-col>
@@ -105,14 +111,14 @@
       <a-row style="margin-bottom: 16px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="changeComponent('addUser')">
+            <a-button type="outline" @click="changeComponent('addUser')">
               <template #icon>
                 <icon-plus />
               </template>
               {{ $t('searchTable.operation.create') }}
             </a-button>
             <a-button
-              type="primary"
+              type="outline"
               status="success"
               @click="changeComponent('editUser')"
             >
@@ -122,7 +128,7 @@
               {{ $t('searchTable.operation.edit') }}
             </a-button>
             <a-button
-              type="primary"
+              type="outline"
               status="danger"
               @click="changeComponent('delete')"
             >
@@ -188,13 +194,7 @@
                       <icon-drag-arrow />
                     </div>
                     <div>
-                      <a-checkbox
-                        v-model="item.checked"
-                        @change="
-                          handleChange($event, item as TableColumnData, index)
-                        "
-                      >
-                      </a-checkbox>
+                      <a-checkbox v-model="item.checked"> </a-checkbox>
                     </div>
                     <div class="title">
                       {{ item.title === '#' ? '序列号' : item.title }}
@@ -240,8 +240,8 @@
     </a-card>
   </div>
 
-  <component :is="addUser" ref="addUserRef"></component>
-  <component :is="editUser" ref="editUserRef"></component>
+  <AddUser ref="addUserRef"></AddUser>
+  <EditUser ref="editUserRef"></EditUser>
 </template>
 
 <script lang="ts" setup>
@@ -251,16 +251,13 @@
     reactive,
     watch,
     nextTick,
-    markRaw,
-    shallowRef,
-    onMounted,
-    getCurrentInstance,
+    getCurrentInstance
   } from 'vue';
   import { useI18n } from 'vue-i18n';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type {
     TableColumnData,
-    TableRowSelection,
+    TableRowSelection
   } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable from 'sortablejs';
@@ -268,13 +265,13 @@
   import useLoading from '@/hooks/loading';
   import { UserListData, UserSearchParams } from '@/api/xtgl/user/type';
   import { getPageUserListData } from '@/api/xtgl/user/user';
-  import addUser from './components/add.vue';
-  import editUser from './components/edit.vue';
-
-  const lookUp = { addUser: markRaw(addUser), editUser: markRaw(editUser) };
+  import AddUser from './components/add.vue';
+  import EditUser from './components/edit.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
+
+  const { ctx } = getCurrentInstance() as any;
 
   const generateFormModel = () => {
     return {
@@ -285,13 +282,12 @@
       startTime: '',
       createdTime: [],
       endTime: '',
-      status: '',
+      status: ''
     };
   };
   const { loading, setLoading } = useLoading(true);
   const { t } = useI18n();
 
-  const modalTitle = ref('');
   const renderData = ref<UserListData[]>([]);
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
@@ -302,88 +298,88 @@
 
   const basePagination: Pagination = {
     page: 1,
-    pageSize: 5,
+    pageSize: 5
   };
 
   const pagination = reactive({
-    ...basePagination,
+    ...basePagination
   });
 
   const rowSelection: TableRowSelection = {
     type: 'checkbox',
     showCheckedAll: true,
-    onlyCurrent: false,
+    onlyCurrent: false
   };
 
   const densityList = computed(() => [
     {
       name: t('searchTable.size.mini'),
-      value: 'mini',
+      value: 'mini'
     },
     {
       name: t('searchTable.size.small'),
-      value: 'small',
+      value: 'small'
     },
     {
       name: t('searchTable.size.medium'),
-      value: 'medium',
+      value: 'medium'
     },
     {
       name: t('searchTable.size.large'),
-      value: 'large',
-    },
+      value: 'large'
+    }
   ]);
 
   const columns = computed<TableColumnData[]>(() => [
     {
       title: t('searchTable.columns.userName'),
-      dataIndex: 'name',
+      dataIndex: 'name'
     },
     {
       title: t('searchTable.columns.nickName'),
-      dataIndex: 'nickName',
+      dataIndex: 'nickName'
     },
     {
       title: t('searchTable.columns.unitName'),
-      dataIndex: 'unitName',
+      dataIndex: 'unitName'
     },
     {
       title: t('searchTable.columns.email'),
-      dataIndex: 'email',
+      dataIndex: 'email'
     },
     {
       title: t('searchTable.columns.telePhone'),
-      dataIndex: 'telePhone',
+      dataIndex: 'telePhone'
     },
     {
       title: t('searchTable.columns.roleIds'),
-      dataIndex: 'roleIds',
+      dataIndex: 'roleIds'
     },
     {
       title: t('searchTable.columns.createTime'),
-      dataIndex: 'createTime',
+      dataIndex: 'createTime'
     },
     {
       title: t('searchTable.columns.status'),
       dataIndex: 'status',
-      slotName: 'status',
+      slotName: 'status'
     },
     {
       title: t('searchTable.columns.operations'),
       dataIndex: 'operations',
-      slotName: 'operations',
-    },
+      slotName: 'operations'
+    }
   ]);
 
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
       label: t('searchTable.form.status.0'),
-      value: '正常',
+      value: '正常'
     },
     {
       label: t('searchTable.form.status.1'),
-      value: '停用',
-    },
+      value: '停用'
+    }
   ]);
 
   const fetchData = async (
@@ -405,7 +401,7 @@
   const search = () => {
     fetchData({
       ...basePagination,
-      ...formModel.value,
+      ...formModel.value
     } as unknown as UserSearchParams);
   };
 
@@ -420,15 +416,15 @@
     formModel.value = generateFormModel();
   };
 
-  const onSelectEvent = (keys, rowKey, record) => {
+  const onSelectEvent = (keys: any, rowKey: any, record: any) => {
     console.log(`${keys}--${rowKey}${JSON.stringify(record)}`);
   };
 
-  const onSelectAllEvent = (keys) => {
+  const onSelectAllEvent = (keys: any) => {
     console.log(keys);
   };
 
-  const onSelectChange = (rowKeys) => {
+  const onSelectChange = (rowKeys: number) => {
     console.log(rowKeys);
   };
 
@@ -437,20 +433,6 @@
     e: Event
   ) => {
     size.value = val as SizeProps;
-  };
-
-  const handleChange = (
-    checked: boolean | (string | boolean | number)[],
-    column: Column,
-    index: number
-  ) => {
-    if (!checked) {
-      cloneColumns.value = showColumns.value.filter(
-        (item) => item.dataIndex !== column.dataIndex
-      );
-    } else {
-      cloneColumns.value.splice(index, 0, column);
-    }
   };
 
   const exchangeArray = <T extends Array<any>>(
@@ -480,7 +462,7 @@
             const { oldIndex, newIndex } = e;
             exchangeArray(cloneColumns.value, oldIndex, newIndex);
             exchangeArray(showColumns.value, oldIndex, newIndex);
-          },
+          }
         });
       });
     }
@@ -498,14 +480,12 @@
     { deep: true, immediate: true }
   );
 
-  const componentCheck = shallowRef(null);
-  const currentInstance = getCurrentInstance();
-  const changeComponent = function changeComponent(val) {
+  const changeComponent = function changeComponent(val: string) {
     if (val) {
       if (val === 'addUser') {
-        currentInstance.ctx.$refs.addUserRef.onHandleOpen();
+        ctx?.$refs.addUserRef.onHandleOpen();
       } else if (val === 'editUser') {
-        currentInstance.ctx.$refs.editUserRef.onHandleOpen();
+        ctx.$refs.editUserRef.onHandleOpen();
       }
     }
   };
@@ -513,7 +493,7 @@
 
 <script lang="ts">
   export default {
-    name: 'SearchTable',
+    name: 'SearchTable'
   };
 </script>
 

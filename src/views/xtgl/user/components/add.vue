@@ -198,14 +198,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, onMounted, computed } from 'vue';
+  import { ref, reactive } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
   import checkUnit from './check-unit.vue';
 
   const { t } = useI18n();
-
   const formData = reactive({
     name: '',
     nickName: '',
@@ -234,12 +233,6 @@
       name: '角色2'
     }
   ];
-
-  //  const topMenu = computed(() => appStore.topMenu);
-
-  // const roleOptions = computed(() => {});
-
-  // const postOptions = computed(() => {});
 
   const genderOptions = [
     {

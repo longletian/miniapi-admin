@@ -11,17 +11,20 @@
           <a-col>
             <a-form-item
               :label="$t('searchTable.form.keyWord')"
-              field="keyWord"
+              :field="query.unitName"
             >
               <a-input-search
+                v-model="query.unitName"
                 :placeholder="$t('searchTable.form.keyWord.placeholder')"
-                search-button="true"
+                search-button
                 @search="onSearch"
               >
                 <template #button-icon>
                   <icon-search />
                 </template>
-                <template #button-default> </template>
+                <template #button-default>
+                  {{ $t('searchTable.form.search') }}</template
+                >
               </a-input-search>
             </a-form-item>
           </a-col>
@@ -32,14 +35,14 @@
       <a-tree-select
         placeholder="请选择"
         :field-names="{
-          key: 'value',
-          title: 'label',
-          children: 'items'
+          key: 'id',
+          title: 'unitName',
+          children: 'children'
         }"
-        :default-value="treeData[0]"
-        :model-value="from.unitId"
+        :default-value="computedTreeData[0]"
+        :model-value="query.unitName"
+        :data="computedTreeData"
         allow-clear
-        :data="treeData"
         style="width: 100%"
       >
       </a-tree-select>
@@ -49,53 +52,18 @@
 
 <script lang="ts" setup>
   import { ref, reactive, computed } from 'vue';
+  import { useXtglStore } from '@/store/index';
+  import { DeptTreeSeachDto } from '@/api/xtgl/dept/type';
 
+  const deptStore = useXtglStore.useDeptStore();
+  const query = reactive<DeptTreeSeachDto>({});
+  const onSearch = () => deptStore.getDeptTreeData(query);
   const empty = ref();
-  const from = reactive({
-    unitId: undefined,
-    unitName: ''
+  const computedTreeData: any = computed(() => {
+    return empty.value ? [] : deptStore.treeInfo;
   });
-  const keyWord = ref();
-  const treeData = [
-    {
-      label: '旺旺集团',
-      value: '0',
-      items: [
-        {
-          label: '旺旺集团-开发部',
-          value: '0-0-2',
-          items: [
-            {
-              label: '旺旺集团-开发部-后台',
-              value: '0-0-2-1'
-            }
-          ]
-        },
-        {
-          label: '旺旺集团-销售部',
-          value: '0-1',
-          items: [
-            {
-              label: '旺旺集团-销售部-售前',
-              value: '0-1-1',
-              items: [
-                {
-                  label: 'Leaf',
-                  value: '0-1-1-0'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ];
 
-  const onSearch = () => {};
-
-  const computedTreeData1 = computed(() => {
-    return empty.value ? [] : treeData;
-  });
+  const;
 
   const yModal = ref();
   const onHandleOpen = () => {
