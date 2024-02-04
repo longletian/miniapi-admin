@@ -5,6 +5,7 @@
       :closable="isClosable"
       :width="width"
       :top="top"
+      :align-center="alignCenter"
       title-align="start"
       :draggable="isDraggable"
       :fullscreen="isFullScreen"
@@ -25,38 +26,39 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, defineEmits } from 'vue';
+  import { ref } from 'vue';
 
+  const alignCenter = ref(true);
   const visible = ref(false);
   const props = defineProps({
     title: {
       type: String,
-      default: '新增',
+      default: '新增'
     },
     width: {
       type: Number,
-      default: 500,
+      default: 500
     },
     top: {
       type: Number,
-      default: 0,
+      default: 0
     },
     isClosable: {
       type: Boolean,
-      default: true,
+      default: true
     },
     isDraggable: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isFullScreen: {
       type: Boolean,
-      default: false,
+      default: false
     },
     footer: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   });
 
   const handleClose = () => {
@@ -66,11 +68,14 @@
   const handleOpen = () => {
     console.log(props.title);
     visible.value = true;
+    if (props.top !== 0) {
+      alignCenter.value = false;
+    }
   };
 
   defineExpose({
     handleOpen,
-    handleClose,
+    handleClose
   });
 </script>
 

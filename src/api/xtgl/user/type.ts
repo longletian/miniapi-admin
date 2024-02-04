@@ -74,15 +74,16 @@ export interface LoginInfoData {
 export interface AddUserData {
   name: string;
   nickName: string;
-  unitId: number;
+  unitId: number | undefined;
   unitName: string;
-  headIcon: string;
-  gender: number;
-  birthDay: Date;
+  gender: number | undefined;
+  passWord: string;
+  confirmPassWord: string;
   telePhone: string;
   email: string;
-  sortNum: number;
+  sortNum: number | undefined;
   description: string;
+  status: number | undefined;
   roleIds: number[];
   postIds: number[];
 }

@@ -21,17 +21,20 @@
                 :label="$t('groupForm.form.unitId')"
                 field="formData.unitId"
               >
-                <a-input-search
-                  :placeholder="$t('groupForm.form.unitId.placeholder')"
-                  search-button="true"
-                  @focus="onUnitSearch"
-                  @search="onUnitSearch"
+                <a-tree-select
+                  placeholder="请选择"
+                  :field-names="{
+                    key: 'id',
+                    title: 'unitName',
+                    children: 'children'
+                  }"
+                  :default-value="computedTreeData[0]"
+                  :data="computedTreeData"
+                  allow-clear
+                  :filter-tree-node="filterTreeNode"
+                  :allow-search="true"
                 >
-                  <template #button-icon>
-                    <icon-search />
-                  </template>
-                  <template #button-default> </template>
-                </a-input-search>
+                </a-tree-select>
               </a-form-item>
             </a-col>
             <a-col>
@@ -198,11 +201,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, onMounted } from 'vue';
+  import { ref, reactive, onMounted, computed } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import checkUnit from './check-unit.vue';
+  import { useXtglStore } from '@/store/index';
+  import { DeptTreeSeachDto } from '@/api/xtgl/dept/type';
 
   const { t } = useI18n();
 
@@ -220,34 +224,34 @@
     sortNum: undefined,
     status: undefined,
     roleIds: [],
-    postIds: [],
+    postIds: []
   });
   const formRef = ref<FormInstance>();
   const { loading, setLoading } = useLoading();
   const options = [
     {
       code: '1',
-      name: '角色1',
+      name: '角色1'
     },
     {
       code: '2',
-      name: '角色2',
-    },
+      name: '角色2'
+    }
   ];
 
   const genderOptions = [
     {
       code: 0,
-      name: t('groupForm.form.gender.0'),
+      name: t('groupForm.form.gender.0')
     },
     {
       code: 1,
-      name: t('groupForm.form.gender.1'),
+      name: t('groupForm.form.gender.1')
     },
     {
       code: 2,
-      name: t('groupForm.form.gender.2'),
-    },
+      name: t('groupForm.form.gender.2')
+    }
   ];
 
   const onConfirm = async () => {
@@ -265,9 +269,20 @@
     yModal.value.handleOpen();
   };
 
-  const checkUnitRef = ref();
-  const onUnitSearch = () => {
-    checkUnitRef.value.onHandleOpen();
+  const deptStore = useXtglStore.useDeptStore();
+  const query = reactive<DeptTreeSeachDto>({});
+  const onSearch = () => deptStore.getDeptTreeData(query);
+
+  onSearch();
+
+  const empty = ref();
+  const computedTreeData: any = computed(() => {
+    return empty.value ? [] : deptStore.treeInfo;
+  });
+
+  const filterTreeNode = (val: any, data: any) => {
+    console.log(`值${JSON.stringify(val)}nodeData${JSON.stringify(data)}`);
+    return data.unitName.indexOf(val) > -1;
   };
 
   defineExpose({ onHandleOpen });

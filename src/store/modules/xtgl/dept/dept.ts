@@ -33,6 +33,7 @@ const useDeptStore = defineStore('dept', {
   actions: {
     async getDeptTreeData(params: DeptTreeSeachDto) {
       const res = await getDeptTreeData(params);
+      console.log(`数据结果${res.data}`);
       this.treeInfo = res.data;
     },
 

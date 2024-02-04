@@ -1,5 +1,10 @@
 <template>
-  <YModal ref="yModal" :title="$t('menu.xtgl.user.add')">
+  <YModal
+    ref="yModal"
+    :title="$t('menu.xtgl.user.add')"
+    :top="100"
+    :width="500"
+  >
     <div class="container">
       <a-form ref="formRef" direction="horizontal" :model="formData">
         <a-space direction="horizontal">
@@ -21,17 +26,21 @@
                 :label="$t('groupForm.form.unitId')"
                 field="formData.unitId"
               >
-                <a-input-search
-                  :placeholder="$t('groupForm.form.unitId.placeholder')"
-                  search-button="true"
-                  @focus="onUnitSearch"
-                  @search="onUnitSearch"
+                <a-tree-select
+                  v-model="formData.unitId"
+                  :field-names="{
+                    key: 'id',
+                    title: 'unitName',
+                    children: 'children'
+                  }"
+                  :default-value="computedTreeData[0]"
+                  :data="computedTreeData"
+                  :placeholder="$t('groupForm.form.unitId')"
+                  allow-clear
+                  :filter-tree-node="filterTreeNode"
+                  :allow-search="true"
                 >
-                  <template #button-icon>
-                    <icon-search />
-                  </template>
-                  <template #button-default> </template>
-                </a-input-search>
+                </a-tree-select>
               </a-form-item>
             </a-col>
             <a-col>
@@ -78,7 +87,6 @@
                 field="formData.gender"
               >
                 <a-select
-                  :key="index"
                   v-model="formData.gender"
                   allow-clear
                   :placeholder="$t('groupForm.form.gender.placeholder')"
@@ -123,7 +131,6 @@
                 field="formData.roleIds"
               >
                 <a-select
-                  :key="index"
                   v-model="formData.roleIds"
                   allow-clear
                   multiple
@@ -145,7 +152,6 @@
                 field="formData.postIds"
               >
                 <a-select
-                  :key="index"
                   v-model="formData.postIds"
                   allow-clear
                   multiple
@@ -194,18 +200,21 @@
       </a-form>
     </div>
   </YModal>
-  <checkUnit ref="checkUnitRef"></checkUnit>
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, computed } from 'vue';
   import { FormInstance } from '@arco-design/web-vue/es/form';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import checkUnit from './check-unit.vue';
+  import { useXtglStore, useUserStore } from '@/store/index';
+  import { AddUserData } from '@/api/xtgl/user/type';
+  import { DeptTreeSeachDto } from '@/api/xtgl/dept/type';
 
   const { t } = useI18n();
-  const formData = reactive({
+  const userStore = useUserStore();
+  const deptStore = useXtglStore.useDeptStore();
+  const formData = reactive<AddUserData>({
     name: '',
     nickName: '',
     description: '',
@@ -251,22 +260,35 @@
 
   const onConfirm = async () => {
     const res = await formRef.value?.validate();
+    console.log(JSON.stringify(formRef.value));
+
     if (!res) {
       setLoading(true);
     }
+    userStore.postAddUserData(formData);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   };
+
+  const onGenderChange = () => {};
 
   const yModal = ref();
   const onHandleOpen = () => {
     yModal.value.handleOpen();
   };
 
-  const checkUnitRef = ref();
-  const onUnitSearch = () => {
-    checkUnitRef.value.onHandleOpen();
+  const query = reactive<DeptTreeSeachDto>({});
+  const onSearch = () => deptStore.getDeptTreeData(query);
+  onSearch();
+
+  const empty = ref();
+  const computedTreeData: any = computed(() => {
+    return empty.value ? [] : deptStore.treeInfo;
+  });
+
+  const filterTreeNode = (val: any, data: any) => {
+    return data.unitName.indexOf(val) > -1;
   };
 
   defineExpose({ onHandleOpen });
